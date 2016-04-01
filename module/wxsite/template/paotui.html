@@ -1,0 +1,63 @@
+ <{extends file="<{$tempdir}>/public/wxsite.html"}>  
+<{block name=extendcss}>   
+<{/block}>
+ <{block name=myScrolljs}>
+<script> 
+		var myScroll;
+function loaded() {
+	myScroll = new iScroll('wrapper', {
+		useTransform: false,
+		onBeforeScrollStart: function (e) {
+			var target = e.target;
+			while (target.nodeType != 1) target = target.parentNode;
+
+			if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
+				e.preventDefault();
+		}
+	});
+}
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false); 
+document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+</script>
+<{/block}>
+<{block name=hearnav}>
+<div class="toptitCon">
+ <div class="toptitBox">
+  <div class="toptitL"><i></i></div>
+  <div class="toptitC"><h3>跑腿服务</h3></div>
+ </div>
+</div>
+<{/block}>
+<{block name=sitetitle}><{$sitename}><{/block}>
+<{block name=blockcontent}>  
+  <div id="wrapper" style="top:40px;">
+	<div id="scroller">
+	
+	
+	
+<!--banner-->
+<div class="errandsbanner"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/075.png"></div>
+<!--服务电话-->
+<div class="errandstelcon">
+ <a href="tel:<{$litel}>"><div class="errandstel"><i></i><span>服务电话：<{$litel}></span></div></a>
+</div>
+<!--主体内容-->
+<div class="errandsmaincon">
+ <div class="errandsmainbox">
+  <div class="errandsmainL"  onclick="dolink('<{ofunc type=url link="/wxsite/pthelpme/pttype/1"}>');"  ><img src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/076.png"></div>
+  <div class="errandsmainR">
+   <div  onclick="dolink('<{ofunc type=url link="/wxsite/pthelpme/pttype/2"}>');"  class="errands"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/077.png"></div>
+   <div   onclick="dolink('<{ofunc type=url link="/wxsite/mypaotui"}>');"   class="errands"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/078.png"></div>
+  </div>
+ </div>
+</div>
+<!--------------------------------------------------------------------------跑腿结束--------------------------------------------------------------------------------------->
+
+	
+	
+	
+	
+	
+  </div>
+</div> 
+<{/block}>

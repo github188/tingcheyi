@@ -1,0 +1,150 @@
+ <{extends file="<{$tempdir}>/public/wxsite.html"}>  
+ <{block name=extendcss}> 
+  <link rel="stylesheet"  href="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/css/weixinlunbo.css">   
+ <{/block}>
+<{block name=myScrolljs}> <!-- 
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/newweixin.js"></script> --> 
+<script> 
+		var myScroll;
+function loaded() {
+	myScroll = new iScroll('wrapper', {
+		useTransform: false,
+		onBeforeScrollStart: function (e) {
+			var target = e.target;
+			while (target.nodeType != 1) target = target.parentNode;
+
+			if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
+				e.preventDefault();
+		}
+	});
+}
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false); 
+document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+</script>
+ <script>
+ 	$(function(){ 
+ 	      var bullets = document.getElementById('abdcd').getElementsByTagName('span');
+ 	      var slider =  Swipe(document.getElementById('slider'), {
+           auto: 3000,
+           continuous: true,
+           callback: function(pos) { 
+              var i = bullets.length;
+              while (i--) {
+                bullets[i].className = ' ';
+              }
+              bullets[pos].className = 'on'; 
+           }
+        });  
+}); 
+</script>
+
+<{/block}>
+<{block name=hearnav}>
+ <!--头部-->
+    <div class="header-bar-warp">
+        <div class="header-bar">
+          <h1 class="topbarclogo txthide" style="background:url(<{$html5logo}>) center no-repeat;background-size: 94px 28px;"><{$sitename}></h1>
+        </div>
+    </div>
+<{/block}>
+<{block name=sitetitle}><{$sitename}><{/block}>
+<{block name=blockcontent}>  
+
+	 <div id="wrapper" style="top:40px;">
+	 
+<div class="page-app"  >
+    <!--首页-->
+	<div>
+ 
+				<div class="wxmenulist" style="margin-top:-10px;margin-bottom:-10px;" > 
+			<ul>
+			
+			
+			
+			<{foreach from=$moretypelist item=items}>
+				<li style="background:url(<{$items['img']}>) center no-repeat; background-size:60%;"  
+				<{if $items['activity'] == 'waimai' }>  onclick="dolink('<{ofunc type=url link="/wxsite/waimai/typeid/<{$items['param']}>"}>');"  <{else}>  onclick="dolink('<{ofunc type=url link="/wxsite/marketlist/typeid/<{$items['param']}>"}>');"  <{/if}> >
+					<div style="min-height:40px; width:100%;">
+						<!--  <img src="<{$items['img']}>" />  -->
+				</div> 
+					<div style="margin-top:28px;"><{$items['name']}></div>
+					
+				</li>
+				
+			<{/foreach}>
+	
+				<li style="background:url(<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/css/images/tab_home_ic_all.png) center no-repeat; background-size:60%;"   onclick="dolink('<{ofunc type=url link="/wxsite/waimai"}>');"  >
+				<div style="min-height:40px; width:100%;"></div>
+					<div style="margin-top:28px;">全部</div>
+				</li>
+			</ul>
+		</div>
+
+			<div class="wxgongnengset" style="margin:10px auto; padding:10px 0px;"> 
+			<ul>
+				<{foreach from=$moduleshow item=items}>
+				<li  <{if count($moduleshow) == 1  }>style="width:100%"<{elseif count($moduleshow) == 2}>style="width:50%"<{elseif count($moduleshow) ==3}>style="width:33%"<{/if}> onclick="dolink('<{ofunc type=url link="/wxsite/<{$items['name']}>"}>');"  >
+						<div class=""><img style=" width:100%; height:42px;" src="<{$items['imgurl']}>" /></div>
+				</li>	
+				<{/foreach}>
+				
+				
+			</ul>
+		</div>
+
+			
+			
+	</div>
+       <div class="clear"></div>
+                <!--首页幻灯-->
+                <section id="slider" class="swipe" style="visibility: visible;">
+  				<div class="swipe-wrap">
+  				  <{load_data assign="list" table="adv"    fileds="*"  limit="5" where="advtype='weixinlb' and  module='<{$sitetemp}>' " }> 
+  				  <{foreach from=$list['list'] item=items}>
+  				   <div class="wrap" ><a href="<{$items['linkurl']}>"><img src="<{$items['img']}>" width="100%" height="70" alt=""></a></div>
+  				  <{/foreach}>
+  				</div>
+  			 <div class="bgboxgo">
+  						<div class="botton-box mBxCm" id="abdcd">
+  							 <{foreach from=$list['list'] item=items}>
+  							    <span class="on"></span>
+  							 <{/foreach}>
+  					 </div>
+  				</div>
+  			</section>
+         
+           	<div class="wxgongnengset" style="margin:10px auto; padding:0px 0px;"> 
+			<ul>
+				<{foreach from=$fourmoduleshow item=items}>
+				<li <{if $items['name']=='market' }> onclick="dolink('<{ofunc type=url link="/wxsite/marketlist"}>');" <{elseif $items['name']=='diancai'}> onclick="dolink('<{ofunc type=url link="/wxsite/dingtai"}>');"<{else}> onclick="dolink('<{ofunc type=url link="/wxsite/<{$items['name']}>"}>');" <{/if}> 
+				<{if count($moduleshow) == 1  }>style="width:100%"<{elseif count($moduleshow) == 2}>style="width:50%;height:80px; line-height:80px;border:none;border-bottom: 1px solid #eeeeee;"
+					<{elseif count($moduleshow) == 3}>style="width:50%;height:80px; line-height:80px;border:none;border-bottom: 1px solid #eeeeee;"
+					<{elseif count($moduleshow) == 4}>style="width:50%;height:80px; line-height:80px;border:none;border-bottom: 1px solid #eeeeee;"<{/if}>  onclick="dolink('<{ofunc type=url link="/wxsite/<{$items['name']}>"}>');"  >
+						<img style=" width:100%; height:80px;" src="<{$items['imgurl']}>" />
+				</li>	
+				<{/foreach}>
+				
+				
+			</ul>
+		</div>
+
+
+</div>
+</div>
+
+<{/block}>
+
+  <{block name=footer}>
+<!--底部-->
+    <div class="bottom-bar-warp">
+        <div class="bottom-bar" id="bottom-bar">
+            <div class="bbar-btn tap-click" onclick="dolink('<{ofunc type=url link="/wxsite/index"}>');"  ><i class="icon icon_home"></i><div class="text" style="margin-top:-8px;">首页</div></div>
+            <div class="bbar-btn tap-click" onclick="dolink('<{ofunc type=url link="/wxsite/member"}>');" ><i class="icon icon_user"></i><div class="text" style="margin-top:-8px;">个人中心</div></div>
+            
+            <div class="bbar-btn tap-click" onclick="dolink('<{ofunc type=url link="/wxsite/order"}>');" ><i class="icon icon_order"></i><div class="text" style="margin-top:-8px;">我的订单</div></div>
+            <div class="bbar-btn"  onclick="dolink('<{ofunc type=url link="/wxsite/togethersay"}>');"><i class="icon icon_phone" style="margin-top: 8px;"></i></a><a class="text"  style="margin-top:-10px;">一起说</div>
+        </div>
+    </div>
+
+
+<{/block}>

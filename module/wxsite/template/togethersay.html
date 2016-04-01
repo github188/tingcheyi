@@ -1,0 +1,446 @@
+ <{extends file="<{$tempdir}>/public/wxsite.html"}>  
+<{block name=extendcss}> 
+<link rel="stylesheet"  href="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/css/shopshow.css">   
+<link rel="stylesheet"  href="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/css/togetersay.css">   
+<{/block}>
+ <{block name=extendjs}>  
+  <script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/wxshop.js"></script>  
+ <script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/jweixin-1.0.0.js"></script>  
+<{/block}>
+<{block name=sitetitle}><{$sitename}><{/block}>
+<{block name=hearnav}>
+ <!--头部-->
+    <header style="position: fixed;display:block; " id=""><div class="return"></div>一起说
+	<div   onclick="dolink('<{ofunc type=url link="/wxsite/wxmsglist"}>');"  style="position: fixed;
+  display: block;
+  z-index: 3;
+  top: 1px;
+  right: 15px;"><p style="line-height: 12px;"><img style="width: 25px;" src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/iconfont-xiaoxiweixuanzhong.png" /></p><p  style="line-height: 12px; font-size:12px;">消息</p></div>
+	</header>
+<{/block}>
+<{block name=myScrolljs}><script> 
+
+var wxmenuid = <{$member['uid']}>;
+
+		var myScroll;
+function loaded() {
+	myScroll = new iScroll('wrapper', {
+		useTransform: false,
+		onBeforeScrollStart: function (e) {
+			var target = e.target;
+			while (target.nodeType != 1) target = target.parentNode;
+
+			if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
+				e.preventDefault();
+		}
+	});
+}
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false); 
+document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+</script>
+<{/block}>
+<{block name=blockcontent}> 
+<div id="wrapper" >
+<div  class="page-app">
+
+   
+	<div class="wxsaycontentlist">
+	
+		<ul>
+			<{foreach $togethersaycomlist item=items }>
+			<li class="wxusersay_<{$items['id']}>">
+				<div class="wxusercontent">
+					<div class="wxuserinfo">
+						<span><img class="userlogo" src="<{$userlogo}>" /></span>
+						<span style="margin-left:7px;display:block;">
+							<p class="wxusername <{if $items['sex'] == 1}> wxnan <{elseif $items['sex'] ==  2}> wxnv <{else}><{/if}>"><{$sitename}></p>
+							<p class="wxuserxx"><{$items['streetname']}>&nbsp;&nbsp;&nbsp;<{$items['addtime']|date_format:"%m-%d %H:%M"}></p>
+						</span>
+					</div>
+					<div class="clear"></div>
+					
+					<div  onclick="caozuousercont(<{$items['id']}>);" class="wxusercontdr"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/iconfont-chevron-down.png" /></div>
+					<div <{if $items['uid'] == $member['uid'] }>onclick="wxuserdel(<{$items['id']}>);"<{else}>onclick="wxuserjubao(<{$items['id']}>);"<{/if}> class="wxusercomfir wxusercomfir_<{$items['id']}>" style="display:none;">
+						<span panduanattr="<{if $items['uid'] == $member['uid'] }>shanchu<{else}>jubao<{/if}>"  class="jubaouser"><{if $items['uid'] == $member['uid'] }>删除<{else}>举报<{/if}></span>
+					</div>
+					
+					<div class="yiqisayusercont">
+						<span style="color:#fe5052;">[ 置顶 ] </span><{$items['usercontent']|htmlspecialchars_decode}>
+					</div>
+				<{if $items['wxuserimgarr'][0] != '' }>	
+				<div class="yiqisayuserimgs" style="height:205px; position:relative; overflow:hidden; margin-bottom:5px;" >
+						
+							<img  class="previewImage" dataattr="<{$items['userimg']}>"  sayid="<{$items['id']}>" src="<{$items['wxuserimgarr'][0]}>" />		
+						
+						<div style="width:100%;background:#000; opacity:0.7;filter:alpha(opacity=70);  position:absolute; bottom:0px;right:0px; height:28px; line-height:28px; ">
+							
+						</div>
+						<div style="position:absolute; color:#ffffff; right:15px; bottom:2px; font-size:14px; ">
+							共<{$items['wxuserimgarr']|@count}>张
+						</div>
+						
+						</div>
+				<{/if}>	
+					<div style="height:22px; ">						
+						<div   onclick="dolink('<{ofunc type=url link="/wxsite/commentwxuser/id/<{$items['id']}>"}>');"  class="zzshuliang  zongmsg"><{$items['pingjiazongshu']}></div>
+						<{load_data assign="zanmuyou" table="wxpjzan" type="one" where="commentid=<{$items['id']}> and uid=<{$member['uid']}> " fileds="*" }>  
+						<div   zanidattr="<{$items['id']}>" pingjiaattr="<{if $zanmuyou == '' }>0<{else}>1<{/if}>" class="zongzanshuliang zongzanshuliang_<{$items['id']}> zzshuliang <{if $zanmuyou == '' }> zongzanshu <{else}> zongzanshucur <{/if}>"><{$items['zongzanshu']}></div>
+					</div>
+					
+				</div>
+			</li>
+			<{/foreach}>
+		
+		
+		<{foreach $togethersaylist item=items }>
+			<li class="wxusersay_<{$items['id']}>">
+				<div class="wxusercontent">
+					<div class="wxuserinfo">
+						<span><img class="userlogo" src="<{$items['logo']}>" /></span>
+						<span style="margin-left:7px;display:block;">
+							<p class="wxusername <{if $items['sex'] == 1}> wxnan <{elseif $items['sex'] ==  2}> wxnv <{else}><{/if}>"><{$items['username']}></p>
+							<p class="wxuserxx"><{$items['streetname']}>&nbsp;&nbsp;&nbsp;<{$items['addtime']|date_format:"%m-%d %H:%M"}></p>
+						</span>
+					</div>
+					<div class="clear"></div>
+					
+					<div  onclick="caozuousercont(<{$items['id']}>);" class="wxusercontdr"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/iconfont-chevron-down.png" /></div>
+					<div <{if $items['uid'] == $member['uid'] }>onclick="wxuserdel(<{$items['id']}>);"<{else}>onclick="wxuserjubao(<{$items['id']}>);"<{/if}> class="wxusercomfir wxusercomfir_<{$items['id']}>" style="display:none;">
+						<span panduanattr="<{if $items['uid'] == $member['uid'] }>shanchu<{else}>jubao<{/if}>"  class="jubaouser"><{if $items['uid'] == $member['uid'] }>删除<{else}>举报<{/if}></span>
+					</div>
+					
+					<div class="yiqisayusercont">
+						<{$items['usercontent']|htmlspecialchars_decode}>
+					</div>
+				<{if $items['wxuserimgarr'][0] != '' }>	
+				<div class="yiqisayuserimgs" style="height:205px; position:relative; overflow:hidden; margin-bottom:5px;" >
+						
+							<img  class="previewImage" dataattr="<{$items['userimg']}>"  sayid="<{$items['id']}>" src="<{$items['wxuserimgarr'][0]}>" />		
+						
+						<div style="width:100%;background:#000; opacity:0.7;filter:alpha(opacity=70);  position:absolute; bottom:0px;right:0px; height:28px; line-height:28px; ">
+							
+						</div>
+						<div style="position:absolute; color:#ffffff; right:15px; bottom:2px; font-size:14px; ">
+							共<{$items['wxuserimgarr']|@count}>张
+						</div>
+						
+						</div>
+				<{/if}>	
+					<div style="height:22px; ">						
+						<div   onclick="dolink('<{ofunc type=url link="/wxsite/commentwxuser/id/<{$items['id']}>"}>');"  class="zzshuliang  zongmsg"><{$items['pingjiazongshu']}></div>
+						<{load_data assign="zanmuyou" table="wxpjzan" type="one" where="commentid=<{$items['id']}> and uid=<{$member['uid']}> " fileds="*" }>  
+						<div   zanidattr="<{$items['id']}>" pingjiaattr="<{if $zanmuyou == '' }>0<{else}>1<{/if}>" class="zongzanshuliang zongzanshuliang_<{$items['id']}> zzshuliang <{if $zanmuyou == '' }> zongzanshu <{else}> zongzanshucur <{/if}>"><{$items['zongzanshu']}></div>
+					</div>
+					
+				</div>
+			</li>
+			<{/foreach}>
+		
+		</ul>
+	
+	</div>
+   
+   
+   
+   
+   
+   
+    
+
+ </div>
+
+
+  
+  </div>
+ <div  onclick="dolink('<{ofunc type=url link="/wxsite/fabiaozhuti"}>');"  style="position:fixed; z-index:99; bottom:46px; margin-left:-25px; left:50%;">
+	<img style="width:50px;" src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/writecomment.png" />
+ </div>
+
+   <div id="cat_zhe" class="cart_zhe"  onclick="quxiaobtnpl();" ></div>
+ <!-- 举报弹出层 -->
+ <div class="corfimjubao" style="display:none;">
+	<p class="jubaotext">确定要举报?</p>
+	<p class="jubaoifqdqx">
+		<span class="jubaospan" ><span onclick="quedingjubao();" jubaoid="" class="quedingjubao">确定</span></span>
+		<span class="jubaospan" ><span  onclick="quxiaobtnpl();" class="quxiaojubao">取消</span></span>
+	</p>
+ </div>
+<!-- 删除弹出层 -->
+ <div class="corfimjubaodel" style="display:none;">
+	<p class="jubaotextdel">确定要删除?</p>
+	<p class="jubaoifqdqxdel">
+		<span class="jubaospandel" ><span onclick="quedingshanchu();" shanchuid="" class="quedingjubaodel">确定</span></span>
+		<span class="jubaospandel" ><span  onclick="quxiaobtndel();" class="quxiaojubaodel">取消</span></span>
+	</p>
+ </div>
+
+
+   <style>
+   .cart_zhe {
+   display:none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 666;
+  width:100%;
+  height:100%;
+  background-color: #000;
+  opacity: 0.4;
+  filter: alpha(opacity=40);
+}
+   </style> 
+
+   <script>
+     wx.config({
+      debug: false,
+      appId: '<{$signPackage['appId']}>',
+      timestamp: '<{$signPackage['timestamp']}>',
+      nonceStr: '<{$signPackage['nonceStr']}>',
+      signature: '<{$signPackage['signature']}>',
+      jsApiList: [
+        'checkJsApi',
+        'previewImage'
+      ]
+  });
+  
+    // 5.2 图片预览
+  //document.querySelector('.previewImage').onclick = function () {
+$(".previewImage").click(function(){	
+ var userimgs = $(this).attr('dataattr');
+	//	 Tmsg(1);
+		var stringarray = userimgs.split("@");	
+		//Tmsg(stringarray);		
+		 wx.previewImage({
+		  current: $(this).attr('src'),
+		  urls: stringarray
+		});
+	});
+
+  //};
+  
+  
+   </script>
+  <script>
+ var wxmemuid = <{$member['uid']}>;
+   function quxiaobtnpl(){
+		$(".corfimjubao").hide();
+		$(".cart_zhe").hide();
+		$(".wxusercomfir").hide();
+   } 
+   function quxiaobtndel(){
+		$(".corfimjubaodel").hide();
+		$(".cart_zhe").hide();
+		$(".wxusercomfir").hide();
+   } 
+
+function caozuousercont(commentid){
+		$(".wxusercomfir_"+commentid).toggle();
+}
+function wxuserjubao(commentid){
+	// 举报弹出层
+	$(".corfimjubao").show();
+	$(".cart_zhe").show();
+	$(".quedingjubao").attr('jubaoid',commentid);
+}
+
+
+//确定举报
+function quedingjubao(){
+	var jubaoid = $(".quedingjubao").attr('jubaoid');
+	if( wxmemuid == '' ||  wxmenuid == 0 ){
+		Tmsg("未登陆，请先登陆~");
+		return false;
+	}
+	$.ajax({
+	  	url:'<{ofunc type=url link="/wxsite/savejubaowxuser/datatype/json"}>',
+	  	data:{uid:wxmemuid,jubaoid:jubaoid},
+	  	dataType: 'json',
+	  	success:function (data, status)
+	  	{
+		
+	  		if(typeof(data.error) != 'undefined')
+				{
+					if(data.error == false)
+					{
+					$(".corfimjubao").hide();
+					$(".cart_zhe").hide();
+					
+						Tmsg('举报成功');
+							$('.closegb').live("click", function() {   
+								 $('.popup').slideToggle('slow',function(){$('#mask').remove();$('.popup').remove();}); 
+								
+								 
+							}); 
+				
+					 }else{
+					 		if(data.msg == '你已经举报过啦~'){
+								Tmsg(data.msg);
+									$(".corfimjubao").hide();
+								$(".cart_zhe").hide();
+							}else{
+								Tmsg(data.msg);
+							}
+							
+					 		
+					}
+				}else{
+					Tmsg(data.msg);
+				} 
+
+	  	},
+		  error: function (data, status, e)
+		  {
+					Tmsg('提交连接失败');
+		  }
+	  }); 
+}
+//删除
+function wxuserdel(commentid){
+	// 举报弹出层
+	$(".corfimjubaodel").show();
+	$(".cart_zhe").show();
+	$(".quedingjubaodel").attr('shanchuid',commentid);
+} 
+// 确定删除自己的评论
+function quedingshanchu(){
+	var shanchuid = $(".quedingjubaodel").attr('shanchuid');
+	if( wxmemuid == '' ||  wxmenuid == 0 ){
+		Tmsg("未登陆，请先登陆~");
+		return false;
+	}
+	$.ajax({
+	  	url:'<{ofunc type=url link="/wxsite/saveshanchuwxuser/datatype/json"}>',
+	  	data:{uid:wxmemuid,shanchuid:shanchuid},
+	  	dataType: 'json',
+	  	success:function (data, status)
+	  	{
+		
+	  		if(typeof(data.error) != 'undefined')
+				{
+					if(data.error == false)
+					{
+					$(".corfimjubaodel").hide();
+					$(".cart_zhe").hide();
+						$(".wxsaycontentlist .wxusersay_"+shanchuid).remove();
+						Tmsg('删除成功');
+											
+					 }else{
+					 		Tmsg(data.msg);
+					 		
+					}
+				}else{
+					Tmsg(data.msg);
+				} 
+
+	  	},
+		  error: function (data, status, e)
+		  {
+					Tmsg('提交连接失败');
+		  }
+	  }); 
+}
+
+   
+$(function(){
+	$(".zongzanshuliang").click(function(){
+		var pingjiavalue = $(this).attr('pingjiaattr');
+		var zancommentid = $(this).attr('zanidattr');
+	
+		var zongzanshu = $(this).text();
+	
+		if(pingjiavalue == 0){
+			zanyige(zancommentid);
+		}
+		if(pingjiavalue == 1){
+			quxiaozanyige(zancommentid);
+		}
+	});
+	
+	var wxmemuid = <{$member['uid']}>;
+//  赞一个
+	function zanyige(zancommentid){
+	
+	if( wxmemuid == '' ||  wxmenuid == 0 ){
+		Tmsg("未登陆，请先登陆~");
+		return false;
+	}
+	
+	$.ajax({
+	  	url:'<{ofunc type=url link="/wxsite/saveuserzanjia/datatype/json"}>',
+	  	data:{uid:wxmemuid,commentid:zancommentid},
+	  	dataType: 'json',
+	  	success:function (data, status)
+	  	{
+		
+	  		if(typeof(data.error) != 'undefined')
+				{
+					if(data.error == false)
+					{
+					var zongzanshu = $(".zongzanshuliang_"+zancommentid).text();
+					 $(".zongzanshuliang_"+zancommentid).removeClass('zongzanshu');
+					 $(".zongzanshuliang_"+zancommentid).addClass('zongzanshucur');
+					 $(".zongzanshuliang_"+zancommentid).attr('pingjiaattr','1');
+					 var shijizzs = Number(zongzanshu)+1;
+					
+					 $(".zongzanshuliang_"+zancommentid).text(shijizzs);
+					 
+				
+					 }else{
+					 		Tmsg(data.msg);
+					}
+				}else{
+					Tmsg(data.msg);
+				} 
+
+	  	},
+		  error: function (data, status, e)
+		  {
+					Tmsg('提交连接失败');
+		  }
+	  }); 
+	}
+//取消赞一个 
+	function quxiaozanyige(zancommentid){
+		
+	if( wxmemuid == '' ||  wxmenuid == 0 ){
+		Tmsg("未登陆，请先登陆~");return false;
+	}
+	
+	$.ajax({
+	  	url:'<{ofunc type=url link="/wxsite/saveuserzanjian/datatype/json"}>',
+	  	data:{uid:wxmemuid,commentid:zancommentid},
+	  	dataType: 'json',
+	  	success:function (data, status)
+	  	{
+		
+	  		if(typeof(data.error) != 'undefined')
+				{
+					if(data.error == false)
+					{
+					var zongzanshu = $(".zongzanshuliang_"+zancommentid).text();
+					 $(".zongzanshuliang_"+zancommentid).removeClass('zongzanshucur');
+					 $(".zongzanshuliang_"+zancommentid).addClass('zongzanshu');					 
+					  $(".zongzanshuliang_"+zancommentid).attr('pingjiaattr','0');
+					   	 var shijizzs = Number(zongzanshu)-1;					
+						$(".zongzanshuliang_"+zancommentid).text(shijizzs);
+					
+							
+					 }else{
+					 		Tmsg(data.msg);
+					}
+				}else{
+					Tmsg(data.msg);
+				} 
+
+	  	},
+		  error: function (data, status, e)
+		  {
+					Tmsg('提交连接失败');
+		  }
+	  }); 
+	}
+});	
+ </script>
+<{/block}>

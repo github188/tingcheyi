@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>jQuery uLED plugin | 觉唯前端</title>
+<meta name="description" content="uLED是一个基于jQuery的一个插件,可以用来作为一个倒数计时，时钟或一个随机数" />
+<meta name="keywords" content="jquery, uled, effects, led" />
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/raphael.js"></script>
+<script type="text/javascript" src="js/jquery.uled.js"></script>
+<style>
+body {background:url(images/bg.gif) repeat; margin:0; padding:0;}
+.title {background-color:rgba(0,0,0,0.56); text-align:center; width:100%; position:fixed; top:0; left:0; padding:5px 0; z-index:99999;}
+.title a {color:#FFF; text-decoration:none; font-size:16px; font-weight:bolder; line-height:24px;}
+#wrapper {width:760px; margin:54px auto; background: none repeat scroll 0 0 #FFF; border-radius: 5px 5px 5px 5px; padding:30px; box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);}
+.autosize {font-size:0; background: #000; display: table;}
+</style>
+</head>
+<body>
+<div class="title"><a href="http://www.jiawin.com/jquery-uled-plugin/">实现LED数字效果的jQuery插件 - jQuery uLED plugin（返回文章）</a></div>
+<div id="wrapper">
+  <div>
+    <div>
+      <p>示例一:倒计时</p>
+      <div id="led0" class="autosize" style="background:#333"></div>
+      <p>示例二:随机显示数字</p>
+      <div id="led1" class="autosize" style="background:#333"></div>
+      <p>实力三:显示时间(格式 - hh:mm)</p>
+      <div id="led2" class="autosize"></div>
+      <p>示例四:显示时间(格式 - hh:mm:ss)</p>
+      <div id="led3" class="autosize"></div>
+      <script type="text/javascript">
+		$(document).ready(function() {
+			var l0 = new uLED({
+				id : "led0",
+				type : "countdown",
+				format : "ddd:hh:mm:ss",
+				color : "#eee",
+				bgcolor : "#000",
+				size : 5,
+				rounded : 1,
+				led : "font1"
+			});
+			var l1 = new uLED({
+				id : "led1",
+				type : "random",
+				length : 7,
+				color : "#af0",
+				bgcolor : "#101a10",
+				size : 10,
+				rounded : 6
+			});
+			var l2 = new uLED({
+				id : "led2",
+				type : "time",
+				format : "hh:mm",
+				color : "#f0a",
+				bgcolor : "#222",
+				size : 22,
+				rounded : 4
+			});
+			var l3 = new uLED({
+				id : "led3",
+				type : "time",
+				format : "hh:mm:ss",
+				hourformat : 12,
+				color : "#fa0",
+				bgcolor : "#222",
+				size : 12,
+				rounded : 0
+			});
+		});
+	</script> 
+    </div>
+  </div>
+</div>
+</body>
+</html>

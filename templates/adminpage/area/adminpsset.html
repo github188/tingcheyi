@@ -1,0 +1,86 @@
+
+ <{extends file="<{$tempdir}>/public/admin.html"}> 
+   <{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+ <{/block}>
+ <{block name=controlname}>网站默认配送设置<{/block}>
+ <{block name=bodylist}>
+ <div style="width:auto;overflow-x:hidden;overflow-y:auto"> 
+          <div class="tags">
+           
+          <div id="tagscontent">
+            <form method="post" name="form1" action="<{ofunc type=url link="/adminpage/area/module/savepsset/datatype/json"}>" onsubmit="return subform('<{ofunc type=url link="/adminpage/area/module/adminpsset"}>',this);">
+              <div>
+                <table border="0" cellspacing="2" cellpadding="4" class="list" name="table" id="table" width="100%">
+                  <tbody> 
+                    <tr onmouseover="this.bgColor='#D7D7D7';" onmouseout="this.bgColor='#F5F5F5';" bgcolor="D7D7D7">
+                      <td class="left">区域导航</td>
+                      <td> <input type="radio" name="locationtype"  value="2" <{if $locationtype ==2}>checked<{/if}>><{if $locationtype ==2}>启用<{else}>未启用<{/if}> </td>
+                    </tr> 
+                    <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7" class="wenzi" >
+                      <td class="left">区域导航配送费</td>
+                      <td>
+                       <input type="text" name="psvalue" value="<{$psvalue|default:'0'}>" class="skey" style="width:50px;" >元
+                      </td>
+                    </tr> 
+                     <tr onmouseover="this.bgColor='#D7D7D7';" onmouseout="this.bgColor='#F5F5F5';" bgcolor="D7D7D7">
+                      <td class="left">地图导航选择店铺</td>
+                      <td> <input type="radio" name="locationtype"  value="1" <{if $locationtype ==1}>checked<{/if}> ><{if $locationtype ==1}>启用<{else}>未启用<{/if}>说明：未启用也需要设置 APP调用 需要调用该数据</td>
+                    </tr>  
+
+					<tr onmouseover="this.bgColor='#D7D7D7';" onmouseout="this.bgColor='#F5F5F5';" bgcolor="D7D7D7">
+                      <td class="left">地图模板选择</td>
+                      <td> 
+					  
+					  <input type="radio" name="licationmudule"  value="1" <{if $licationmudule ==1}>checked<{/if}> >模板一（地图搜索）
+					  <input type="radio" name="licationmudule"  value="2" <{if $licationmudule ==2}>checked<{/if}> >模板二（地图定位）
+					  
+					  &nbsp;&nbsp;&nbsp;(需开启地图导航选择店铺才生效)
+					  
+					  </td>
+                    </tr>  
+					
+					
+                    <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7" class="map">
+                      <td class="left">配送半径</td>
+                      <td>
+                       <input type="text" name="locationradius" value="<{$locationradius|default:'0'}>">
+                      </td>
+                    </tr> 
+                   
+                     <{$radiusvalue = $radiusvalue|unserialize}>
+                  <{section name=loop loop=$locationradius}> 
+                    <tr id="allps" onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7"  class="map">
+                      <td class="left"> <{$tempgongli = $smarty.section.loop.index+1}>
+                        	     <{$tempgongli}> 公里内配送费</td>
+                      <td><input type="text" name="radiusvalue<{$smarty.section.loop.index}>"   value="<{$radiusvalue[$smarty.section.loop.index]|default:'0'}>" class="skey" style="width:50px;" >元</td>
+                    </tr> 
+                   <{/section}>   
+                   
+                    
+                  
+                  </tbody> 
+                </table>
+              </div>
+              <div class="blank20"></div> 
+               <input type="submit" value="确认提交" class="button">  
+            </form>
+          </div>
+        </div>
+        <div class="blank20"></div> 
+      
+      </div>
+      <div class="clear"></div>
+    </div>
+    
+    
+    
+  </div> 
+<script>
+	$(function(){ 
+		//doselect();
+	});
+   
+</script>
+<!--newmain 结束-->
+<{/block}>

@@ -1,0 +1,882 @@
+<!DOCTYPE HTML>
+<!--[if IE 9]><html class="ie9"><![endif]-->
+<!--[if IE 8]><html class="ie8"><![endif]-->
+<!--[if IE 7]><html class="ie7"><![endif]-->
+<!--[if IE 6]><html class="ie6"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html><!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	  <link rel="shortcut icon" href="<{$siteurl}>/upload/favicon/favicon-16x16.png" type="image/png" />
+    <link rel="icon" href="<{$siteurl}>/upload/favicon/favicon-16x16.png" type="image/png" sizes="16x16" />
+    <link rel="icon" href="<{$siteurl}>/upload/favicon/favicon-32x32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="<{$siteurl}>/upload/favicon/favicon-48x48.png" type="image/png" sizes="48x48" />
+    <link rel="icon" href="<{$siteurl}>/upload/favicon/favicon-64x64.png" type="image/png" sizes="64x64" />
+      <title><{$sitename}></title>    
+	<{block name="seokey"}><meta name="Keywords" content="<{$keywords}>" /><{/block}>
+<{block name="seodes"}><meta name="description" content="<{$description}>" /><{/block}>
+<{$metadata|stripslashes}> 
+ <script> 
+	var siteurl = "<{$siteurl}>";
+	var is_static ="<{$is_static}>";
+	var controllername= '<{$controlname}>';
+</script>
+<link rel="stylesheet" href="<{$siteurl}>/templates/<{$tempdir}>/public/mnew7/css/map-n.css" />
+<!-- <link rel="stylesheet" href="<{$siteurl}>/templates/<{$tempdir}>/public/mnew7/js/areamap.js" /> -->
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.2&ak=<{$baidumapkey}>"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/jquerynew.js" type="text/javascript" language="javascript"></script>
+ <script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/allj.js" type="text/javascript" language="javascript"></script>
+    <link rel="stylesheet" href="<{$siteurl}>/templates/<{$tempdir}>/public/site/style.css" type="text/css">
+
+	</head>
+	<body style="overflow:auto;">
+<div class="head clearfix">
+        <div class="logo"><a href="#"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/logo.gif" width="80%" alt=""></a></div>
+        <div class="navs">
+            <ul>
+                <li class="menus_list_1"><a href="javascript:void(0)"><img id="menu0" class="menus" src="<{$siteurl}>/templates/<{$tempdir}>/public/site/home_hover.gif" alt="" /></a></li>
+                <li class="menus_list_2"><a href="javascript:void(0)"><img id="menu1" class="menus" src="<{$siteurl}>/templates/<{$tempdir}>/public/site/experience.gif" alt="" /></a></li>
+                <li class="menus_list_3"><a href="javascript:void(0)"><img id="menu5" class="menus" src="<{$siteurl}>/templates/<{$tempdir}>/public/site/about.gif" alt="" /></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="w_hd">
+        <ul>
+            <li id="w1"></li>
+            <li id="w2"></li>
+            <li id="w3"></li>
+            <li id="w4"></li>
+        </ul>
+    </div>
+    <div class="eq_d" >
+<!--         <div class="eq_d_top">
+            <div class="eq_all">
+                <div class="eq_images"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/qrcode_park.png" /></div>
+                <div class="eq_download"><a id="eq_download_btn" href="javascript:void(0)"></a></div>
+            </div>
+        </div> -->
+        <!-- 地图开始 -->
+<style>
+.head {
+
+    z-index: 998;
+
+}
+.eq_d {
+    width: 100%;
+    position: absolute;
+    right: 0px;
+    height: 290px;
+    z-index: 100;
+    top: 40px;
+}
+.mover_img_top {
+    position: relative;
+    margin-top: 230px;
+}
+.ban_img {
+    position: absolute;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    -moz-opacity: 0;
+    top: 220px;
+}
+/*.map {
+    position: absolute;
+    top: 70px;
+    bottom: 15%;
+    left: 12%;
+    right: 12%;
+    width: 76%;
+    min-width: 980px;
+}*/
+ .guideTop{width:100%; height:80px;background:#01DCB6;}
+.guideContent{ width:1200px; margin:0 auto;}
+.guideContent a img{ width:165px; height:55px;  float:left;   margin-top: 13px;}
+.mmeberinfo{ float:right;}
+.mmeberinfo li{ color:#fff;  font-size:16px; float:left; margin-left:15px; height:80px; line-height:80px;}
+.mmeberinfo li a{ color:#fff;  font-size:16px;  height:80px; line-height:80px;}
+/*.guidebox{  background: url(<{$siteurl}>/upload/images/landing_bg_1e47940.png); background-size:100% 100%; }*/
+.guidebox{ background-size:100% 100%; }
+
+ </style>
+
+
+  
+<div class="guidebox"style="position:relative; ">
+<div class="map" id="map">
+  <div class="top">
+    
+    <!-- 引导显示图标 -->
+
+    <!-- 输入具体的地址调用地图接口 -->
+    <div class="address clearfix" id="address" style="position:relative;" > <!--  position: absolute; top: 0px; left: 0px; -->
+      <div class="fr history-address m-shadow">
+        <a id="historylist" href="javascript:;" title="历史地址">
+          <span>历史地址</span>
+          <i class="i-triangle-down"></i>
+        </a>
+       
+	   
+	   <div class="dialog dialog-historyaddr" style="display: none;">  <div class="map-dialog" style="left:750px; top: 75px;">    
+	   <i class="icon i-mapdialog-arr" style="left: 25px;"></i>   
+
+	<{if empty($cookmalist)}>
+	   
+	   <div class="content" style="width: 150px;"><div class="address-warp">
+	   <ul>      
+	  
+				  <li class="empty">暂无历史地址</li>  
+	     	
+	   
+	  </ul></div></div>  
+	  
+	  <{else}>
+	  
+		<div class="content">
+		<div class="address-warp">
+	
+		<ul>     
+		<{foreach from=$cookmalist key=myid item=items}>
+		 <{if $myid <= 5 && !empty($items)}>
+<a  style="width:240px; font-size:14px; color:#000000; height:50px; line-height:50px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    outline: 0!important; background:#fff; border-bottom: 1px solid #DEDEDE;"  class="name first" href="<{ofunc type=url link="/site/setuserlng/lng/<{$cooklnglist[$myid]|default:'0'}>/lat/<{$cooklatlist[$myid]|default:'0'}>/mapname/<{$items}>"}>" title="<{$items}>">
+			 <li style="padding:0px 10px;" class=""><{$items}></li>
+			 </a>
+ <{/if}>		 
+		 <{/foreach}>
+		</ul>
+		
+		</div></div>
+	  
+	  <{/if}>
+	  
+	  </div></div>
+	   
+	   
+      </div>
+      <div class="fl current-city m-shadow">
+        <a href="javascript:;" class="city" id="citylist" data-ispoi="1" data-cid="410100">
+          <span>
+            <{$cityname}>
+          </span>
+         <!--  <i class="i-triangle-down"></i> -->
+        </a>
+      </div>
+      <div class="fl address-input">
+        <div class="input-container clearfix m-shadow">
+          <input type="text" id="searchKeywords" placeholder="输入地址搜索周边车位 " class="fl" />
+		    <input type="hidden" name="cityname" id="cityname" value="<{$cityname}>">
+                     <input type="hidden"  name="surec" value="1"> 
+          <a href="javascript:;" class="fl" id="search">搜索</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="result hidden jspScrollable" id="search_result" style="overflow: hidden; padding: 0px; height: 100%; width: 300px;">
+		<div class="jspContainer" style="width: 300px; height: 280px;"><div class="jspPane" style="padding: 0px; top: 0px; left: 0px; width: 300px;"><div class="loading"></div></div></div>
+ </div>
+  
+  <div class="container hidden" id="bd-map" style="overflow: hidden; position: relative; z-index: 0; color: rgb(0, 0, 0); text-align: left; background-color: rgb(243, 241, 236);">
+  
+  </div>
+  
+   
+  
+
+</div>
+</div>
+ 
+
+<div class="mask" style="display:none;"></div>
+<div class="dialog dialog-failed" style="display: none;">     
+	<table class="simple-dialog" style="left: 420px; top: 190px;">    
+		<tbody>      
+			<tr>        
+				<td class="top-left"></td>       
+				<td class="top-center"></td>        
+				<td class="top-right"></td>      
+			</tr>      
+			<tr>       
+				<td class="middle-left"></td>       
+				<td class="middle-center">         
+					<div class="dialog-main">                       
+						<a href="javascript:;" class="notitle-close fr"><i class="icon i-cross"></i></a>                        
+						<div class="content"><i class="icon i-dialog-wrong"></i><span class="tips">请输入您的地址！</span></div>          
+					</div>       
+				</td>       
+				<td class="middle-right"></td>      
+			</tr>      
+			<tr>        
+				<td class="bottom-left"></td>       
+				<td class="bottom-center"></td>        
+				<td class="bottom-right"></td>      
+			</tr>    
+		</tbody>  
+	</table>
+</div>
+<!-- 地图结束 -->
+
+    </div>
+    <div class="eq_txt ico0"></div>
+    <div class="main_content y1 clearfix" id="m0">
+            <!-- <img class="w_img" src="<{$siteurl}>/templates/<{$tempdir}>/public/site/bg_img1.jpg" alt="">-->
+
+            <div class="move_img">
+                <div class="mover_img_all">
+                    <div class="mover_img_top">
+                        <div class="mover_img_s1"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/yun.png" /></div>
+                        <div class="mover_img_s2">
+                            <div class="phone_slider">
+                            <img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/slider_1.jpg" id="s1" class='current1' />
+                            <img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/slider_2.jpg" class='current2' id="s2" />
+                            <img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/slider_3.jpg" class='current2'   id="s3" />
+                            </div>
+                        </div>
+                        <div class="mover_img_s3"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/shan.png" width="90%" /></div>
+                    </div>
+                </div>
+                
+                
+            </div>
+            <div class="w_bd">
+                <div class="main_cont_view">
+                    <div class="w_car1" id="mc0"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/car_2.png" alt="car" id="i0" class="forward" /></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main_content y2 clearfix" id="m1" style="background-color:#46a4e4;">
+            <!--<img class="w_img" src="<{$siteurl}>/templates/<{$tempdir}>/public/site/bg_img2.jpg" alt="">-->
+            <div class="ban_img an_1" id="mb1"><div class="wz_i"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/b1.gif" alt=""></div></div>
+            <!--<div class="slogan sl_1" id="ms1"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/word_001.gif" alt=""></div>-->
+            <div class="w_car" id="mc1"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/car_2.png" alt="" id="i1" class="forward"></div>
+        </div>
+
+        <div class="main_content y3 clearfix" id="m2">
+            <!--<img class="w_img" src="<{$siteurl}>/templates/<{$tempdir}>/public/site/bg_img3.jpg" alt="">-->
+            <div class="ban_img an_2" id="mb2"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/b2.gif" alt=""></div>
+            <!--<div class="slogan sl_2" id="ms2"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/word_002.gif" alt=""></div>-->
+            <div class="w_car" id="mc2"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/car_2.png" alt="" id="i2" class="forward"></div>
+        </div>
+
+        <div class="main_content y4 clearfix" id="m3">
+            <!--<img class="w_img" src="<{$siteurl}>/templates/<{$tempdir}>/public/site/bg_img4.jpg" alt="">-->
+            <div class="ban_img an_3" id="mb3"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/b3.gif" alt=""></div>
+            <!--<div class="slogan sl_3" id="ms3"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/word_003.gif" alt=""></div>-->
+            <div class="w_car" id="mc3"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/car_2.png" alt="" id="i3" class="forward"></div>
+        </div>
+
+        <div class="main_content y5 clearfix" id="m4">
+            <!--<img class="w_img" src="<{$siteurl}>/templates/<{$tempdir}>/public/site/bg_img5.jpg" alt="">-->
+            <div class="ban_img an_4" id="mb4"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/b4.gif" alt=""></div>
+            <!--<div class="slogan sl_4" id="ms4"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/word_004.gif" alt=""></div>-->
+            <div class="w_car" id="mc4"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/car_2.png" alt="" id="i4" class="forward"></div>
+        </div>
+
+        <div class="main_content y6 clearfix" id="m5">
+            <img class="w_img" src="<{$siteurl}>/templates/<{$tempdir}>/public/site/bg_img6.jpg" alt="">
+            <div class="main_cont6">
+                <div class="main_cont6_left">
+                    <div class="contact">
+						<style>
+							.con_title {
+								margin-bottom: 8%;
+								font-size:25px;
+								color: #7d7d7d;
+							}
+						</style>
+                        <div class="con_title">
+							广州**停车科技有限公司
+							<!--<img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/title_001.gif" alt="">-->
+						</div>
+                        <div class="con_map"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/map_img.gif" alt=""></div>
+                    </div>
+                    <div class="a_adress">
+                        <div class="ad_ab">停车易停车网是广州**科技公司投资建设和运营的停车导航平台，为广大驾车人士服务，帮助驾车 者寻找目的地附近的、价格便宜的、有空位的理想停车场，为停车场和驾车者架起沟通"信息之桥"。
+
+						</div>
+                        <div class="ad_infor"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/infor_img.gif" alt=""></div>
+                    </div>
+                </div>
+                <div class="main_cont6_right">
+                    <div class="rq_a_img"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/rq_11.gif" alt="" width="100%"></div>
+                    <div class="rq_a_name"><!--web40000579910-->微信号：****</div>
+                    <div class="rq_txt">扫一下   添加微信账号</div>
+                </div>
+                <div class="w_car" id="mc5"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/car_2.png" alt="" id="i5" ></div>
+            </div>
+        </div>
+        
+        
+        <!--弹窗-->
+        <div class="sv">
+        <div class="sv_bg"></div>
+        <div class="small_login">
+            <div class="s_login_left">
+              <div class="s_eq_img"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/qrcode_park.png" width="220" /></div>
+              <div class="s_eq_text">手机扫描二维码下载</div>
+            </div>
+            <div class="s_login_right">
+              <div class="s_top"><span class="guan"><a href="#"><img id='closesv' src="<{$siteurl}>/templates/<{$tempdir}>/public/site/x.gif" /></a></span>&nbsp;&nbsp;&nbsp;&nbsp;电脑直接下载</div>
+              <div class="s_dowmload">
+                <ul>
+                  <li class="android">
+                  <div class="s_an"><a target="_blank" href="http://android.myapp.com/myapp/detail.htm?apkName=funion.app.qparking">
+                  <img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/s_dowm.jpg" /></a>
+                   <div style="text-align:center; margin-top:-8px;">支持3.0以上</div>
+                  </div>
+                  
+                  </li>
+                  <li>
+                  <div class="s_ip">
+                  <a target="_blank" href="https://itunes.apple.com/us/app/qu-ting-che/id946369891?l=zh&ls=1&mt=8"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/site/s_dowm.jpg" /></a>
+                  <div style="text-align:center; margin-top:-8px;">支持6.0以上</div>
+                  </div></li>
+                  
+                </ul> 
+              </div>
+            </div>
+        </div>
+        </div>
+
+
+
+
+    <script type='text/javascript' src='http://www.qutingche.cn/Public/Home/js/jquery-1.8.0.min.js'></script>
+    <script type='text/javascript' src='http://www.qutingche.cn/Public/Home/js/jquery.mousewheel.min.js'></script>
+ <!--    <script type='text/javascript' src='http://www.qutingche.cn/Public/Home/js/web.js'></script> -->
+ <script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/web.js" type="text/javascript" language="javascript"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+	<script>
+var biaoqianval = false;
+function bqzhi(){
+	biaoqianval  = false;
+}
+	
+		var map = new BMap.Map("bd-map");  
+
+
+var myIcon1 = new BMap.Icon(siteurl+"/upload/map/pepole.png", new BMap.Size(75,75),{offset: new BMap.Size(25,25),imageOffset: new BMap.Size(25,25)});  
+var marker = null;   
+var infoWindow = new BMap.InfoWindow('');  // 创建信息窗口对象
+var makenow = false;
+var markerslist = null;
+
+map.setDefaultCursor("url('upload/shop/add-my-shubiao.cur'),default");
+map.setDraggingCursor("auto"); 
+//加载缩放级别
+
+map.addControl(new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL}));  //右上角，仅包含平移和缩放按钮
+
+var savemapurl = '<{ofunc type=url link="/site/setuserlng/mapname/@mapname@/lat/@lat@/lng/@lng@/random/@random@"}>';  
+map.enableContinuousZoom();//可缩放
+
+	
+	// 百度地图API功能
+
+		map.enableScrollWheelZoom(); 
+		map.enableContinuousZoom(); 
+	
+	
+	// 创建Map实例
+	//map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);
+	map.centerAndZoom("<{$cityname}>",15);
+	
+	$("#tipclose").click(function(){
+		$("#guider .bg").hide();
+	});
+	$(".notitle-close").click(function(){
+		$(".dialog-failed").hide();
+			$(".mask").hide();
+	});
+	$("#searchKeywords").focus(function(){
+		$("#guider .bg").addClass('search');
+	
+	//	alert(0);
+		
+	});
+	
+	
+	$("#search").click(function(){
+		$("#tangram-suggestion--TANGRAM__2-main").hide();
+		var searchval = $("#searchKeywords").val();
+		if( searchval == '' ){
+			$(".dialog-failed").show();
+			$(".mask").show();
+		}else{
+			$("#guider").hide();
+			//position: absolute; top: 0px; left: 0px;
+			$("#address").css("position","absolute");
+			$("#address").animate({top:"0px",left:"0px"}, 'slow');			
+			$("#search_result").removeClass("hidden");
+			$("#bd-map").removeClass("hidden");
+			//local.search(searchval);
+				$("#tangram-suggestion--TANGRAM__2-main").css("top","230px");
+				$("#tangram-suggestion--TANGRAM__2-main").css("left","353px");
+				$(".map").css('height','600px');
+				$(".guidebox").css('height','550px');
+			dosearchmap(0);
+		}
+	});
+
+function dosearchmap(pagenum){
+
+ 
+	   //调用搜索
+	   map.clearOverlays();
+	   var  tempurlss = siteurl+'/index.php?ctrl=site&action=ajaxbaidu&random=@random@';  //  searchvalue  cityname
+	   var searchvalue = $('#searchKeywords').val();
+	   var cityname = $('#cityname').val();
+	  $.ajax({
+     type: 'post',
+     async:false,
+     data:{'searchvalue':searchvalue,'cityname':cityname,'pagenum':pagenum},
+     url: tempurlss.replace('@random@', 1+Math.round(Math.random()*1000)), 
+     dataType: 'script',success: function(content) {    
+	 
+		//searchbackdata(content);
+		
+		 },
+      error: function(content) { 
+       	alert('选择的城市不满足百度地图搜索条件'); 
+	    }
+     });   
+	   
+ 
+  return false;
+}
+function searchbackdata(datas){  
+ //alert(datas.total);
+ //alert(datas.pagenum);
+	if(datas.status == 0){
+	      miaodian(datas.results,datas.total);
+	      makedivpage(datas.total,datas.pagenum);
+	}
+ // alert(datas.length);
+}	
+
+/*构造搜索*/
+ var markerslist = null;
+ 	 
+function miaodian(datas,shuliang){
+
+
+	markerslist=new Array();
+	$('#search_result').html('');
+	var  wordearray = ['A','B','C','D','E','F','G','H','I','J','K','L','M'];
+	makenow = false;
+	 var tempoint;
+	 $('#search_result').append('<div class="jspContainer" style="width: 300px;overflow-y:auto; height: 100%;"><div class="jspPane" style="padding: 0px; top: 0px; left: 0px; width: 278px;"><div class="total-addr">共<span>'+shuliang+'</span>地址</div><ul> </ul><div class="pager"> </div></div></div>  ');
+	 $.each(datas, function(i,val){  
+	 //alert(val.location.lng);
+	 
+         		    	   if(i == 0){  
+         		    	        tempoint =   new BMap.Point(val.location.lng,val.location.lat);//imageOffset: new BMap.Size(-32,0 - i * 46)}
+         		    	        map.centerAndZoom(tempoint,map.getZoom()); 
+         		    	   } 
+                     var icon = new BMap.Icon("/upload/map/mapIcon.png", new BMap.Size(90,44),{offset: new BMap.Size(45,46),imageOffset: new BMap.Size(-32,0 - i * 47)});//infoWindowAnchor:new BMap.Size(33,44),offset:new BMap.Size(0,0)}
+         		         var mkr = new BMap.Marker(new BMap.Point(val.location.lng,val.location.lat), {icon: icon});  
+         		        var temp_linksss = savemapurl.replace('@lat@',val.location.lat).replace('@lng@', val.location.lng).replace('@mapname@', encodeURI(val.name)); 
+         		         var contentm = '<p class="infoTitle">'+val.name+'</p><p class="infoAddress">'+val.address+'</p><p class="nearshop">附近共有<span class="shopnum"> '+val.shuliang+' </span>家商家</p>';
+         		         if(val.shuliang > 0){
+         		            contentm += '<a href="'+temp_linksss+'" class="mapBtns">查看商家</a>';
+         		         }
+         		       
+         		    	   var infoWindow2 = new BMap.InfoWindow(contentm); 
+                     markerslist.push(infoWindow2);
+                     mkr.addEventListener("click", function(){  this.openInfoWindow(infoWindow2);});
+					 
+					//  map.openInfoWindow(markerslist[checkobj],tempoint);  
+					 // map.centerAndZoom(tempoint,map.getZoom()); 
+					  
+                     map.addOverlay(mkr);  
+					 $('#search_result .jspContainer ul').append('<li lng="'+ val.location.lng+'" lat="'+ val.location.lat+'" index="'+i+'" class="field"><div class="poi sprite fl">'+wordearray[i]+'</div><div class="content"><div class="title">'+val.name+'</div><div class="addr">地址：'+val.address+'</div> <div class="nearby">附近有<span>'+val.shuliang+'</span>家商家</div></div></li>  ');
+           
+   });  
+  if( markerslist.length > 0 ){
+		map.openInfoWindow(markerslist[0],tempoint);  
+		map.centerAndZoom(tempoint,map.getZoom());
+		$("#search_result .jspContainer li:first").addClass("first-field");
+		$("#search_result .jspContainer li:first").addClass("active");
+  }else{
+	$('#search_result .jspContainer ul').append('<div class="no-address">  <div class="text">未找到相关地址：</div>  <p>1.请核对地址拼写正确。</p>  <p>2.请尝试其他关键字。</p></div> ');
+  
+  }
+
+}
+function makedivpage(shuliang,pagenum){
+	var pagesize = 12;
+	var pageall = shuliang/pagesize > parseInt(shuliang/pagesize) ?parseInt(shuliang/12)+1:parseInt(shuliang/12);
+   var gotopage = 0;
+   //<a data-page="1" href="javascript:;" class="active">1</a>   
+	 if(pagenum != 0){
+	 	    gotopage = Number(pagenum)-1;
+	      $('#search_result .pager').append('<a  onclick="dosearchmap('+gotopage+');" data-page="'+gotopage+'" href="javascript:;" class="active">&lt;</a>');
+	 } 
+	var tempage = pageall > 10?10:pageall;
+	 for(var i=0;i<tempage;i++){
+	 	var c = i+1;
+	 	   if(i == pagenum){
+	 	   	   
+	 	       $('#search_result .pager').append('<a  onclick="dosearchmap('+i+');" data-page="'+i+'" href="javascript:;" class="active">'+c+'</a>');
+	 	   }else{
+	 	   	
+	 	   	 $('#search_result .pager').append('<a  onclick="dosearchmap('+i+');" data-page="'+i+'" href="javascript:;" >'+c+'</a>'); 
+	 	   }
+	 } 
+	 if(pagenum != pageall){
+	 	   gotopage = Number(pagenum)+1;
+	    $('#search_result .pager').append('<a data-page="'+gotopage+'"  onclick="dosearchmap('+gotopage+');"  href="javascript:;" >&gt;</a>'); //每页12个  
+	 }
+}
+$('#search_result  .jspContainer li').live("click", function() {    
+	$(this).addClass('active').siblings().removeClass('active');
+	
+	var checkobj = $(this).attr('index');
+	if(checkobj != undefined){
+	     var tempoint =   new BMap.Point($(this).attr('lng'),$(this).attr('lat'));//imageOffset: new BMap.Size(-32,0 - i * 46)}
+	      map.openInfoWindow(markerslist[checkobj],tempoint);  
+        map.centerAndZoom(tempoint,map.getZoom()); 
+	}
+});
+
+
+
+
+
+
+map.addEventListener("click",function(e){    
+
+	if(e.overlay == null){ 		
+			if(biaoqianval == false){
+				biaoqianval  = true;
+
+					 setTimeout("bqzhi()", 500 ); 
+					
+						 var url = siteurl+'/index.php?ctrl=site&action=ajaxlngtlat&lng='+e.point.lng+'&lat='+e.point.lat+'&random=@random@&datatype=json'; 
+						$.ajax({
+						 type: 'post',
+						 async:false, 
+						 url: url.replace('@random@', 1+Math.round(Math.random()*1000)), 
+						 dataType: 'json',success: function(content) {   
+							if(content.error == false){ 
+							// alert( content.msg.store_num);
+							  shuliang = content.msg.store_num;
+						  
+						  if(shuliang > 0){
+							    var newpoint = new BMap.Point(content.msg.lng, content.msg.lat);  
+								  //savemapurl  encodeURI
+								  var temp_linksss = savemapurl.replace('@lat@',content.msg.lat).replace('@lng@', content.msg.lng).replace('@mapname@', encodeURI(content.msg.region_addr));
+								 
+									var contentm = '<p class="infoTitle">'+content.msg.region_name+'</p><p class="infoAddress">'+content.msg.region_addr+'</p><p class="nearshop">附近共有<span class="shopnum" > '+shuliang+' </span>家商家</p>';
+												 if(shuliang > 0){
+													contentm += '<a href="'+temp_linksss+'" class="mapBtns">查看商家</a>';
+												 }
+											   
+												   var NewinfoWindow = new BMap.InfoWindow(contentm); 
+								  
+								  
+								 // var NewinfoWindow = new BMap.InfoWindow(contentc);   
+								
+								 marker = new BMap.Marker(newpoint,{icon:myIcon1});
+							
+								   map.openInfoWindow(NewinfoWindow,newpoint);  
+								  $('#cityname').val(content.msg.city); 
+								  if(makenow ==  false){
+											makenow = true;
+										   map.addOverlay(marker);
+								  }
+							  } else{
+							
+										 shuliang = content.msg.store_num;
+								 
+										var newpoint = new BMap.Point(content.msg.lng, content.msg.lat);  
+										  //savemapurl  encodeURI
+										  var temp_linksss = savemapurl.replace('@lat@',content.msg.lat).replace('@lng@', content.msg.lng).replace('@mapname@', encodeURI(content.msg.region_addr));
+										 
+											var contentm = '<p class="infoTitle">'+content.msg.region_name+'</p><p class="infoAddress" style="height:34px; line-height:34px;">'+content.msg.region_addr+'</p>';
+											 
+
+													contentm += '<a  style="background:#b5b5b5; color:#fff;" href="javascript:void(0);" class="mapBtns">努力覆盖中...</a>';
+										
+											 var NewinfoWindow = new BMap.InfoWindow(contentm); 
+										  
+										  
+										 // var NewinfoWindow = new BMap.InfoWindow(contentc);   
+										
+										 marker = new BMap.Marker(newpoint,{icon:myIcon1});
+									
+										   map.openInfoWindow(NewinfoWindow,newpoint);  
+										  $('#cityname').val(content.msg.city); 
+										  if(makenow ==  false){
+													makenow = true;
+												   map.addOverlay(marker);
+										  }
+									  
+							  
+							  
+								
+							}
+							  
+							  
+							  
+							  
+							} else{
+							
+										 shuliang = content.msg.store_num;
+								//  alert(shuliang);
+										var newpoint = new BMap.Point(content.msg.lng, content.msg.lat);  
+										  //savemapurl  encodeURI
+										  var temp_linksss = savemapurl.replace('@lat@',content.msg.lat).replace('@lng@', content.msg.lng).replace('@mapname@', encodeURI(content.msg.region_addr));
+										 
+											var contentm = '<p class="infoTitle">'+content.msg.region_name+'</p><p class="infoAddress">'+content.msg.region_addr+'</p>';
+														 if(shuliang > 0){
+															contentm += '<a href="javascript:void(0);" class="mapBtns" style="background:#ccc; color:#fff;">努力覆盖中</a>';
+														 }
+													   
+														   var NewinfoWindow = new BMap.InfoWindow(contentm); 
+										  
+										  
+										 // var NewinfoWindow = new BMap.InfoWindow(contentc);   
+										
+										 marker = new BMap.Marker(newpoint,{icon:myIcon1});
+									
+										   map.openInfoWindow(NewinfoWindow,newpoint);  
+										  $('#cityname').val(content.msg.city); 
+										  if(makenow ==  false){
+													makenow = true;
+												   map.addOverlay(marker);
+										  }
+									  
+							  
+							  
+								
+							}
+							},
+						error: function(content) { 
+
+
+						alert('获取失败，可以尝试刷新重试！'); 
+						
+						
+						
+						
+						}
+					   });  
+ 
+					
+			
+			//		$.getScript('http://api.map.baidu.com/geocoder/v2/?ak=<{$baidumapkey}>&callback=renderReverse&location='+e.point.lat+','+e.point.lng+'&output=json&pois=1');   
+					
+			}
+	} 
+});
+
+function renderReverse(datas){
+/*	 if(datas.status == 0){  
+	 	  var  shuliang = 0;
+	    var url = siteurl+'/index.php?ctrl=site&action=ajaxlngtlat&lng='+datas.result.location.lng+'&lat='+datas.result.location.lat+'&random=@random@&datatype=json'; 
+	    $.ajax({
+         type: 'post',
+         async:false, 
+         url: url.replace('@random@', 1+Math.round(Math.random()*1000)), 
+         dataType: 'json',success: function(content) {   
+         	if(content.error == false){ 
+            // alert( content.msg.store_num);
+              shuliang = content.msg.store_num;
+         	} 
+	    	},
+        error: function(content) {   alert('shiba'); }
+       });  
+ 
+	      var newpoint = new BMap.Point(datas.result.location.lng, datas.result.location.lat);  
+	      //savemapurl  encodeURI
+	      var temp_linksss = savemapurl.replace('@lat@',datas.result.location.lat).replace('@lng@', datas.result.location.lng).replace('@mapname@', encodeURI(datas.result.formatted_address));
+	     
+	
+		  
+		    var contentm = '<p class="infoTitle">'+datas.result.business+'</p><p class="infoAddress">'+datas.result.formatted_address+'</p><p class="nearshop">附近共有<span class="shopnum"> '+shuliang+' </span>家商家</p>';
+         		         if(shuliang > 0){
+         		            contentm += '<a href="'+temp_linksss+'" class="mapBtns">查看商家</a>';
+         		         }
+         		       
+         		    	   var NewinfoWindow = new BMap.InfoWindow(contentm); 
+		  
+		  
+	     // var NewinfoWindow = new BMap.InfoWindow(contentc);   
+	      if(makenow ==  false){ 
+	   	          marker = new BMap.Marker(newpoint,{icon:myIcon1});
+        }else{
+     	           marker.setPosition(newpoint);  
+	      } 
+	      
+	       map.openInfoWindow(NewinfoWindow,newpoint);  
+	      $('#cityname').val(datas.result.addressComponent.city); 
+	      if(makenow ==  false){
+	  	            makenow = true;
+	               map.addOverlay(marker);
+	      }
+	 }else{  
+	 } 
+	 */
+}
+
+
+
+$("#searchKeywords").keyup(function(){
+
+	if(biaoqianval == false){
+		biaoqianval  = true;
+
+			 setTimeout("bqzhi()", 500 ); 
+			 
+			 
+			 
+			  if(event.keyCode ==13){
+				$("#tangram-suggestion--TANGRAM__2-main").hide();
+				var searchval = $("#searchKeywords").val();
+				if( searchval == '' ){
+					$(".dialog-failed").show();
+					$(".mask").show();
+				}else{
+					$("#guider").hide();
+					//position: absolute; top: 0px; left: 0px;
+					$("#address").css("position","absolute");
+					$("#address").animate({top:"0px",left:"0px"}, 'slow');			
+					$("#search_result").removeClass("hidden");
+					$("#bd-map").removeClass("hidden");
+					//local.search(searchval);
+						$("#tangram-suggestion--TANGRAM__2-main").css("top","141px");
+						$("#tangram-suggestion--TANGRAM__2-main").css("left","355px");
+						
+					dosearchmap(0);
+				}
+			}else{
+				 
+			 
+			 
+			 
+			 
+			 
+						var searchval  = $("#searchKeywords").val();
+				
+						$.ajax({
+							url: '<{$siteurl}>/index.php?ctrl=site&action=getsearmap&datatype=json',
+							data: 'searchvalue=' + encodeURI(searchval),
+							dataType: "json",
+							success: function(content) {  
+								
+								$("#tangram-suggestion--TANGRAM__2-main").show();
+								$("#tangram-suggestion--TANGRAM__2-main #tangram-suggestion--TANGRAM__2 table tbody").html('');
+								
+							//	alert(content.msg.length);
+								var tempaddc = content.msg.length;
+								if(content.msg.length > 0 ){
+									for(var i=0;i<tempaddc;i++){
+												//	alert(	content.msg[i].datacontent );		   
+						$('#tangram-suggestion--TANGRAM__2-main #tangram-suggestion--TANGRAM__2 table tbody').append('<tr><td id="tangram-suggestion--TANGRAM__2-item0"  class=""><i class="route-icon">'+content.msg[i].datacontent+'&nbsp;<span class="tangram-suggestion-grey">'+content.msg[i].dataaddress+'</span></i></td></tr>');
+										  
+									 } 
+								 }
+								 else{
+								 
+	// $('#tangram-suggestion--TANGRAM__2-main #tangram-suggestion--TANGRAM__2 table tbody').append('<tr><td id="tangram-suggestion--TANGRAM__2-item0"  class=""><i class="route-icon"><span class="tangram-suggestion-grey">未获取到该地址，请换个关键字尝试下...</span></i></td></tr>');
+
+			$("#tangram-suggestion--TANGRAM__2-main").hide();					 }
+								  //   $('#search_result .pager').append('<a  onclick="dosearchmap('+i+');" data-page="'+i+'" href="javascript:;" class="active">'+c+'</a>');
+							
+								
+								bindsearch();
+							
+							}
+						});
+			}
+	
+	}
+	
+});
+function bindsearch(){
+	$("#tangram-suggestion--TANGRAM__2 table tbody tr").click(function(){
+		$("#searchKeywords").val( $(this).text() );
+		$("#tangram-suggestion--TANGRAM__2-main").hide();
+	});
+}
+
+$("#historylist").click(function(){
+	$(".dialog-historyaddr").toggle();
+});
+
+</script>
+<style>
+	#search_result  li:hover{background-color: #EEEEEE;}
+</style>
+
+<div class="tangram-suggestion-main" id="tangram-suggestion--TANGRAM__2-main" data-guid="TANGRAM__2" style="position: absolute; display:none ;z-index:1000; left: 328px; top: 190px; width: 478px;">
+
+	<div style="position: absolute; top: 0px; left: 0px; width: 480px; height: 323px;">
+		<iframe src="javascript:void(0)" frameborder="0" scrolling="no" height="97%" style="width: 480px; z-index: -1; display: block; border: 0px;"></iframe>
+	</div>
+	<div id="tangram-suggestion--TANGRAM__2" class="tangram-suggestion" style="position:relative; top:0px; left:0px">
+		<table cellspacing="0" cellpadding="2" style="width:100%;">
+			<tbody>
+				
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(function(){ 
+	$("#search_result  li").hover(function(){
+		$(this).addClass("over");
+		},function(){
+		$(this).removeClass("over");
+	});
+});
+	
+</script>
+
+
+	<style>
+.infoTitle{ font-size:14px; color:#000000; height:20px; line-height:20px;}
+.infoAddress{font-size:14px; color:#959595;}
+.nearshop{font-size:14px; color:#000000; height:34px; line-height:34px;}
+.shopnum{ color:#fe4d3d;}
+.mapBtns{ background:#00a0e9; font-size:16px; font-weight:bold; color:#fff;  padding:3px 10px; }
+</style>
+	
+</body>
+
+</html>

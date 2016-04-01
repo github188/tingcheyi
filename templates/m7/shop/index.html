@@ -1,0 +1,977 @@
+<{extends file="<{$tempdir}>/public/site.html"}>
+<{block name=sitetitle}><{$shopinfo['shopname']}><{/block}>
+<{block name=extendcss}>
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/css/shop.css">
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/css/outdiv.css">
+<{/block}>
+<{block name=extendjs}>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/bootstrap.min.js" type="text/javascript" language="javascript"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/hanwoshop.js" type="text/javascript" language="javascript"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/cart.js" type="text/javascript" language="javascript"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/outdiv.js" type="text/javascript" language="javascript"></script>
+
+<{/block}>
+<{block name=shophide}><{/block}>
+
+
+
+<{block name=bodylist}>
+
+<div class="m-cf f-shadow-con f-radius" id="restaurant-panel">
+	<div class="logo" style="float: left;height: 66px;width: 66px;margin: 0px;">
+		<img src="<{$imgserver}><{$shopinfo['shoplogo']|default:$shoplogo}>" width="66px" height="66px">
+	</div>
+	<div class="title"  style="width:325px;">
+		<h3 class="f-dian c-24231e" style="width:500px;overflow: visible;">
+			<a href="javascript:void(0);" id="supplierName_span" title="<{$shopinfo['shopname']}>"><{$shopinfo['shopname']}></a>
+			<!--<span style="margin-left: 20px;  font-size: 14px;  color: #ff6931;">总销量:<{$sellcount}></span>  -->
+                     	<span class="status service_status_0" id="status_resturant">
+
+						<{if $shopopeninfo['opentype'] ==2}>正在营业
+                    <{elseif $shopopeninfo['opentype']==3}>休息中,但接受预定
+                    <{else}>休息中
+                    <{/if}>
+
+						</span>
+
+
+			<span style="color: #ff6931; font-size:14px;">联系电话:</span>
+						<span style="color: #ff6931; font-size:14px;">
+							<{$shopinfo['phone']}>
+						</span>
+		</h3>
+                    <span class="f-fl f-s4">
+                      <div class="hc_xinxin_div" style="margin:3px 3px 0 0;"> <span class="Star_g" original-title="<{$shopinfo['point']*20}>" style="margin:0px 0px 0px 0px;"> <span class="Star_y" style="width:<{$shopinfo['point']*20}>%;"></span> </span> </div>
+
+                    </span>
+		<span class="f-14 num c-999">  <{$shopinfo['point']}>.0</span>
+                    <span class="f-13 liang">
+
+					<{foreach from=$mainattr item=itvv}>
+
+						 <{foreach from=$shopattr item=itv}>
+
+							 <{if $itv['firstattr'] == $itvv['id']}>
+							     <{if $itvv['type'] == 'checkbox'}>
+									<{$itv['value']}>
+								 <{/if}>
+							 <{/if}>
+
+						 <{/foreach}>
+
+			       <{/foreach}></span>
+		<span class="f-13 "style="display: block" >地址： <{$shopinfo['address']}></span>
+	</div>
+
+	<div class="shoucang" onclick="favor()">
+
+
+		<a href="javascript:void(0);" <{if !empty($collect)}> style="display:none;" <{/if}>  onclick="myFavorite2();" id="AddFavShop"  class="favor_0 l-shoucang" id="isFavor">
+
+		<p class="f-13" id="favor">未收藏</p>
+
+		</a>
+
+
+		<a href="javascript:void(0);" <{if empty($collect)}> style="display:none; " <{/if}> onclick="delFav();"   id="CancelFavShop"  class="favor_0 l-shoucang11" id="isFavor"><p class="f-13" id="favor">已收藏</p></a>
+
+	</div>
+	<!--<div class="sudus">-->
+	<!--<div style="margin-top: 5px;">-->
+	<!--<span class="f-36" id="deliveryLeastValue"><{$shopinfo['limitcost']}></span><span class="f-14">元</span>-->
+	<!--<p class="f-13">起送价</p></div>-->
+	<!--</div>-->
+	<!--<div class="sudus">-->
+	<!--<div style="margin-top: 5px;">-->
+	<!--<span class="f-36" id="deliveryLeastValue"><{$shopinfo['pscost']}></span><span class="f-14">元</span>-->
+	<!--<p class="f-13">配送费</p></div>-->
+	<!--</div>-->
+	<div class="sudus">
+		<div style="margin-top: 5px;">
+			<span class="f-14">剩余车位</span> <span class="f-36" id="deliveryLeastValue"><{$shopinfo['pscost']}></span>
+			<p class="f-13">总车位：<{$shopinfo['pscost']}></p>
+		</div>
+	</div>
+	<{if $locationtype==1}>
+	<div class="sudus">
+		<div style="margin-top: 5px;">
+			<span class="f-36" id="juli">未启用地图</span>
+			<p class="f-13" style="text-align: right;">距离</p></div>
+	</div>
+
+	<div class="sudus">
+		<{assign var=foo value="|"|explode:$shopinfo['starttime']}>
+		<{foreach from=$foo key=myid item=items}>
+		<{if !empty($items)}>
+		<{assign var=newtime value="-"|explode:$items}>
+
+		<{if !empty($newtime[0])}>
+		<{assign var=dettime value=":"|explode:$newtime[0]}>
+		<{$newtimedata[] = $dettime[0]}>
+		<{$newtimedata[] = $dettime[1]}>
+		<{/if}>
+		<{if !empty($newtime[1])}>
+		<{assign var=dettime value=":"|explode:$newtime[1]}>
+		<{$newtimedata[] = $dettime[0]}>
+		<{$newtimedata[] = $dettime[1]}>
+		<{/if}>
+		<{/if}>
+		<{/foreach}>
+		<div style="margin-top: 5px;">
+
+<span class="f-14"  >白天：
+    <span class="f-18" style="color: #ff6931;font-size: 18px;"><{$shopinfo['daymoney']}>元</span>
+	<span  style="font-size: 12px;">/<{$shopinfo['goodattrdefault']}></span>
+<span   style="font-size: 12px;">
+    （<{$newtimedata[0]|default:''}>：<{$newtimedata[1]|default:''}>-<{$newtimedata[2]|default:''}>：<{$newtimedata[3]|default:''}>）
+</span>
+</span>
+			<p class="f-14"> 晚上：
+				<span class="f-18" style="color: #ff6931;font-size: 18px;"><{$shopinfo['nightmoney']}>元</span>
+				<span  style="color: #838383;font-size: 12px;">/<{$shopinfo['goodattrdefault']}></span>
+    <span   style="font-size: 12px;color: #838383;">
+        （<{$newtimedata[4]|default:''}>：<{$newtimedata[5]|default:''}>-<{$newtimedata[6]|default:''}>：<{$newtimedata[7]|default:''}>）
+    </span>
+			</p></div>
+	</div>
+	<{/if}>
+</div>
+
+
+
+
+
+<div class="shopheader">
+	<div style="width:1200px; margin:0 auto;">
+		<div class="spinfo">
+			<div class="spinfoLeft">
+				<img width="76" height="76" style="width:76px; height:76px;" src="<{$imgserver}><{$shopinfo['shoplogo']|default:$shoplogo}>" title="<{$shopinfo['shopname']}>" />
+			</div>
+			<div class="spinfoRight">
+				<ul>
+					<li style="font-size:16px;background:url(<{$siteurl}>/templates/<{$tempdir}>/public/images/xiaoicon.png) center right no-repeat;"><{$shopinfo['shopname']}></li>
+					<li>
+						<div class="hc_xinxin_div" style="margin:3px 3px 0 0;"> <span class="Star_g tips" original-title="<{$shopinfo['point']*20}>" style="top:34px; left:15px;margin:0px 0px 0px px;"> <span class="Star_y" style="width:<{$shopinfo['point']*20}>%;"></span> </span> </div>
+						<div style="margin-left:60px;"><{$shopinfo['point']}>.0</div></li>
+					<li><{$shopinfo['limitcost']}>元起送
+						<{if $psinfo['pscost'] == 0 }>
+						免配送费
+						<{else}>
+						<{$psinfo['pscost']}>元配送费
+						<{/if}>
+
+						由<{if $psinfo['pstype'] == 1}>车场<{else}>网站<{/if}>配送
+
+					</li>
+				</ul>
+			</div>
+			<div style="clear:both;"></div>
+
+
+			<div class="spinfodrwo"  style="border-top:1px #ffbcbc solid">
+
+				<ul>
+					<li>时间 : <{assign var=newshowtime value="|"|explode:$shopinfo['starttime']}>
+						<{foreach from=$newshowtime  item=v}>
+						<{$v}>&nbsp;
+						<{/foreach}></li>
+					<li>地址 : <{$shopinfo['address']}></li>
+				</ul>
+
+			</div>
+
+
+		</div>
+
+
+		<div class="spiRig">
+
+			<ul>
+				<li>
+					<p class="sp">45+</p>
+					<p>送货速度/分钟</p>
+				</li>
+				<li>
+					<p class="sp" id="juli" style="font-size:14px;">未启用地图</p>
+					<p>车场距离/米</p>
+				</li>
+				<li style="margin-right:10px;">
+					<p class="sp"><{$shopinfo['limitcost']}></p>
+					<p>起送价/元</p>
+				</li>
+				<li style="margin-right:10px;">
+					<p class="sp"><{$shopinfo['pscost']}></p>
+					<p>配送费/元</p>
+				</li>
+				<li style="margin-right:10px;">
+					<p class="sp"><{$shopinfo['limitcost']}></p>
+					<p>起送价/元</p>
+				</li>
+			</ul>
+
+		</div>
+
+	</div>
+</div>
+<script>
+
+	$(".spinfo").mouseover(function(){
+
+		$(".spinfodrwo").show();
+		$(".spinfo").css("border-bottom","none");
+
+	});
+	$(".spinfo").mouseout(function(){
+
+		$(".spinfodrwo").hide();
+		$(".spinfo").css("border-bottom","2px #fedddd solid");
+
+	});
+
+
+</script>
+
+<{if !empty($com_goods) }>
+<div class="tuijianfood">
+
+	<div class="recFoodimg">
+		<img src="<{$siteurl}>/templates/<{$tempdir}>/public/images/recBg.png" />
+	</div>
+
+	<div class="recFood">
+		<ul>
+			<{foreach from=$com_goods item=items}>
+
+			<li class="">
+				<a   href="<{ofunc type=url link="/shop/showgoods/id/<{$items['id']}>"}>" title="点击查看商品详情" ><img src="<{$items['img']}>" /></a>
+				<div class="recFoodxq">
+					<a   href="<{ofunc type=url link="/shop/showgoods/id/<{$items['id']}>"}>" title="点击查看商品详情" >
+					<div class="rfoodname">
+						<span class="rfname"><{$items['name']}></span>
+						<span class="rcfcosst" style="color: #363636;  font-size: 12px;" >销售<{$items['sellcount']}>份</span>
+					</div>
+					</a>
+					<div style="clear:both;"></div>
+
+					<div class="rfoodn">
+						<a   href="<{ofunc type=url link="/shop/showgoods/id/<{$items['id']}>"}>" title="点击查看商品详情" >
+						<div class="rfoodnLeft" style="width:auto;">
+							<p class="hc_xinxin_div" style="margin:3px 3px 0 12px;"> <span class="Star_g" original-title="<{$items['point']*20}>" style="margin:0px 0px 0px 0px;"> <span class="Star_y" style="width:<{$items['point']*20}>%;"></span> </span> </p>
+
+
+							<p>
+								<span class="yueshou" style="margin:0px 0px 0px 12px;color: #c02424; font-size:16px;">￥<{$items['cost']}><{if !empty($items['goodattr'])}>/<{$items['goodattr']}><{else}>/<{$shopinfo['goodattrdefault']}><{/if}></span>
+
+
+							<span>
+										  <{assign var=goodssignlist value=","|explode:$items['signid']}>
+                                                            	      <{foreach from=$goodssignlist key=mytestid item=goodssi}>
+                                                            	         <{if $mytestid < 5 && !empty($goodssi) && isset($goodsattr[$goodssi])}>
+                                                            	           <img style="width:15px; height:15px;" src="<{$goodsattr[$goodssi]}>"/>
+                                                            	            <{/if}>
+                              <{/foreach}>
+										</span>
+
+							</p>
+						</div>
+						</a>
+						<div class="rfoodnRight">
+							<div style="width:98px; height:27px; margin-top:5px;">
+								<div style="float:left;width:25px;<!--  background:#3b79b3; --> height:27px; line-height:27px; text-align:center; color:#FFF;">
+									<!-- 3 -->&nbsp;
+								</div>
+
+
+
+								<{if $shopopeninfo['opentype'] ==2 || $shopopeninfo['opentype'] ==3 }>
+								<{if $items['count'] < 1}>
+								<div  style=" cursor:pointer; float:left;width:73px; background:#ccc; height:27px; line-height:27px; text-align:center; color:#FFF;">已售完</div>
+								<{else}>
+								<div  onclick="<{if $items['have_det']==1}>addproduct(<{$items['id']}>,<{$items['shopid']}>,1,this);<{else}>addonedish(<{$items['id']}>,<{$items['shopid']}>,1,this);<{/if}>" style=" cursor:pointer; float:left;width:73px; background:#5993ca; height:27px; line-height:27px; text-align:center; color:#FFF;">
+									加入购物车</div>
+								<{/if}>
+
+
+
+
+								<{else}>
+								<div  style=" cursor:pointer; float:left;width:73px; background:#ccc; height:27px; line-height:27px; text-align:center; color:#3D3D3D;font-weight:bold;">休息中
+
+
+								</div>
+								<{/if}>
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</li>
+
+			<{/foreach}>
+		</ul>
+	</div>
+	<script>
+
+		$(function(){
+
+			$(".recFood li:eq(1)").css("margin-right","195px");
+
+
+		});
+	</script>
+
+</div>
+<{/if}>
+<div id="dingcan">
+
+
+
+	<div class="chy_list_zp">
+		<div class="mainbody" style="overflow: visible">
+			<div class="left" style=" width:908px; overflow:visible">
+
+				<!---产品展示-->
+				<div id="left_list" style="width:908px;background:#FFFFFF; margin-bottom:20px;" class="leftlist">
+
+
+					<div class="tit03" style=" background:#01DCB6; width:100%; height:43px; line-height:43px; font-size:14px">
+						<a href="javascript:;" class="a1">停车产品</a><a href="javascript:;">商家评论</a><a href="javascript:;">商家详情</a><a href="javascript:;">特价活动</a>
+					</div>
+					<ul id="left_cale2">
+						<li>价格区间：
+							<a href="javascript:;"  onclick="change_shop_cost(0,0,this)" class="current">全部</a>
+							<a href="javascript:;"  onclick="change_shop_cost(0,200,this)">200元以下</a>
+							<a href="javascript:;"  onclick="change_shop_cost(199,999,this)">200-1000元</a>
+							<a href="javascript:;"  onclick="change_shop_cost(999,5000,this)">1000-5000元</a>
+							<a href="javascript:;"  onclick="change_shop_cost(4999,10000,this)">5000元以上</a></li>
+						<li>
+							产品分类：
+							<a href="javascript:;" onclick="change_shop_list(0,this)" class="current">全部</a>
+							<{foreach from=$goodstype  item=items}>
+							<a href="javascript:;" onclick="change_shop_list(<{$items.id}>,this)"><{$items.name}></a>
+							<{/foreach}>
+						</li>
+					</ul>
+					<div id="goodlista" style="min-height:600px;">
+						<{foreach from=$goodstype key=cid item=items}>
+						<div id="cd_925_box" class="<{$items.id}>_mid lisul">
+							<h2 class="h87"><{$items['name']}></h2>
+
+
+
+							<div class="caidanFood" id="" style="margin-top:30px;">
+								<ul>
+									<{foreach from=$items['det'] item=itv}>
+
+									<{if !empty($itv['img'])}>
+									<li  class="goodsli" cdata="<{$itv['cost']}>"  >
+
+										<{if $itv['is_cx'] == 1 }>
+										<span class="sale-item-discount">限时<{$itv['zhekou']}>折</span>
+										<{/if}>
+
+
+										<a   href="<{ofunc type=url link="/shop/showgoods/id/<{$itv['id']}>"}>" title="点击查看商品详情" ><img src="<{$imgserver}><{$itv['img']}>" /></a>
+										<div class="recFoodxq" style="height: 110px">
+											<a   href="<{ofunc type=url link="/shop/showgoods/id/<{$itv['id']}>"}>" title="点击查看商品详情" >
+
+											<div class="rfoodname">
+												<span class="rfname" style="width: 120px"><{$itv['name']}></span>
+												<span class="rcfcosst" style="color: #363636;  font-size: 12px;" >已售<{$itv['sellcount']}>个/剩余<{$itv['count']-$itv['sellcount']}>个</span>
+											</div>
+											<div class="rfoodname" style="height: 42px;font-weight: lighter;">
+												<span class="star"><{$itv['begindate']}></span><span class="end"><{$itv['enddate']}> </span>
+												<!--<span >始<{$itv['begindate']}>-终<{$itv['enddate']}></span>-->
+												<!--<span class="rcfcosst" style="color: #363636;  font-size: 12px;" ></span>-->
+											</div>
+											</a>
+											<div style="clear:both;"></div>
+
+											<div class="rfoodn">
+												<a   href="<{ofunc type=url link="/shop/showgoods/id/<{$itv['id']}>"}>" title="点击查看商品详情" >
+												<div class="rfoodnLeft" style="width:auto;">
+													<p class="hc_xinxin_div" style="margin:0px 3px 0 12px;"> <span class="Star_g" original-title="<{$itv['point']*20}>" style="margin:0px 0px 0px 0px;"> <span class="Star_y" style="width:<{$itv['point']*20}>%;"></span> </span> </p>
+
+													<p>
+							<span class="yueshou" style="margin:0px 0px 0px 12px;color: #c02424; font-size:16px;">
+							￥<{$itv['cost']}><{if !empty($itv['goodattr'])}>/<{$itv['goodattr']}><{else}>/<{$shopinfo['goodattrdefault']}><{/if}>
+							<{if $itv['is_cx'] == 1 }><del style="color:#9E9E9E;">￥<{$itv['cost']/($itv['zhekou']/10)}></del><{/if}></span>
+
+
+							<span>
+										  <{assign var=goodssignlist value=","|explode:$itv['signid']}>
+                                                            	      <{foreach from=$goodssignlist key=mytestid item=goodssi}>
+                                                            	         <{if $mytestid < 5 && !empty($goodssi) && isset($goodsattr[$goodssi])}>
+                                                            	           <img style="width:15px; height:15px;" src="<{$goodsattr[$goodssi]}>"/>
+                                                            	            <{/if}>
+                              <{/foreach}>
+										</span>
+
+													</p>
+												</div>
+												</a>
+												<div class="rfoodnRight"  >
+													<div style="width:98px; height:27px; margin-top:5px;">
+														<div style="float:left;width:25px; <!-- background:#3b79b3;  -->height:27px; line-height:27px; text-align:center; color:#FFF;">
+															<!-- 3 -->&nbsp;
+														</div>
+
+
+														<{if $shopopeninfo['opentype'] ==2 || $shopopeninfo['opentype'] ==3 }>
+														<{if $itv['count'] < 1}>
+														<div  style=" cursor:pointer; float:left;width:73px; background:#ccc; height:27px; line-height:27px; text-align:center; color:#FFF;">已售完</div>
+														<{else}>
+														<div  onclick="<{if $itv['have_det']==1}>addproduct(<{$itv['id']}>,<{$itv['shopid']}>,1,this);<{else}>addonedish(<{$itv['id']}>,<{$itv['shopid']}>,1,this);<{/if}>" style=" cursor:pointer; float:left;width:73px; background:#5993ca; height:27px; line-height:27px; text-align:center; color:#FFF;">
+															加入购物车</div>
+														<{/if}>
+
+
+														<{else}>
+														<div  style="position:absolute;right:10px; top:14px; cursor:pointer; float:left;width:73px; background:#ccc; height:27px; line-height:27px; text-align:center; color:#3D3D3D;font-weight:bold;">休息中
+
+
+														</div>
+														<{/if}>
+													</div>
+												</div>
+											</div>
+
+										</div>
+									</li>
+									<{/if}>
+
+									<{/foreach}>
+								</ul>
+							</div>
+
+
+
+
+
+							<ul class="ul01" style="padding:0px;line-height:52px; ">
+								<{foreach from=$items['det'] item=itv key=key}>
+
+								<{if empty($itv['img'])}>
+
+								<{if $key is not odd}>
+								<li class="goodsli" cdata="<{$itv['cost']}>" style="width:432px; margin-left:0px; margin-right:0px;height: 52px;line-height: 52px;" >
+									<{else}>
+								<li class="goodsli" cdata="<{$itv['cost']}>" style="width:432px; margin-left:0px;margin-right:8px;height: 52px;line-height: 52px;" >
+
+									<{/if}>
+									<a href="<{ofunc type=url link="/shop/showgoods/id/<{$itv['id']}>"}>" style="background:none; height:52px; line-height:52px;color: #000000;
+									font-size: 16px;
+									font-weight: bold; width:180px; overflow:hidden;"><{$itv['name']}><b style="font-size:12px; color:red;">【<{if $itv['is_cx'] == 1 }>限时<{$itv['zhekou']}>折<{/if}>】</b>
+									</a>
+									<a   href="<{ofunc type=url link="/shop/showgoods/id/<{$itv['id']}>"}>" title="点击查看商品详情" >
+										<span style="position:absolute; left:205px;">
+										  <{assign var=goodssignlist value=","|explode:$itv['signid']}>
+                                                            	      <{foreach from=$goodssignlist key=mytestid item=goodssi}>
+                                                            	         <{if $mytestid < 5 && !empty($goodssi) && isset($goodsattr[$goodssi])}>
+                                                            	           <img style="width:15px; height:15px;" src="<{$goodsattr[$goodssi]}>"/>
+                                                            	            <{/if}>
+                              <{/foreach}>
+										</span>
+
+									<span style="color: #c02424;font-size: 16px; right:100px;line-height:43px;font-weight: bold;" >￥<{$itv['cost']}>元 <{if $itv['is_cx'] == 1 }><del style="color:#9E9E9E;">￥<{$itv['cost']/($itv['zhekou']/10)}></del><{/if}></span>
+									</a>
+									<{if $shopopeninfo['opentype'] ==2 || $shopopeninfo['opentype'] ==3 }>
+
+									<{if $itv['count'] < 1}>
+
+
+									<div  style=" position:absolute;right:10px; top:14px; cursor:pointer; float:left;width:73px; background:#ccc; height:27px; line-height:27px; text-align:center; color:#FFF;">
+										已售完
+									</div>
+									<{else}>
+
+									<div onclick="<{if $itv['have_det']==1}>addproduct(<{$itv['id']}>,<{$itv['shopid']}>,1,this);<{else}>addonedish(<{$itv['id']}>,<{$itv['shopid']}>,1,this);<{/if}>" style=" position:absolute;right:10px; top:14px; cursor:pointer; float:left;width:73px; background:#5993ca; height:27px; line-height:27px; text-align:center; color:#FFF;">
+										加入购物车</div>
+									<{/if}>
+
+
+
+
+									<{else}>
+									<div  style=" position:absolute;right:10px; top:14px;  cursor:pointer; float:left;width:73px; background:#ccc; height:27px; line-height:27px; text-align:center; color:#3D3D3D;font-weight:bold;">休息中
+
+
+									</div>
+									<{/if}>
+
+								</li>
+
+								<{/if}>
+								<{/foreach}>
+
+							</ul>
+						</div>
+
+						<{/foreach}>
+					</div>
+				</div>
+				<!---产品展示结束-->
+				<div id="left_list" style="background:#FFFFFF; overflow: visible; position:relative; z-index:55; margin-bottom:20px" class="leftlist">
+
+					<div id="cd_925_box"  style="padding:0px; width:908px;">
+						<h2 class="h87" style="clear:both;background:#01DCB6; color:#fff;height:43px; line-height:43px;">全部评论</h2>
+						<div id="pingjialist">
+
+						</div>
+					</div>
+				</div>
+				<!---评价结束-->
+
+				<div id="left_list" style="background:#FFFFFF; display:none; overflow: visible; position:relative; z-index:55; margin-bottom:20px" class="leftlist leftlistlist">
+
+
+					<div id="cd_925_box"  style="padding:0px; width:908px;">
+						<h2 class="h87" style="background:#01DCB6;color:#fff; height:43px; line-height:43px;">商家详情</h2>
+						<div class="business_abstract">
+							<{$shopinfo['intr_info']|htmlspecialchars_decode}>
+						</div>
+						<h2 class="h87" style="clear:both">商家地图</h2>
+						<div class="business_map">
+							<div class="left"><div id="SearchAddmap" style="width:700px;height:444px;"></div></div>
+							<div class="right">
+								<h5>地址：</h5>
+								<p><{$shopinfo['address']}></p>
+
+								<!--<h5>营业时间：</h5>-->
+								<!--<p><{$shopinfo['starttime']|replace:"|":","}> </p> -->
+							</div>
+						</div>
+					</div>
+
+
+
+				</div>
+				<!---商家结束-->
+				<div id="left_list" style="background:#FFFFFF; overflow: visible; display:none;position:relative; z-index:55; margin-bottom:20px" class="leftlist">
+
+
+					<div id="cd_925_box" style="padding:0px; width:908px;">
+						<h2 class="h87" style="background:#01DCB6; height:43px; line-height:43px; color:#fff;">特价活动</h2>
+						<div class="business_abstract">
+							<{if !empty($ruledata)  }>
+							<table border="1" align="center" style="width:100%;">
+								<tr>
+									<th></th>
+									<th>促销名称</th>
+									<th>规则说明</th>
+									<th>开始时间</th>
+									<th>结束时间</th>
+								</tr>
+								<{foreach from=$ruledata key=key item=items}>
+
+								<tr align="center">
+									<td><span  style="colro:green;"><{$key+1}></span></td>
+									<td><{$items['name']}></td>
+									<td> <span id="showrule_<{$items['id']}>" data=""></span></td>
+									<td><{$items['starttime']|date_format:"%Y-%m-%d"}></td>
+									<td><{$items['endtime']|date_format:"%Y-%m-%d"}></td>
+								</tr>
+
+
+								<{/foreach}>
+							</table>
+							<{/if}>
+						</div>
+					</div>
+
+
+
+				</div>
+				<!---促销结束-->
+
+			</div>
+
+
+			<style>.prudot_right_05{ width:275px; overflow:visible}
+			.restuGg{ margin-bottom:40px; margin-left:17px; width:275px; background:#fff;}
+			.restuGgTitle{width:255px; height:43px; line-height:43px; background:#5993ca; color:#fff; padding-left:20px;font-size:16px; }
+			.restuGgContent{ padding:22px; width:211px;}
+			.restuGgqsj{width:241px; color:#fff; margin-left:8px;font-size:16px;  background:#01DCB6; padding-left:18px; line-height:37px;}
+
+			.restuGgimg{ width:259px; margin-top:10px; color:#101010;  margin-left:8px;background:#fff;}
+			.restuGgimg ul li{float:left; border-right:1px solid #dcdcdc; padding:5px; margin-bottom:10px;}
+
+			.newGouwuche{width:292px; background:#deedfb;}
+			.newGouwucheTit{width:292px; background:#9bbddd; height:47px; line-height:47px; color:#ffffff;}
+			.newGouwucheTit .cpfood{font-size: 14px;margin-left: 17px;}
+			.newGouwucheTit .qkfood{font-size: 14px; color:#2c6396; cursor:pointer;}
+			.newGouwucheTit .fsfood{font-size: 14px;margin-left: 52px;}
+			.newGouwucheTit .jgfood{font-size: 14px;margin-left: 37px;}
+
+			.qujiesuan{width:292px; background:#9bbddd; height:51px; line-height:51px; color:#ffffff;}
+			</style>
+
+			<form action="<{ofunc type=url link="/site/showcart"}>" method="post" onsubmit="return checkcart();">
+			<div class="prudot_right_05" style="width:292px;">
+
+				<div class="restuGg">
+					<div class="restuGgTitle">
+						车场公告
+					</div>
+					<div class="restuGgContent">
+						<{$shopinfo['notice_info']|htmlspecialchars_decode}>
+					</div>
+					<div class="restuGgqsj">
+
+						<{foreach from=$ruledata item=items}>
+
+						<p><{$items['name']}></p>
+
+						<{/foreach}>
+
+					</div>
+					<div class="restuGgimg">
+						<ul>
+							<{foreach from=$mainattr item=itat}>
+							<{if $itat['type']=='img'}>
+							<{foreach from=$itat['det'] item=itdd}>
+							<{foreach from=$shopattr item=itaa}>
+							<{if $itdd['id'] == $itaa['attrid']}>
+							<li class="rst-badge-item" style="width:259px;">
+								<span><img src="<{$itaa['value']}>" /></span>
+								<span style="margin-left:5px;"><{$itdd['instro']}></span>
+
+								<{/if}>
+								<{/foreach}>
+								<{/foreach}>
+								<{/if}>
+								<{/foreach}>
+						</ul>
+						<div style="clear:both;"></div>
+					</div>
+				</div>
+
+
+
+
+
+
+				</form>
+
+
+
+			</div>
+			<div class="prudot_right_05" style="width:292px;">
+				<!-- 购物车 -->
+
+				<div id="newGouwuche" class="newGouwuche" style="  bottom: 0px; z-index:99999999999999; position: fixed;">
+
+					<div class="newGouwucheTit">
+						<span class="cpfood">产品</span>
+						<span onclick="delshopcart();" class="qkfood">[清空]</span>
+						<span class="fsfood">份数</span>
+						<span class="jgfood">单价</span>
+					</div>
+					<div id="cartlist">
+
+
+
+					</div>
+
+
+
+
+
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+</div>
+
+<div id="product_one" class="cart_products_list" style="width:260px;display:none;">
+	<div class="cart_products_title" onclick="closeproductdiv();">
+		<span  >X</span>
+	</div>
+	<div   class="productloding">
+		数据加载中....
+	</div>
+	<div    class="cart_products_content_area">
+
+
+
+	</div>
+</div>
+<div id="temdiv_id" style="display:none;">
+	<div id="temd_id1">
+		<div>  	您距<{$shopinfo['shopname']}>超过<{$servery}>米，如需配送请致电<{$litel}>， </div>
+		<div>我们的客服会为您提供解决方案。</div>
+		<div id="btntu_div" style="margin-top:20px;">  <a href="<{ofunc type=url link="/site/guide/shopid/<{$shopinfo['id']}>"}>" class="y"><< 重新定位</a>  <a href="<{ofunc type=url link="/site/index"}>" class="n"> 查看附近商家</a>  <a href="javascript:void();" onclick="closetout();" class="n"> 继续看看 >></a> </div>
+	</div>
+	<div id="temd_id2">
+		<div> <font style="font-weight:bold;">您还未定位，我们无法为您提供准确服务…</font></div>
+		<div>   您需要先定位，确定您与所选商家的距离  </div>
+		<div id="btntu_div" style="margin-top:20px;">  <a href="<{ofunc type=url link="/site/guide/shopid/<{$shopinfo['id']}>"}>" class="y"><< 定位确定您的位置</a>  <a href="javascript:void();" onclick="closetout();" class="n"> 留在本页面先看看 >></a> </div>
+	</div>
+</div>
+<style>
+	#btntu_div a.y{
+		padding:5px 5px 5px 5px;
+		background-color:#fca500;
+		height:30px;
+		color:#fff;
+		font-weight:bold;
+	}
+	#btntu_div a.n{
+		padding:5px 5px 5px 5px;
+		background-color:#5ec3cd;
+		height:30px;
+		color:#fff;
+		font-weight:bold;
+	}
+	#btntu_div a:hover{
+		text-decoration:none;
+		color:#fff;
+
+	}
+</style>
+<script>
+	var alllist = <{$ruledata|@json_encode}>;
+	$(function(){
+		$.each(alllist,function(i,field){
+			var showcontent = '';
+
+			if(field.limitcontent > 0){
+				showcontent += '订单总价大于'+field.limitcontent+'元';
+			}else{
+				showcontent +='所有订单';
+			}
+			if(field.limittype ==  2){
+				showcontent ='每周(星期'+field.limittime+'),'+showcontent;
+			}
+			if(field.limittype == 3){
+				showcontent ='每天在'+field.limittime+'时间段，'+showcontent;
+			}
+			if(field.controltype ==  1){
+				showcontent +='赠送:'+field.presenttitle+'库存还剩'+field.controlcontent+'件';
+			}
+			if(field.controltype ==  2){
+				showcontent +='优惠:'+field.controlcontent+'元';
+			}
+			if(field.controltype ==  3){
+				var times = field.controlcontent*0.1;
+				showcontent +='折扣:'+times+'折';
+			}
+			if(field.controltype ==  4){
+				showcontent +='免配送费';
+			}
+
+
+			$('#showrule_'+field.id).text(showcontent);
+		});
+
+	});
+
+
+
+
+
+
+</script>
+<script type="text/javascript">
+	$(".MealsList li:nth-child(even)").addClass('odd');//css({'border-left':'3px solid #f60','background-color':'#fffae7'});
+	var juanlist = <{$juanlist|json_encode}>;
+	var nowdate = '<{time()|date_format:"%Y-%m-%d"}>';
+	var starttime = '<{$shopinfo['starttime']}>';
+	var nowtime = '<{time()|date_format:"%Y-%m-%d %H:%M:%S"}>';
+	var shopid = <{$shopinfo['id']}>;
+	var locationfalse  = false;
+	var submithtml = '<{ofunc type=url link="/shop/makeorder/datatype/json/random/@random@"}>';
+	var orderhtml = '<{ofunc type=url link="/site/waitpay/orderid/@orderid@"}>';
+	var memberid = <{$member['uid']}>;
+	var allowedguestbuy = <{$allowedguestbuy|default:0}>;
+
+	<{if $locationtype == 1}>
+	<{if empty($lng)}>
+
+	$('#temd_id1').remove();
+
+	<{else}>
+	$('#temd_id2').remove();
+	<{/if}>
+	$.get("<{ofunc type=url link="/site/ceju/lat/<{$shopinfo['lat']}>/lng/<{$shopinfo['lng']}>/dlng/<{$lng}>/dlat/<{$lat}>/datatype/json"}>", function(result){
+		$("#juli").text(result.msg);
+		if(result.error ==  false){
+			locationfalse = false;
+		}else{
+			locationfalse = true;
+			artopen();
+		}
+	},'json');
+	<{else}>
+
+	$(function(){
+		var myaddressid = '<{$myaddress}>';
+		if(myaddressid == null|| myaddressid==''){
+			window.location.href= '<{ofunc type=url link="/site/guide"}>';
+		}
+	});
+	<{/if}>
+
+
+
+	function artopen(){
+		art.dialog({
+			id: 'testID3',
+			lock: true,
+			background: '#666', // 背景色
+			opacity: 0.87,	// 透明度
+			title:'定位提示',
+			content: $('#temdiv_id').html()
+		});
+	}
+	function closetout(){
+		art.dialog({id: 'testID3'}).close();
+	}
+
+
+	//添加店铺收藏
+	function myFavorite2()
+	{
+		var url = siteurl+'/index.php?ctrl=shop&action=addcollect&datatype=json&collectid='+shopid+'&type=0';
+		var backinfo = ajaxback(url,{});
+		if(backinfo.flag == false){
+			$('#AddFavShop').hide();
+			$('#CancelFavShop').show();
+		}else{
+			diaerror(backinfo.content);
+		}
+	}
+	//删除店铺收藏
+	function delFav()
+	{
+		var url = siteurl+'/index.php?ctrl=shop&action=delcollect&datatype=json&collectid='+shopid+'&type=0';
+		var backinfo = ajaxback(url,{});
+		if(backinfo.flag == false){
+			$('#AddFavShop').show();
+			$('#CancelFavShop').hide();
+		}else{
+			diaerror(backinfo.content);
+		}
+	}
+
+
+
+</script>
+<script>
+
+
+
+</script>
+
+
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=<{$baidumapkey}>"></script>
+<script type="text/javascript">
+
+	// 百度地图API功能
+	/*初始化地图*/
+	var map = new BMap.Map("SearchAddmap");
+	var point = new BMap.Point(<{$lng}>, <{$lat}>);
+	var myIcon1 = new BMap.Icon(siteurl+"/upload/map/pepole.png", new BMap.Size(30,50));
+	var point2 = new BMap.Point(<{$shopinfo['lng']}>, <{$shopinfo['lat']}>);
+	var myIcon2 = new BMap.Icon(siteurl+"/upload/map/shop.png", new BMap.Size(19,19));
+	var marker2 =  new BMap.Marker(point2,{icon:myIcon2});
+	var marker = new BMap.Marker(point,{icon:myIcon1});
+	var infoWindow = new BMap.InfoWindow('');  // 创建信息窗口对象
+	map.centerAndZoom(point2, 15);
+	//加载缩放级别
+	map.addControl(new BMap.NavigationControl());  //添加默认缩放平移控件
+	map.addControl(new BMap.NavigationControl({anchor: BMAP_ANCHOR_TOP_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL}));  //右上角，仅包含平移和缩放按钮
+	map.addControl(new BMap.NavigationControl({anchor: BMAP_ANCHOR_BOTTOM_LEFT, type: BMAP_NAVIGATION_CONTROL_PAN}));  //左下角，仅包含平移按钮
+	map.addControl(new BMap.NavigationControl({anchor: BMAP_ANCHOR_BOTTOM_RIGHT, type: BMAP_NAVIGATION_CONTROL_ZOOM}));  //右下角，仅包含缩放按钮
+
+	map.addOverlay(marker);
+
+	map.addOverlay(marker2);
+
+	$(function(){
+
+		$(' .ordering_pic_orange').showBigPic({
+			src: 'bigsrc',   	  //图片地址
+			type:'click', //事件
+			content:''	  //显示的内容
+		})
+
+	})
+
+
+	//刷新购物车
+	function freshcart(){
+
+		if($('#ShopCart').html() == undefined){
+
+			url = siteurl+'/index.php?ctrl=site&action=smallcat&shopid='+shopid+'&random=@random@';
+			url = url.replace('@random@', 1+Math.round(Math.random()*1000));
+			$.get(url, function(result){
+
+				$("#cartlist").html(result);
+				freachperson();
+				jifenduihuan();
+				//  $('.new_cart_show').bind("hover", function() {
+				//   	  $(this).addClass('hoveron').siblings().removeClass('hoveron');
+				//   });
+				//    $('#CMoney').text(allcost);
+				//   $('#waimaibtn').text(allcost);
+			});
+		}else{
+			//调用  自动刷新购物车
+
+			url = siteurl+'/index.php?ctrl=site&action=smallcat2&shopid='+shopid+'&random=@random@';
+			url = url.replace('@random@', 1+Math.round(Math.random()*1000));
+			$.get(url, function(result){
+				$("#cartshow_c").html(result);
+				if(Number($('#jifendkou').attr('data')) > 0){
+					$('#jifendkou').show();
+				}
+				jifenduihuan();
+			});
+
+
+		}
+	}
+
+</script>
+
+
+<style>
+
+	.sale-item-discount {
+		width: 46px;
+		height: 54px;
+		line-height: 24px;
+		text-align: center;
+		position: absolute;
+		padding: 20px 20px 12px;
+		right: 6px;
+		bottom: 14px;
+		display: block;
+		color: #fff;
+		font-size: 22px;
+		background:#FF4444;
+		border-radius:50%;
+		overflow: hidden;
+		position: absolute;
+		top: 70px;
+		right: 8px;
+	}
+</style>
+<div style="text-align:center;"></div>
+
+
+<{/block}>

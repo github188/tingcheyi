@@ -1,0 +1,359 @@
+ <{extends file="<{$tempdir}>/public/wxsite.html"}>  
+<{block name=extendcss}>  
+ <style>
+
+	.prer03 li p {
+
+width: 90%;
+
+border-bottom: 1px solid #dcdcdc;
+
+margin: 0px auto;
+
+padding: 15px;
+
+line-height: 20px;
+
+position: relative;
+
+}
+
+.ftnBd {
+
+font-weight: bold;
+
+}
+
+ 
+
+.city-select {
+
+background: url(../images/li_selected.png) right no-repeat;
+
+background-size: 18px 18px;
+
+} 
+#scroller {
+position:absolute; 
+	z-index:1;
+	display:block;   
+	overflow:auto; 
+	width:100%;
+}
+textarea{border:none;}
+textarea:hover{border:none;}
+.infoname{ width:80px;float:left; color:#333333;height:40px; line-height:40px; font-size:16px;text-align:right;}
+.infolist{padding:8px;  height:auto; background:#ffffff;border-bottom:1px solid #e6e6e6; }
+.infoinput{padding-left:10px;height:40px;width:100%; float:left; line-height:40px;;border:1px solid #d6d6d6;border-radius:5px;}
+.infointdiv{width:70%; float:left;}
+</style>
+<{/block}>
+ <{block name=myScrolljs}>
+<script> 
+var scroll1, scroll2;
+function loaded() { 
+	scroll1 = new iScroll('wrapper',{
+		useTransform: false,
+		onBeforeScrollStart: function (e) {
+			var target = e.target;
+			while (target.nodeType != 1) target = target.parentNode;
+
+			if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA'){
+				e.preventDefault();
+				}
+		}
+	});  //	hScrollbar:false, 		vScrollbar:false,		useTransition: true,//
+	scroll2 = new iScroll('wrapper2', {hScroll:false,vScrollbar:false,bounce:false});
+}
+
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+</script>
+<{/block}>
+<{block name=hearnav}><header style="position: fixed;display:block;" id="header"><div class="return"></div>商家入驻</header><{/block}>
+<{block name=sitetitle}>商家入驻-<{$system['sitename']}><{/block}>
+<{block name=footer}><{/block}>
+<{block name=blockcontent}>   
+ <div id="wrapper" style="bottom:0px;top:25px;">
+	<div id="scroller" style="margin-top:20px;">
+ <section> 
+ 
+   <form id="fabupaotui" method="post" action="<{ofunc type=url link="/wxsite/fabupaotui/datatype/json"}>">
+        <ul>
+
+			
+			<li style="margin-top:0px; background:#ffffff; height:45px; line-height:45px;  border-top:1px solid #e6e6e6; border-bottom:1px solid #e6e6e6;">
+			
+			<span style="color:#333333; font-size:16px; padding-left:10px;">请填写并上传您的资料</span>
+			
+			</li>
+			
+			<li class="infolist" style="padding-top:20px;">
+			<div style="width:100%;">
+				<div class="infoname">姓名：</div>
+				<div class="infointdiv">
+					<input name="username" id="username" class="infoinput" placeholder="请输入您的姓名" type="text" />
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+			</li>
+			<li class="infolist">
+			<div style="width:100%;">
+				<div class="infoname">手机号：</div>
+				<div class="infointdiv">
+					<input class="infoinput" name="mobile" id="mobile" placeholder="请输入您的手机号" type="text" />
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+			</li>
+			<li class="infolist" style="border-bottom:1px solid #e6e6e6;">
+			<div style="width:100%;">
+				<div class="infoname">QQ：</div>
+				<div class="infointdiv">
+					<input class="infoinput" name="qq" id="qq" placeholder="请输入您的QQ(选填)"  type="text" />
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+			</li>
+			
+			<li class="infolist" style="border-bottom:1px solid #e6e6e6;">
+			<div style="width:100%;">
+				<div class="infoname">店铺名称：</div>
+				<div class="infointdiv">
+					<input class="infoinput" name="resname" id="resname" placeholder="请输入店铺名称"  type="text" />
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+			</li>
+			
+			<li class="infolist" style="border-bottom:1px solid #e6e6e6;">
+			<div style="width:100%;">
+				<div class="infoname">店铺地址：</div>
+				<div class="infointdiv">
+					<input class="infoinput" name="addr" id="addr" placeholder="店铺的详细地址"  type="text" />
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+			</li>
+		 <{if $allowedcode == 1}>	
+			<li class="infolist" style="border-bottom:1px solid #e6e6e6;">
+			<div style="width:100%;">
+				<div class="infoname">验证码：</div>
+				<div class="infointdiv">
+					<input class="infoinput" style="width:28%;" name="Captcha" id="Captcha" placeholder="验证码"  type="text" />
+					<img onclick="javascript:freshcode();" style="margin-top: 0px; float:left;  height: 45px;  width: 90px;" src="<{ofunc type=url link="/site/getCaptcha"}>"   id="captchaimg" /><span style="margin-top:7px; float:left;"  class="span1"><a href="javascript:freshcode();">换一张</a></span>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+			</li>
+			  <{/if}>
+		
+		<li class="infolist" style="border-bottom:1px solid #e6e6e6;">
+			<div style="width:100%;">
+				<div class="infoname"></div>
+				<div class="infointdiv" style=" line-height: 40px;">
+					 <input name="regagree" id="regagree" value="1" type="checkbox" checked="" > 我接受<a target="_blank" id="kaidianxieyi" href="javascript:void(0);"><{$sitename}>开店协议</a>。
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+			</li>
+			
+			
+						
+			<li class="infolist" style="border-bottom:1px solid #e6e6e6;">
+			<div style="width:100%;">
+				<div class="infoname" style="font-size:12px; line-height:24px; color:red;">温馨提示：</div>
+				<div class="infointdiv">
+					审核通过后，您将通过短信或QQ邮件获取登录密码，24小时内须上传至少一件商品，否则店铺将予关闭！
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+			</li>
+			
+			
+		
+			<li style="padding:8px; padding-bottom:30px; ">
+				
+				<div id="sjruzhu" onclick="sjruzhu();" style="background:#e83828;height:50px; line-height:50px;border-radius:20px; color:#fff; font-size:14px; text-align:center;">立即入驻</div>
+			
+			</li>
+			
+		</ul>
+		
+		</form>
+    </section>
+	
+
+	
+  </div>
+</div> 
+
+<{load_data assign="xieyicon" table="single" type="one" where="code='sjxieyi'" fileds="*" }> 
+<div id="zhezhao" style="background: none repeat scroll 0 0 #000000;  height: 100%;  opacity: 0.2;  filter: alpha(opacity=20);  position: fixed;  width: 100%;  z-index: 666;  left: 0px;  top: 0px;  display:none ;"></div>
+<div   id="wrapper2">
+<div  class=" newpopup w580 xieyiZZ" style="">
+	<div class="popup-hd" style="  float: right; margin-right:20px;"><a id="closex" title="关闭" class="closegb" href="javascript:void(0);"><span>关闭</span></a></div>
+	<h3><{$system['sitename']}>入驻协议</h3>
+	<p id="alertbox-msg" class="position02" style="padding:0 10px; padding-bottom:30px;"><{$xieyicon['content']|htmlspecialchars_decode|default:'暂无说明'}></p>
+	<div class="bgPray"><input id="alertbox-OK" class="inputBtn05 closegb" type="button" value="我同意"  ></div>
+	<div style="height:40px;"></div>
+	</div>
+<style> 
+ #wrapper2{
+ 	position:absolute; 
+	z-index:1000;
+	display:none;
+	top:80px;
+	bottom:72px; 
+	overflow:auto; 
+	width:100%;
+	
+}
+.newpopup {
+  padding: 0px 10px;
+  border: 1px solid #999;
+  opacity: 0.95;
+  display: block;
+  position: fixed;
+  padding: 12px 0px;
+  z-index: 667;
+  width: 296px;
+  background: #fff;
+  border: 5px solid #e5e5e5;
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  /* height: 100px; */
+  top: 40%;
+  left: 50%;
+  margin-left: -150px;
+  margin-top: -79px;
+}
+.newpopup h3 {
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #707070;
+}
+</style>
+<script>
+$(function(){
+	 
+	 
+	$("#zhezhao,.closegb,#alertbox-OK").click(function(){
+		$("#zhezhao").hide();
+			$("#wrapper2").hide();
+	});
+	$("#kaidianxieyi").click(function(){
+		kaidianxieyi();
+			
+	});
+	
+   function hidediv(){
+        $("#zhezhao").hide();
+			$("#wrapper2").hide();
+   }
+		
+					 
+	function kaidianxieyi(){
+	var htmls = $("#xieyicon").html();
+		 	$("#zhezhao").show();
+			$("#wrapper2").show();
+			 scroll2.refresh();
+		//Tmsg(htmls);
+	}
+	$("#regagree").click(function(){
+		if( $("#regagree").attr("checked") ){
+			$("#regagree").val('1');
+		}else{
+			$("#regagree").val('');
+		}
+	});
+});
+
+function freshcode()
+{ 	
+	var radom = 1+Math.round(Math.random()*1000); 
+	$('#captchaimg').attr('src',siteurl+'/index.php?ctrl=site&action=getCaptcha&random='+radom); 
+}
+
+
+
+function subform(newurl,obj)
+{
+	var url = $(obj).attr('action'); 
+	$.ajax({
+     type: 'post',
+     async:false,
+     data:$(obj).serialize(),
+     url: url.replace('@random@', 1+Math.round(Math.random()*1000)), 
+     dataType: 'json',success: function(content) {   
+     	if(content.error == false){
+     		diasucces('操作成功',newurl);
+     	}else{
+     		if(content.error == true)
+     		{
+     			diaerror(content.msg); 
+     		}else{
+     			diaerror(content); 
+     		}
+     	} 
+		},
+    error: function(content) { 
+    	diaerror('数据获取失败'); 
+	  }
+   });   
+   
+	return false;
+}
+
+
+function  sjruzhu(){
+	
+		
+		  $('#loading').show();
+		 
+		url = siteurl+'/index.php?ctrl=wxsite&action=saveshangjia&datatype=json&random=@random@';
+     	  url = url.replace('@random@', 1+Math.round(Math.random()*1000));
+        $.ajax({         //script定义
+                 url: url.replace('@random@', 1+Math.round(Math.random()*1000)),
+                 dataType: "json",
+                 async:true,
+                 data:{'username':$("#username").val(),'mobile':$("#mobile").val(),'qq':$('#qq').val(),'resname':$('#resname').val(),'addr':$('#addr').val(),'Captcha':$('#Captcha').val(),'regagree':$('#regagree').val()},
+                 success:function(content) { 
+                 	if(content.error ==  false){
+					
+				
+							Tmsg('提交成功，请等待管理员审核');
+							$('.closegb').live("click", function() {   
+								 $('.popup').slideToggle('slow',function(){$('#mask').remove();$('.popup').remove();}); 
+								 window.location.href=  siteurl+'/index.php?ctrl=wxsite&action=shangjia' ;
+								 
+							});
+							
+						
+							
+                 	}else{
+                 		Tmsg(content.msg);
+                 	}
+                  	$('#loading').toggle();
+                 
+                 },
+                 error:function(){
+                  $('#loading').toggle();
+                 }
+        }); 
+		// setTimeout("myyanchi()", 500 ); 
+	  $('#loading').show();
+     	
+
+}
+</script>
+
+
+</div>
+
+
+<{/block}>

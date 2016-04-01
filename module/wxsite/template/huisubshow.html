@@ -1,0 +1,416 @@
+ <{extends file="<{$tempdir}>/public/wxsite.html"}>  
+<{block name=extendcss}> 
+<link rel="stylesheet"  href="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/css/shopshow.css">   
+<link rel="stylesheet"  href="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/css/public1.css">   
+
+<{/block}>
+ <{block name=extendjs}>  
+  <script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/wxshop.js"></script>  
+<{/block}>
+<{block name=sitetitle}><{$sitename}><{/block}>
+<{block name=hearnav}>
+  <header style="position: fixed;display:block;" id=""><div class="return"></div><{$shopinfo['shopname']}></header>
+
+
+
+<{/block}>
+<{block name=myScrolljs}><script> 
+		var myScroll;
+function loaded() {
+	myScroll = new iScroll('wrapper', {
+		useTransform: false,
+		onBeforeScrollStart: function (e) {
+			var target = e.target;
+			while (target.nodeType != 1) target = target.parentNode;
+
+			if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
+				e.preventDefault();
+		}
+	});
+}
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false); 
+document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+</script>
+<{/block}>
+<{block name=blockcontent}> 
+<div id="wrapper" style="top:42px;">
+<div  class="page-app">
+<style>
+body{background:#f0f0f0;}
+.shopinfo{background:#f0f0f0; }
+.infocontent{ padding:12px;}
+.shopcont{ widht:100%;}
+.xfcost{ width:100%; height:52px;border-radius:8px;background:#fff; margin:0 auto; border:1px solid #d9d9d9;}
+.shoptetx{width:65%; float:right; overflow:hidden;}
+.shopname{color:#333333; font-size:20px;font-weight:bold; font-family:微软雅黑;}
+.yhuibuy{ height:52px;line-height:52px; background:#ffffff;  position:relative;}
+.buyorderyh{ position:absolute; top:9px; right:20px; height:35px;padding:0px 18px;line-height:35px; font-size:16px;font-weight:bold; background:#fe6634; border-radius:5px;color:#fff;}
+.liwd30{ width:10%; text-align:center; font-size:16px; color:#878787;font-weight:bold; font-family:微软雅黑;}
+.xfcostname{color:#333333; width:30%;height:52px; line-height:52px;  font-size:16px; margin-left:8px;}
+#consumptioncost{ font-size:14px; font-weight:bold; height:42px; width:60%; margin-right:10%; line-height:42px; border:none; text-align:right;}
+.shifucost{ font-size:24px;}
+.yhuibox{border-bottom:1px solid #e1e1e1; border-top:1px solid #e1e1e1; padding:0px 15px;}
+#shophui_bg{display:none;}
+#youhuicostbox{display:none;}
+.subbuyorder{ display:none; width:90%; margin:30px auto 20px; background:#ff6634; border:1px solid #c77962;border-radius :5px; text-align:center; color:#fff; font-size:20px;font-weight:bold; height:52px; line-height:52px;}
+.nosubbuyorder{ width:90%; margin:30px auto 20px; background:#f6d0a9; border-radius :5px; text-align:center; color:#fff; font-size:20px;font-weight:bold; height:52px; line-height:52px;}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+</style>
+<script>
+var limittype = <{$shophuiinfo['limittype']|default:0}>;  // limittype int(1)   否       1表示 不制定    2表示制定星期和具体时间段   
+var controltype = <{$shophuiinfo['controltype']|default:0}>;	   // 闪惠类型  2 每满多少减多少   3 折扣
+var mjlimitcost = <{$shophuiinfo['mjlimitcost']|default:0}>;	//每满费用金额
+var limitzhekoucost = <{$shophuiinfo['limitzhekoucost']|default:0}>;//折扣限制金额
+var controlcontent = <{$shophuiinfo['controlcontent']|default:0}>;// 限制减费用金额  或者  折扣
+var shopid = <{$shopid|default:0}>;// 店铺ID
+var huiid = <{$shophuiinfo['id']|default:0}>;//闪慧ID
+
+var checknext = false;
+ function myyanchi(){
+  		
+  		  checknext = false;
+  	}
+$(function(){
+	$("#xunwenfwy").bind('click',function(e){
+	//Tmsg(0);
+	 //if(checknext ==  false){ 
+    	 //checknext = true;
+		//setTimeout("myyanchi()", 500 );
+		$("#consumptioncost").focus();
+		 e.preventDefault();
+		 Tmsg(0);
+	//}	
+	});
+	
+	/*
+$("#xunwenfwy").mouseup(function(e){
+  
+});
+*/
+
+
+	$("#consumptioncost").bind('keyup',function(){
+		var xiaofeiinput = $("#consumptioncost").val();
+		var defaultLength = 0;//线的最小长度是10
+		var xunwenfwyWidth = $("#xunwenfwy").width();//询问服务员后输入
+		var length = $("#consumptioncost").val().length;
+		  if(length > defaultLength){
+				 defaultLength = length;
+					
+				//	 $('#consumptioncost').css('width', defaultLength*8);
+				//	 $('#xunwenfwy').text('￥');
+				//	 var inputwidth = $("#consumptioncost").width(); 
+				//	 $('#xunwenfwy').css('width', xunwenfwyWidth-inputwidth);
+			 <{if $is_shophui == 1}> 		 
+					 if(controltype==2){
+						if( xiaofeiinput >= mjlimitcost ){		
+							$("#nosubbuyorder").hide();
+							$("#subbuyorder").show();
+							var hownum =  Number( Math.floor(xiaofeiinput/mjlimitcost) );
+							if( hownum > 0 ){
+								$("#youhuicostbox").show();
+								$("#noshophui_bg").hide();
+								$("#shophui_bg").show();	
+								var youhuicost = Number(hownum)*Number(controlcontent);
+								$("#youhuicost").text(youhuicost);
+								 $("#shifucost").text(xiaofeiinput-youhuicost);
+								 $("#submitcost").text(xiaofeiinput-youhuicost);
+							}else{
+								$("#youhuicostbox").hide();
+								$("#noshophui_bg").show();
+								$("#shophui_bg").hide();
+								 $("#shifucost").text(xiaofeiinput);
+								 $("#submitcost").text(xiaofeiinput);
+							}
+							
+						}else{
+						
+								$("#youhuicostbox").hide();
+								$("#noshophui_bg").show();
+								$("#shophui_bg").hide();
+								 $("#shifucost").text(xiaofeiinput);
+								 $("#submitcost").text(xiaofeiinput);
+							
+						}
+					 }
+					
+					 if(controltype==3){
+						if( xiaofeiinput >= limitzhekoucost ){							
+								$("#nosubbuyorder").hide();
+								$("#subbuyorder").show();
+								$("#youhuicostbox").show();
+								$("#noshophui_bg").hide();
+								$("#shophui_bg").show();	
+								var youhuicost = Number(xiaofeiinput)*(Number((100-controlcontent)/100));
+								$("#youhuicost").text(youhuicost);
+								 $("#shifucost").text(xiaofeiinput-youhuicost);
+								 $("#submitcost").text(xiaofeiinput-youhuicost);
+							
+						}else{
+						
+								$("#youhuicostbox").hide();
+								$("#noshophui_bg").show();
+								$("#shophui_bg").hide();
+								 $("#shifucost").text(xiaofeiinput);
+								 $("#submitcost").text(xiaofeiinput);
+							
+						}
+					 }
+				<{else}>
+						 $("#shifucost").text(xiaofeiinput);
+						 $("#submitcost").text(xiaofeiinput);
+						  $("#nosubbuyorder").hide();
+						$("#subbuyorder").show();
+						 
+					 <{/if}>
+					 
+					 
+	      }
+		  if( length == 0 ){
+			//	$('#xunwenfwy').text('询问服务员后输入');
+			//	$('#xunwenfwy').css('width', '60%');
+			//	 $('#consumptioncost').css('width', '2px');
+				 
+				  $("#shifucost").text(0);
+				  $("#youhuicostbox").hide();
+				  
+				  $("#nosubbuyorder").show();
+				  $("#subbuyorder").hide();
+
+		  }
+		
+		});
+});
+
+
+
+function  orderSubmit(){
+	 if(checknext ==  false){ 
+    	 checknext = true;
+     	 if($('#DeliveryTime').val() == ''){
+     	    Tmsg('请录入联送货时间');
+     	   return false;
+     	 } 
+     	$('#loading').show();
+     	  url = siteurl+'/index.php?ctrl=wxsite&action=makeshophuiorder&datatype=json&random=@random@';
+     	  url = url.replace('@random@', 1+Math.round(Math.random()*1000));
+        $.ajax({         //script定义
+                 url: url.replace('@random@', 1+Math.round(Math.random()*1000)),
+                 dataType: "json",
+                 async:true,
+                 data:{shopid:shopid,'xfcost':$("#consumptioncost").val(),buyorderphone:$("#buyorderphone").val(),'yhcost':$("#youhuicost").text(),'sjcost':$('#submitcost').text(),'huiid':huiid,'paytype':$("#paytype").attr('paytype')},
+                 success:function(content) { 
+                 	if(content.error ==  false){
+					
+					window.location.href=  siteurl+'/index.php?ctrl=wxsite&action=subpayhui&orderid='+content.msg ;//.html?orderid='+datas.data;
+					
+					
+                 	}else{
+                 		Tmsg(content.msg);
+                 	}
+                  	$('#loading').toggle();
+                 
+                 },
+                 error:function(){
+                  $('#loading').toggle();
+                 }
+        }); 
+        setTimeout("myyanchi()", 500 );
+   }    
+}
+
+
+
+
+
+</script>
+	<div class="shopinfo">
+		<div class="infocontent">
+			<div class="shopcont">
+				<div class="xfcost box_inline">
+					<div class="xfcostname liwd30">消费总额：</div>
+				<!-- 	<div class="xfcostname " id="xunwenfwy"  style=" text-align:right; color:#cdcdcd; width:60%">询问服务员后输入</div> -->
+					<div style="width:70%; text-align:right;"><input type="number" value="" id="consumptioncost" placeholder="询问服务员后输入" /></div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+		<div style="clear:both;"></div>
+		
+		<div class="yhuibox" style="border-bottom:none;">
+	<div class="yhuibuy box_inline">
+		<div class="liwd30" style="width:50%; text-align:left;">
+			联系电话
+			</div>
+		<div class="liwd30" style="color:#ff6634;width:50%;text-align:right;">
+			<div style="width:100%; text-align:right;"><input style="width:100%; text-align:right; border:none;" type="number" value="" id="buyorderphone" placeholder="请输入联系电话" /></div>
+		</div>
+	</div>
+
+</div>
+
+		
+		
+		<div style="clear:both;"></div>
+		
+		
+<{if $is_shophui == 1}>
+<div class="yhuibox" >
+	<div class="yhuibuy box_inline">
+		<div class="liwd30">
+			<{if $shophuiinfo['controltype'] == 2}><img id="mjhuiimg" src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/mjshophui_bg.png" style="width:30px;margin-top:6px; " /><{/if}>
+			<{if $shophuiinfo['controltype'] == 3}><img id="zhekouhuiimg" src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/mjshophui_bg.png" style="width:30px;margin-top:6px; " /><{/if}>
+		</div>
+		<div class="liwd30" style="width:35%;color:#000000; text-align:left;">
+			<{$shophuiinfo['name']}>
+		</div>
+		<div class="liwd30" style="width:45%; text-align:right;">
+			<span id="youhuicostbox">-￥<span id="youhuicost">0</span></span>
+		</div>
+		<div class="liwd30" style="width:10%; text-align:right;">
+			
+			<img id="noshophui_bg" src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/noshophui_bg.png" style="width: 30px;margin-top: 12px;  " />
+			<img id="shophui_bg" src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/shophui_bg.png" style="width: 30px;margin-top: 12px;  " />
+
+		</div>
+	</div>
+</div>
+<div style="height:15px; background:#f0f0f0;"></div>
+<{/if}>
+<div class="yhuibox">
+	<div class="yhuibuy box_inline">
+		<div class="liwd30" style="width:60%; text-align:left;">
+			实付金额
+			</div>
+		<div class="liwd30" style="color:#ff6634;width:40%;text-align:right;">
+			￥<span class="shifucost" id="shifucost">0</span>
+		</div>
+	</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div style="padding:0 15px;background:#f0f0f0;border-bottom: 1px solid #e1e1e1;">
+	<div class="yhuibuy box_inline" style="background:#f0f0f0;">
+	
+		<div class="liwd30" style="width:90%; text-align:left;">
+			选择支付方式
+			</div>
+		<div class="liwd30">
+		
+		</div>
+	</div>
+
+</div>
+
+
+<div style="padding:0 15px;border-bottom: 1px solid #e1e1e1;">
+	<div class="yhuibuy box_inline" >
+		<div class="liwd30" style="width:15%;">
+			<img src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/wxpay_bg.png" style="width:30px;margin-top:12px; " />
+		</div>
+		<div id="paytype" paytype="1" class="liwd30" style="width:75%; text-align:left;">
+			微信支付
+		</div>
+		<div class="liwd30">
+			<img src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/wxpay_curbg.png" style="width:25px;margin-top:14px; " />
+
+		</div>
+	</div>
+
+</div>
+
+
+<div class="subbuyorder" id="subbuyorder" onclick="orderSubmit();" >
+
+	<span id="submitcost">0</span>元 确认买单
+	
+</div>
+
+<div class="nosubbuyorder" id="nosubbuyorder">
+
+	确认买单
+	
+</div>
+
+
+
+ </div>
+
+
+  
+  </div>
+ 
+  <style>
+  .user-menu i.icon-exit {
+  background: url(<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/css/images/menu-exit.png);
+  background-size: 25px 25px;
+  margin-top: 5px;
+}
+  </style>
+<script>
+$(function(){
+
+	function isWeiXin(){
+	    var ua = window.navigator.userAgent.toLowerCase();
+	    if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+	        return true;
+	    }else{
+	        return false;
+	    }
+	}
+	
+ 	var browser = {
+
+			versions: function () {
+			var u = navigator.userAgent, app = navigator.appVersion;
+
+			return {
+			trident: u.indexOf('Trident') > -1, //IE内核
+			presto: u.indexOf('Presto') > -1, //opera内核
+			webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+			gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+			mobile: !!u.match(/AppleWebKit.*Mobile.*/) || !!u.match(/AppleWebKit/), //是否为移动终端
+			ios: !!u.match(/(i[^;]+;(U;)? CPU.+Mac OS X)/), //ios终端
+			android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+			iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者QQHD浏览器
+			iPad: u.indexOf('iPad') > -1, //是否iPad
+			webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+			};
+			} (),
+			language: (navigator.browserLanguage || navigator.language).toLowerCase()
+			}
+			if (browser.versions.mobile ) {
+			            
+
+				            if(isWeiXin()){
+								$("#icon-bangdmem").show();
+								$("#icon-exit").hide();
+					        }else{
+							
+								$("#icon-bangdmem").hide();
+								$("#icon-exit").show();
+								
+							}
+			         
+			        }
+				
+})
+</script>
+ 
+<{/block}>

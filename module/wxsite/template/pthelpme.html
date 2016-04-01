@@ -1,0 +1,641 @@
+<{extends file="<{$tempdir}>/public/wxsite.html"}>  
+<{block name=extendcss}>   
+<{/block}>
+ <{block name=myScrolljs}>
+
+  <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=<{$baidumapkey}>"></script>
+<script> 
+		var myScroll;
+function loaded() {
+	myScroll = new iScroll('wrapper', {
+		useTransform: false,
+		onBeforeScrollStart: function (e) {
+			var target = e.target;
+			while (target.nodeType != 1) target = target.parentNode;
+
+			if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
+				e.preventDefault();
+		}
+	});
+}
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false); 
+document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+ 
+</script>
+  
+<{/block}>
+<{block name=hearnav}>
+<div class="toptitCon">
+
+<!-- 默认跑腿标题 -->
+ <div class="toptitBox addressbox">
+  <div class="toptitL"><i></i></div>
+  <div class="toptitC"><h3>帮我<{if $pttype  == 1 }>送<{/if}><{if $pttype  == 2 }>买<{/if}></h3></div>
+ </div>
+  <!-- 选择地图搜索标题 -->
+ <div class="mapaddressbox toptitBox" style="display:none; padding:0px; height:49px;">
+ <!--搜索框-->
+ 
+<div class="searchCon" >
+ <div class="toptitL sousuodizhi" style="margin-top:5px;"><i></i></div>
+ <div class="searchBox" style="float:left; margin-left:15px; width:80%; height:32px;">
+ <input style="height:32px; line-height:32px; padding-left:25px; font-size:14px;width:100%;    margin-top: 4px;" type="text" id="searchKeywords"  onkeyup="getscraddress();" placeholder="搜索地址"><i></i></div>
+</div>
+
+</div>
+ <!-- 补充详细地址标题 -->
+<div class="toptitBox paotititlebox" style="display:none;">
+  <div class="toptitL buchongdizhiadd"><i></i></div>
+  <div class="toptitC"><h3>补充地址</h3></div>
+ </div>
+ 
+ 
+ 
+</div>
+<{/block}>
+<{block name=sitetitle}><{$sitename}><{/block}>
+<{block name=blockcontent}>  
+  <div id="wrapper" style="top:40px;">
+	<div id="scroller">
+	
+	<div class="addressbox">
+<!--输入要求-->
+<div class="hemebushurcon">
+ <div class="hemebushurbox"><i class="fa fa-edit"></i><textarea style="height:60px;" name="demandcontent" id="demandcontent" placeholder="<{if $pttype  == 1 }>请填写物品的名称，大概的重量和体积<{/if}><{if $pttype  == 2 }>请填写代买的商品名称和描述，如需要购买什么东西，有什么具体的要求<{/if}>"></textarea></div>
+</div>
+<!--信息填写-->
+<div class="hemebuinfocon">
+ <div class="hemebuinfobox">
+  <ul>
+ 
+  <li><span>取货地址</span> <div lng="" lat="" address="" detaddress=""    style="float:right;color:#666;width: 75%; font-size: 14px;" type="text" onclick="getmapaddress(2);" class="newinp2"><{$info['bigadr']|default:'点击选择取货地址'}></div></li>
+
+   </ul>
+ </div>
+</div>
+<div class="hemebuinfocon">
+ <div class="hemebuinfobox">
+  <ul>
+   <li><span>收货地址</span> <div lng="" lat="" address="" detaddress=""  style="float:right;color:#666;width: 75%; font-size: 14px;" type="text" onclick="getmapaddress(1);" class="newinp1"><{$info['bigadr']|default:'点击选择收货地址'}></div></li>
+   
+   <li class="borno"><span>收货电话</span><input type="text" id="shouphone" name="shouphone" value="" placeholder="请填写取货电话"></li>
+  
+  </ul>
+ </div>
+</div>
+ 
+<div style="clear:both;"></div>
+<style>
+.kgbox{ width:60%;  margin:0 auto; background:#fff; height:35px; line-height:35px; margin-top:20px; border:1px solid #cdcdcd;border-radius:50px;}
+.kgjian{width:20%; text-align:center; color:#b3b3b3; font-size:36px;height:35px;  line-height:35px; margin-top:-3px;}
+.kgmid{width:60%; text-align:center; color:#191919; font-weight:bold;}
+.kgjia{color:#ff6e6e;width:20%;font-size:36px;height:35px; line-height:35px;text-align:center; margin-top:-3px;}
+.kgchushizhi{color:#b2b2b2; font-size:15px; font-weight:normal;}
+.dibubox{ background:#fff;}
+.costbox{ height:60px; margin-top:20px; color:#808080; font-size:16px; position:relative;}
+.kmleft{width:50%;text-align:center;}
+.kmright{width:50%;text-align:center;}
+.kmleft p,.kmright p{ height:30px; line-height:30px;}
+.kmleft p span,.kmright p span{ color:#3f3f3f; font-size:24px; font-weight:bold; }
+.kmleft p span.showdetcost{ color:#cbcbcb; font-size:20px;  margin-left:5px;  }
+.minborder{ position:absolute;background:#d4d4d4;width:2px; height:60px; left:50%; top:0px; margin-left:-1px;}
+</style>
+<div class="dibubox">
+<div style="height:10px;background:#f0f0f0;"></div>
+<!-- 重量加减计算 -->
+<div class="kgbox">
+		<div class="yhuibuy box_inline">
+		<div class="liwd30 kgjian" onclick="getweightkg(0);" >
+			 -
+			</div>
+			<div class="liwd30 kgmid">
+			 <span id="kgnumber"><{$ptsetinfo['kg']}></span><span class="kgchushizhi">&nbsp;&nbsp;公斤以下</span>
+			</div>
+		<div class="liwd30 kgjia" id="kgjia" onclick="getweightkg(1);">
+		+
+ 		</div>
+	</div>	
+</div> 
+
+<div class="infolist" style="padding-top:10px;">
+			<div style="width:100%;">
+				<div class="infoname" style="text-align:center;color:#b4b4b4;"><{if $pttype  == 1 }>取货时间<{/if}><{if $pttype  == 2 }>收货时间<{/if}></div>
+				<div class="infointdiv" style="margin:5px auto;width:70%; text-align:center;">
+							<select name="timeid" id="timeid"  style=" display:; width:100%;border-radius:5px;  height:38px; border: 1px solid #e4e4e4;background: #ffffff;"  >
+								   	 <{foreach from=$pstimelist item=itk}>
+										<option value="<{$itk['value']}>"><{$itk['d']}> <{if !empty($itk['i'])}><{$itk['i']}><{else}><{$itk['s']}>-<{$itk['e']}><{/if}></option>
+								 <{/foreach}> 
+								  </select> 
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+			</div>
+
+<div class="costbox" style="display:none;">
+<input type="hidden" value="" id="allkgcost" />
+<input type="hidden" value="" id="allkmcost" />
+		<div class="yhuibuy box_inline">
+		 
+			<div class="liwd30 kmleft">
+			 <p>总价(元)</p>
+			 <p><span id="allcost"></span><span class="showdetcost">></span></p>
+			</div>
+			<div class="liwd30 kmright">
+			 <p>距离(千米)</p>
+			 <p><span id="julikmnum"></span></p>
+			</div>
+		</div>	
+		<div class="minborder">&nbsp;</div>
+</div> 
+<div style="height:20px;"></div>
+</div>
+
+<div class="intexchabutt" style="margin-top:20px;"><input type="button" onclick="fabupaotuiorder();" value="确认支付" class="intexbg1"></div>
+
+</div>
+<!-----------------------跑腿服务------------------------->
+	
+	
+	
+	<!-- 地图选地址部分 -->
+	 
+ <div class="mapaddressbox"  style="display:none;">
+	<div class="showmapbox">
+		 <div class="mapditu" id="map">
+			
+		 </div>
+		 <div id="marker_red_sprite"><img src="<{$siteurl}>/upload/map/marker_red_sprite.png" /></div>
+	</div>
+ 
+	
+<div id="choiceguidebox" >
+	<ul>
+		 
+	</ul>
+</div>
+</div>
+
+	<!-- 补充详细地址部分 -->
+ <div class="bcdetailaddress" style="display:none; ">
+ <div  style="width:100%;background:#fff;">
+ <div class="hemebuinfobox">
+  <ul>
+ 
+   <li style="border:none; line-height:40px;"><span style="color:#ff6e6e; font-size;16px;" id="detailaddtitle">您的地址是:</span></li>   
+   <li style="border:none;  line-height:25px; font-size;16px;font-weight:bold;"><span id="detailaddress"></span></li>   
+  
+  <li><input style="width:100%;font-size;15px;" type="text"  id="detaddressval" value="" placeholder="请补充楼号，小区号等详细信息"></li>
+
+   </ul>
+ </div>
+ </div>
+ <div class="intexchabutt"><input type="button" onclick="suredetailaddress();" value="确定" class="intexbg1"></div>
+</div>
+	
+<!-- 折线地图，取货地址与收货地址坐标之间的 直接地图显示 -->
+<div id="huimap" style="width:100%;height:400px;display:none; ">
+	
+</div>
+
+	
+	<div style="height:20px;"></div>
+	
+  </div>
+</div> 
+
+<script>
+var map,market;
+var biaoqianval = false;
+var addtype = 1;
+var km = '<{$ptsetinfo['km']}>';
+var kmcost = '<{$ptsetinfo['kmcost']}>';
+var addkm = '<{$ptsetinfo['addkm']}>';
+var addkmcost = '<{$ptsetinfo['addkmcost']}>';
+var kg = '<{$ptsetinfo['kg']}>';
+var kgcost = '<{$ptsetinfo['kgcost']}>';
+var addkg = '<{$ptsetinfo['addkg']}>';
+var addkgcost = '<{$ptsetinfo['addkgcost']}>';
+
+ var click_button = false;
+function doubleclick(){
+	click_button = false;
+}
+function lockclick(){
+	 if(click_button == false){
+			click_button = true;
+			setTimeout("doubleclick()", 300); 
+			return true;
+	 }else{
+		 return false;
+	 }
+}
+
+function bqzhi(){
+	biaoqianval  = false;
+}
+ $(function(){ 
+ $('.toptitBox .toptitL').unbind();
+			$('.toptitBox .toptitL').bind("click", function() {    
+				history.back();
+		   });
+			$('.toptitBox .sousuodizhi').bind("click", function() {    
+				$(".mapaddressbox").hide();
+				$(".addressbox").show();
+				myScroll.refresh();
+			});
+	 
+			$('.toptitBox .buchongdizhiadd').bind("click", function() {    
+				$(".paotititlebox").hide();
+				$(".mapaddressbox").show();
+				myScroll.refresh();
+			});
+ 
+ 
+	getscraddress(); 
+	
+  });
+ 
+function getmapaddress(type){
+	addtype = type;
+	$(".addressbox").hide();
+	$(".mapaddressbox").show();
+	var screenheight = ($(window).height())*0.5;
+	$(".mapditu").css('height',screenheight);
+	getLocation();
+}
+function getmapshow(lng,lat){
+	var map = new BMap.Map("map");  
+	var point = new BMap.Point(lng,lat);  
+	map.centerAndZoom(point, 15);  
+	map.enableScrollWheelZoom();
+	map.enableContinuousZoom();
+	showmapnearadr(lng,lat); 
+	//map.enableKeyboard(); //键盘方向键缩放事件
+	map.addEventListener("dragend", function(){   //拖拽事件  
+	 var center = map.getCenter();   
+	 showmapnearadr(center.lng,center.lat);
+	 
+	});
+}
+function getdefaultmapshow(lng,lat){
+	var map = new BMap.Map("map");  
+	//var point = new BMap.Point('<{$lng}>','<{$lat}>');  
+	var point = new BMap.Point(113.597715,34.802461);  
+	map.centerAndZoom(point, 15);  
+	map.enableScrollWheelZoom();
+	map.enableContinuousZoom();
+	showmapnearadr(113.597715,34.802461);
+	//map.enableKeyboard(); //键盘方向键缩放事件
+	map.addEventListener("dragend", function(){   //拖拽事件  
+	 var center = map.getCenter();     
+	 showmapnearadr(center.lng,center.lat);
+	 
+	});
+	
+}
+function showmapnearadr(lng,lat){
+	 $.getScript('http://api.map.baidu.com/geocoder/v2/?ak=<{$baidumapkey}>&callback=renderReverse&location='+lat+','+lng+'6&output=json&pois=1'); 
+}
+function renderReverse(datas){
+	 
+	 if(datas.status == 0){
+	 	$("#choiceguidebox ul").html('');
+		 /* 
+		 {"addr":"河南省广州市中原区华淮小区11栋",
+		 "cp":"NavInfo",
+		 "direction":"附近",
+		 "distance":"40",
+		 "name":"华淮小区11栋",
+		 "poiType":"房地产",
+		 "point":{"x":113.60700002968,"y":34.736593865518},
+		 "tag":"房地产;住宅区","tel":"","uid":"97389a78371b6f76b020a838","zip":""}
+		 
+		 */
+	$('#choiceguidebox ul').append('<li lat="'+datas.result.location.lat+'"  lng="'+datas.result.location.lng+'"  address="'+datas.result.business+'"  ><div class="addresslist" ><p class="choicegudie" style="color:red;">[推荐位置]'+datas.result.business+'</p><p class="choicedetgudie" >'+datas.result.formatted_address+'</p></div></li>');
+				 
+			 if(datas.result.pois.length > 0){
+			//	$("#choiceguidebox ul").html('');
+				for(i=0;i<datas.result.pois.length;i++){
+				
+					$('#choiceguidebox ul').append('<li lat="'+datas.result.pois[i].point.y+'"  lng="'+datas.result.pois[i].point.x+'"  address="'+datas.result.pois[i].name+'"  ><div class="addresslist"><p class="choicegudie">'+datas.result.pois[i].name+'</p><p class="choicedetgudie">'+datas.result.pois[i].addr+'</p></div></li>');
+					
+					
+				}
+					setTimeout("bqzhi()",200 );
+					 myScroll.refresh();
+			
+			}else{
+		//	$("#choiceguidebox ul").html('');
+			 $('#choiceguidebox ul').append('<li><div class="addresslist" style="text-align:center;"><p class="choicegudie">获取地址失败</p><p class="choicedetgudie" style="text-align:center;">请在尝试下</p></div></li>');
+			
+			setTimeout("bqzhi()",200 );
+			 myScroll.refresh();
+			}
+			
+			 $("#choiceguidebox ul li").bind('click',function(){
+				var lng = $(this).attr('lng');
+				var lat = $(this).attr('lat');
+				var address = $(this).attr('address');
+				choiceaddress(lng,lat,address);
+			})
+		
+	 }
+}
+ 
+function getscraddress(){ 
+	if(biaoqianval == false){
+	  
+		//	 setTimeout("bqzhi()",500 );  
+			 
+		
+						var searchval  = $("#searchKeywords").val();
+						
+						if(searchval != ''){ 
+					
+								biaoqianval  = true;
+									  
+									var searchvalue = encodeURI(searchval);
+									  var tempurl = 'http://api.map.baidu.com/geocoder/v2/?address='+searchvalue+'&output=json&ak=<{$baidumapkey}>&callback=showLocation';
+									 $.getScript(tempurl); 
+						  
+					
+						} 
+	}
+
+}
+function showLocation(datas){
+	$("#choiceguidebox ul").html(''); 
+	if(datas.status == 0){
+		var lng = datas.result.location.lng;
+		var lat = datas.result.location.lat;
+		showmapnearadr(lng,lat);
+	}
+}
+function choiceaddress(lng,lat,address){   //选择地址列表之后 -> 进入补充地址
+ 
+	$(".mapaddressbox").hide();
+	//$(".addressbox").show();
+	$(".newinp"+addtype).attr('lng',lng);
+	$(".newinp"+addtype).attr('lat',lat);
+	$(".newinp"+addtype).attr('address',address);
+	$(".newinp"+addtype).text(address);
+	
+	$(".paotititlebox").show();
+	$(".bcdetailaddress").show();
+	$("#detailaddress").text(address);
+	 
+	$("#detaddressval").val('')
+	if(addtype == 1){
+		$("#detailaddtitle").text("您的收货地址是:");
+	}else{
+		$("#detailaddtitle").text("您的取件地址是:");
+	}
+	myScroll.refresh();
+	
+}
+function suredetailaddress(){	   // 确认补充地址按钮后 - > 进入主页面，并且如果符合条件 计算跑腿费用
+	$(".paotititlebox").hide();
+	$(".bcdetailaddress").hide();
+	$(".addressbox").show();
+	var detaddressval = $("#detaddressval").val();
+	$(".newinp"+addtype).append(detaddressval);
+	$(".newinp"+addtype).attr('detaddress',detaddressval);
+	jisuanptcost(); 
+	myScroll.refresh();
+}
+function jisuanptcost(){   // 调用计算KM	
+	/* 取货地址 */
+	var getaddress = $(".newinp2").text();
+	var getlng = $(".newinp2").attr('lng');
+	var getlat = $(".newinp2").attr('lat');
+	/* 收货地址 */
+	var shouaddress = $(".newinp1").text();
+	var shoulng = $(".newinp1").attr('lng');
+	var shoulat = $(".newinp1").attr('lat');
+	if( getaddress != '' &&  getlng != '' &&  getlat != '' &&  shouaddress != '' &&  shoulng != '' &&  shoulat != ''   ){
+		$(".costbox").show(); 
+			setTimeout("dojulist("+getlng+","+getlat+","+shoulng+","+shoulat+")",500 ); 
+	}
+	myScroll.refresh();
+}
+function dojulist(getlng,getlat,shoulng,shoulat){   // 计算2地址距离公里 
+		var huimap = new BMap.Map("huimap");
+		var pointcenter = new BMap.Point(getlng,getlat);  
+		huimap.centerAndZoom(pointcenter, 13);
+		var pointA = new BMap.Point(getlng,getlat);  //  创建取货地址坐标
+		var pointB = new BMap.Point(shoulng,shoulat);  // 创建收货地址坐标
+		var julikm = ( (huimap.getDistance(pointA,pointB))/1000  ).toFixed(1);
+		dotongyijssuan(julikm);
+	//	alert('取货地址与收货地址距离是：'+( (huimap.getDistance(pointA,pointB))/1000  ).toFixed(1)+' Km。');  //获取取货地址与收货地址 距离,保留小数点后两位	
+	// 	var polyline = new BMap.Polyline([pointA,pointB], {strokeColor:"blue", strokeWeight:6, strokeOpacity:0.5});  //定义折线
+	 //	huimap.addOverlay(polyline);     //添加折线到地图上
+}
+function dotongyijssuan(julikm){   //最后 同意调用 计算费用等
+		dopaotuikmcost(julikm);
+		dopaotuikgcost();
+		var allkgcost = $("#allkgcost").val();
+		var allkmcost = $("#allkmcost").val();		 
+		var allcost   = Number(allkgcost)+Number(allkmcost);
+		$("#allcost").text(allcost);
+		$("#julikmnum").text(julikm);
+}
+function dopaotuikmcost(julikm){  // 根据距离公里计算跑腿金额
+	$("#julikmnum").text(julikm);
+	var allkmcost =  0;
+ 	if( julikm <= km  ){
+		allkmcost = kmcost;
+	}else{
+		var addjuli = julikm-km;
+		var addnum = Math.floor(addjuli/addkm);
+		var addcost = addnum*addkmcost;
+ 		allkmcost = Number(kmcost)+Number(addcost);
+	}
+	$("#allkmcost").val(allkmcost); 
+}
+function dopaotuikgcost(){  // 根据重量公斤计算跑腿金额
+	var weightkg = $("#kgnumber").text();
+	 
+ 	var allkgcost =  0;
+ 	if( weightkg <= kg  ){
+		allkgcost = kgcost;
+	}else{
+		var addweight = weightkg-kg;
+		var addweightkg = Math.floor(addweight/addkg);
+		var addweightkgcost = addweightkg*addkgcost;
+ 		allkgcost = Number(kgcost)+Number(addweightkgcost);
+	}
+	$("#allkgcost").val(allkgcost); 
+	 
+	
+}
+function getweightkg(type){  // 加减 重量公斤 数量 type 0为减 1为加
+
+	var gweightkg = $("#kgnumber").text();
+	 
+	if( type == 0 ){
+		if(lockclick()){
+			if(gweightkg > kg){
+				if( gweightkg <= kg ){
+					$(".kgjian").css('color','#b3b3b3');
+					$(".kgchushizhi").show();
+				}else{
+					 $("#kgnumber").text(Number(gweightkg)-1); 
+					if( Number(gweightkg)-1 == kg ){
+						$(".kgjian").css('color','#b3b3b3');
+						$(".kgchushizhi").show();
+					}			
+				}
+				gweightkg = $("#kgnumber").text();
+			 
+			}
+		}
+	}
+	if( type == 1 ){
+		if(lockclick()){
+			$(".kgjian").css('color','#ff6e6e');
+			$(".kgchushizhi").hide();
+			 $("#kgnumber").text(Number(gweightkg)+1);		
+			 
+			 gweightkg = $("#kgnumber").text();
+		}
+	}
+	var julikm = $("#julikmnum").text();
+	dotongyijssuan(julikm);
+}
+
+
+function getLocation() { 
+  if (navigator.geolocation)
+    { 
+       navigator.geolocation.getCurrentPosition(showPosition,showError);
+    }
+   else{
+		getdefaultmapshow();
+	}
+  }
+
+function showPosition(position)
+{ 	
+	var lng = position.coords.longitude;
+	var lat = position.coords.latitude;
+	getmapshow(lng,lat);
+}
+ function showError(error)
+  {
+  getdefaultmapshow();
+   switch(error.code) 
+    {
+    	
+    case error.PERMISSION_DENIED:
+      //x.innerHTML="User denied the request for Geolocation."
+    //  $('#showareainfo').text("User denied the request for Geolocation.");
+      break;
+    case error.POSITION_UNAVAILABLE:
+     // x.innerHTML="Location information is unavailable."
+      //$('#showareainfo').text("Location information is unavailable.");
+      break;
+    case error.TIMEOUT:
+    //  x.innerHTML="The request to get user location timed out."
+    //$('#showareainfo').text("The request to get user location timed out.");
+      break;
+    case error.UNKNOWN_ERROR:
+     // x.innerHTML="An unknown error occurred."
+     //  $('#showareainfo').text("An unknown error occurred.");
+      break;
+    }
+     
+  }
+function saveaddress(){ 
+		$('#loading').show();
+		var sex = $("input[name='sex']:checked").val();
+		var bigadr = $(".newinp1").text();
+		var detailadr = $(".newinp2").val();
+		var lng = $(".newinp1").attr('lng');
+		var lat = $(".newinp1").attr('lat');
+		var tempaddress = $(".newinp1").text()+$(".newinp2").val();
+        var info = {'contactname':$('#contactname').val(),'sex':sex,'lng':lng,'lat':lat,'phone':$('#mobile').val(),'bigadr':bigadr,'detailadr':detailadr,'add_new':tempaddress,'addressid':<{$id}>}; 
+	  	var url = '<{ofunc type=url link="/area/saveaddress/random/@random@/datatype/json"}>';
+		  var backdata = ajaxback(url,info); 
+		  if(backdata.flag == false){ 
+		  	<{if $shopid > 0}>
+		  	 window.location.href = siteurl+'/index.php?ctrl=wxsite&action=bkaddress&shopid=<{$shopid}>&backtype=<{$backtype}>';
+		  	<{else}>
+		      window.location.href = siteurl+'/index.php?ctrl=wxsite&action=address';
+		    <{/if}>
+		  }else{
+		  	$('#loading').hide();
+		     Tmsg(backdata.content);
+		  }
+		  
+	}
+</script>
+<script>
+
+function  fabupaotuiorder(){
+	
+		 
+		  $('#loading').show();
+	
+	var demandcontent = $("#demandcontent").val();
+		 /* 取货地址 */
+	var getaddress = $(".newinp2").attr('address');
+	var getdetaddress = $(".newinp2").attr('detaddress');
+	var getlng = $(".newinp2").attr('lng');
+	var getlat = $(".newinp2").attr('lat');
+	/* 收货地址 */
+	var shouaddress = $(".newinp1").attr('address');
+	var shouetaddress = $(".newinp1").attr('detaddress');
+	var shoulng = $(".newinp1").attr('lng');
+	var shoulat = $(".newinp1").attr('lat');
+	
+ 	var shouphone = $("#shouphone").val();
+ 	var minit = $("#timeid").find("option:selected").val();
+	
+ 
+	var pttype = '<{$pttype}>';
+	
+	var ptkg = $("#kgnumber").text();
+	var ptkm = $("#julikmnum").text();
+	var allkgcost = $("#allkgcost").val();
+	var allkmcost = $("#allkmcost").val();
+	var allcost = $("#allcost").text();
+	
+		url = siteurl+'/index.php?ctrl=wxsite&action=fabupaotui&datatype=json&random=@random@';
+     	  url = url.replace('@random@', 1+Math.round(Math.random()*1000));
+        $.ajax({         //script定义
+                 url: url.replace('@random@', 1+Math.round(Math.random()*1000)),
+                 dataType: "json",
+                 async:true,
+                 data:{'demandcontent':demandcontent,'getaddress':getaddress,'getdetaddress':getdetaddress,'getlng':getlng,'getlat':getlat,'shouaddress':shouaddress,'shouetaddress':shouetaddress,'shoulng':shoulng,
+				 'shoulat':shoulat,'shouphone':shouphone,'minit':minit,'pttype':pttype,'paytype':1,'ptkg':ptkg,'ptkm':ptkm,
+				 'allkgcost':allkgcost,'allkmcost':allkmcost,'allcost':allcost},
+                 success:function(content) { 
+                 	if(content.error ==  false){
+					
+						window.location.href=  siteurl+'/index.php?ctrl=wxsite&action=subshow&orderid='+content.msg ;//.html?orderid='+datas.data;
+					//	alert(0);
+						//window.location.href= 'http://www.baidu.com';
+						
+							Tmsg('提交成功，请等待管理员审核');
+							$('.closegb').live("click", function() {   
+								 $('.popup').slideToggle('slow',function(){$('#mask').remove();$('.popup').remove();}); 
+								 window.location.href=  siteurl+'/index.php?ctrl=wxsite&action=paotui' ;
+								 
+							});
+							
+						
+							
+                 	}else{
+                 		Tmsg(content.msg);
+                 	}
+                  	$('#loading').toggle();
+                 
+                 },
+                 error:function(){
+                  $('#loading').toggle();
+                 }
+        }); 
+	 
+}
+</script>
+<{/block}>

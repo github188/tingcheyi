@@ -1,0 +1,206 @@
+ <{extends file="<{$tempdir}>/public/admin.html"}>
+  <{block name=extendjs}>
+   <script src="<{$siteurl}>/js/kindeditor/kindeditor.js" type="text/javascript" language="javascript"></script>
+ <script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script>
+ <script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+  <{/block}>
+ <{block name=controlname}>编辑/添加专题页<{/block}>
+ <{block name=bodylist}>
+
+
+       <div style="width:98%;overflow-y:auto;white-space:nowrap;height:900px;">
+
+          <div class="tags">
+
+          <div id="tagscontent">
+            <form method="post" name="form1" action="<{ofunc type=url link="/adminpage/other/module/savespecialpage/datatype/json"}>"  onsubmit="return subform('<{ofunc type=url link="/adminpage/other/module/specialpage"}>',this);" >
+              <div>
+                <table border="0" cellspacing="2" cellpadding="4" class="list" name="table" id="table" width="100%">
+                  <tbody>
+
+                  	<tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7" id="selecttrstart">
+                      <td class="left">名称</td>
+                      <td><input type="text" name="name" id="name" value="<{$info['name']}>" class="skey" style="width:250px;" ></td>
+                    </tr>
+                   <tr onmouseover="this.bgColor='#D7D7D7';" onmouseout="this.bgColor='#F5F5F5';" bgcolor="D7D7D7">
+                      <td class="left" valign="top">首页显示图片</td>
+                      <td>
+                      	<img src="<{$info['indeximg']}>" width=80px height=80px id="imgshow1" <{if  empty($info['indeximg'])}> style="display:none;"<{/if}>>
+                      	<input type="hidden" name="indeximg" id="indeximg" value="<{$info['indeximg']}>" class="skey" style="width:150px;" >
+                      	<span onclick="uploads(1);">上传图片</span>
+                      	</td>
+                    </tr>
+					
+					<tr onmouseover="this.bgColor='#D7D7D7';" onmouseout="this.bgColor='#F5F5F5';" bgcolor="D7D7D7">
+                      <td class="left" valign="top">首页显示图片宽度</td>
+                      <td><input type="text" name="imgwidth" id="imgwidth" value="<{$info['imgwidth']|default:'50%'}>" class="skey" style="width:150px;" >(写成百分一多少，比如：50%，如果两个都是50%，这样一行就放2个专题页活动,默认为50%)</td> 
+                    </tr>
+					<tr onmouseover="this.bgColor='#D7D7D7';" onmouseout="this.bgColor='#F5F5F5';" bgcolor="D7D7D7">
+                      <td class="left" valign="top">首页显示图片高度</td>
+                      <td><input type="text" name="imgheight" id="imgheight" value="<{$info['imgheight']|default:'62'}>" class="skey" style="width:150px;" >px（单位：像素，默认为62px）</td>
+                    </tr>
+					
+					  <tr onmouseover="this.bgColor='#D7D7D7';" onmouseout="this.bgColor='#F5F5F5';" bgcolor="D7D7D7">
+                      <td class="left" valign="top">专题页头部显示图片</td>
+                      <td>
+                      	<img src="<{$info['specialimg']}>" width=80px height=80px id="imgshow2" <{if  empty($info['specialimg'])}> style="display:none;"<{/if}>>
+                      	<input type="hidden" name="specialimg" id="specialimg" value="<{$info['specialimg']}>" class="skey" style="width:150px;" >
+                      	<span onclick="uploads(2);">上传图片</span>
+                      	</td>
+                    </tr>
+                    <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7" id="selecttrstart">
+                      <td class="left">专题页背景色调</td>
+                      <td><input type="text" name="color" id="color" value="<{$info['color']}>" class="skey" style="width:150px;" ></td>
+                    </tr>
+					<tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7" id="selecttrstart">
+                      <td class="left">定义活动格式</td>
+                      <td><input type="radio" name="is_custom"   value="1"  <{if  !empty($info) &&  $info['is_custom'] == 1}>checked<{/if}> >固定
+					  <input type="radio" name="is_custom"  value="0" <{if !empty($info) &&  $info['is_custom'] == 0}>checked<{/if}>>自定义
+					  &nbsp;&nbsp;&nbsp;(注：固定的是指系统默认的活动类型；自定义则为自己所定义的，需要在店铺或者商品处勾选对应的商家或者商品)</td>
+                    </tr>
+					 <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7" id="selecttrstart">
+                      <td class="left">针对对象</td>
+                      <td><input type="radio" name="showtype"   value="0" <{if  !empty($info) &&  $info['showtype'] == 0}>checked<{/if}>>店铺
+					  <input type="radio" name="showtype"  value="1" <{if  !empty($info) &&  $info['showtype'] == 1}>checked<{/if}>>商品</td>
+                    </tr>
+					 <tr id="shophuodongtype" style="display:none;" onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">
+                      <td class="left">活动类型</td>
+                      <td>
+                      	 <select name="shopcx_type"> 
+							<option value="6"  <{if $info['cx_type'] == 6 }>selected<{/if}>  > 购停车卡（选此类型点击则直接跳转到购买列表页面）</option>
+							<option value="7"  <{if $info['cx_type'] == 7 }>selected<{/if}>  > 在线养车（选此类型点击则直接跳转到养车列表页面）</option>
+							<option value="8"  <{if $info['cx_type'] == 8 }>selected<{/if}>  > 预定车位（选此类型点击则直接跳转到预定列表页面）</option>
+							<option value="9"  <{if $info['cx_type'] == 9 }>selected<{/if}>  > 跑腿服务（选此类型点击则直接跳转到跑腿服务页面）</option>
+							
+							<option value="1"  <{if $info['cx_type'] == 1 }>selected<{/if}>  > 推荐商家</option>
+							<option value="2"  <{if $info['cx_type'] == 2 }>selected<{/if}>  > 满减商家</option>
+							<option value="3"   <{if $info['cx_type'] == 3 }>selected<{/if}> > 打折商家</option>
+							<option value="4"   <{if $info['cx_type'] == 4 }>selected<{/if}> >免配送费</option>
+							<option value="5"   <{if $info['cx_type'] == 5 }>selected<{/if}> > 赠送商家</option>
+
+                       		</select>
+                       </td>
+                    </tr>
+					 <tr id="goodshuodongtype" style="display:none;" onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">
+                      <td class="left">活动类型</td>
+                      <td>
+                      	 <select name="goodscx_type">
+							<option value="1" <{if $info['showtype'] == 1 }>selected<{/if}>  > 商品折扣</option>
+                       		</select>
+                       </td>
+                    </tr>
+					
+		 
+                    <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7" id="selecttrstart">
+                      <td class="left">是否开启</td>
+                      <td><input type="radio" name="is_show"   value="1" <{if empty($info) }>checked<{else}><{if $info['is_show'] == 1}>checked<{/if}> <{/if}> >开启<input type="radio" name="is_show"  value="0" <{if !empty($info) && $info['is_show'] == 0}>checked<{/if}>>关闭</td>
+                    </tr>
+					
+<tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7" id="selecttrstart">
+                      <td class="left">排序</td>
+                      <td><input type="text" name="orderid" id="orderid" value="<{$info['orderid']}>" class="skey" style="width:50px;" ></td>
+                    </tr>
+
+                   <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">
+                      <td class="left">规则说明</td>
+                      <td>
+                      <div class='nop'><script>KE.show({id:'ruleintro',allowFileManager : true,imageUploadJson:'<{ofunc type=url link="/other/saveupload"}>',fileManagerJson:'<{ofunc type=url link="/other/saveupload"}>',items:['source','|', 'justifyleft', 'justifycenter', 'justifyright','justifyfull', 'insertorderedlist', 'insertunorderedlist', '|', 'fontname', 'fontsize', '|', 'textcolor', 'bgcolor', 'bold','italic', 'underline', 'removeformat', '|', 'image', 'advtable', 'hr','link', 'unlink']});</script><textarea name="ruleintro" id="ruleintro" style='width:550px; height:260px;'><{$info['ruleintro']}></textarea></div>                      </td>
+
+                    </tr>
+
+                    <input type="hidden" name="ztyid" id="ztyid" value="<{$info['id']}>" class="skey" style="width:150px;">
+                   </tbody>
+                </table>
+              </div>
+              <div class="blank20"></div>
+               <input type="submit" value="确认提交" class="button">
+            </form>
+          </div>
+        </div>
+        <div class="blank20"></div>
+
+      </div>
+      <div class="clear"></div>
+    </div>
+</div>
+  <script>
+  var imgtype = 0;
+  $(function(){
+
+		<{if !empty($info) && $info['is_custom'] == 1   }>		
+			<{if $info['showtype'] == 0   }>
+				$("#shophuodongtype").show();
+			<{/if}>
+			<{if $info['showtype'] == 1  }>
+				$("#goodshuodongtype").show();
+			<{/if}>
+		<{/if}>
+  });
+  
+  $("input[name='is_custom']").click(function(){
+		  var checkid =  $("input[name='is_custom']:checked").val();
+		 var showtype11 =  $("input[name='showtype']:checked").val();
+		
+			 if(checkid == 1){
+				 if(showtype11 == 1){
+					 $('#shophuodongtype').hide();
+					 $('#goodshuodongtype').show();
+				 }else{
+					 $('#shophuodongtype').show();
+				 $('#goodshuodongtype').hide();
+				 }
+			 }else{
+				 $('#shophuodongtype').hide();
+				 $('#goodshuodongtype').hide();
+				  
+			 }
+		 
+	}); 
+  $("input[name='showtype']").click(function(){
+		  var checkid =  $("input[name='showtype']:checked").val();
+		  var is_custom1 =  $("input[name='is_custom']:checked").val();
+		 if(is_custom1 == 1){
+			 if(checkid == 1){ 
+				$('#shophuodongtype').hide();
+				 $('#goodshuodongtype').show();
+			 }else{
+				 $('#shophuodongtype').show();
+				 $('#goodshuodongtype').hide();
+				  
+			 }
+		  }else{
+			 $('#shophuodongtype').hide();
+		 	 $('#goodshuodongtype').hide();
+		  }
+	}); 
+ 
+	var dialogs ;
+ function uploads(type){
+	  imgtype = type;
+ 	  dialogs = art.dialog.open('<{ofunc type=url link="/adminpage/other/module/adminupload/func/uploadsucess/type/adv"}>');
+ 	  dialogs.title('上传图片');
+ }
+  function uploadsucess(flag,obj,linkurl){
+ 	 if(flag == true){
+ 		alert(linkurl);
+		dialogs.close();
+		uploads();
+ 	 }else{
+ 		 dialogs.close();
+		 if(imgtype == 1){
+			  $('#indeximg').val(linkurl);
+			  $('#imgshow1').attr('src',linkurl);
+			  $('#imgshow1').show();
+		}
+		if(imgtype == 2){
+			  $('#specialimg').val(linkurl);
+			  $('#imgshow2').attr('src',linkurl);
+			  $('#imgshow2').show();
+		}
+		
+   }
+ }
+
+
+</script>
+<{/block}>

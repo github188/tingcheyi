@@ -1,0 +1,737 @@
+ <{extends file="<{$tempdir}>/public/site.html"}>   
+<{block name=extendjs}>
+ <script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/v5_plugin.js.pagespeed.jm.inM6bedmF7.js"></script>
+  <script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/jquery.cookie.js" type="text/javascript" language="javascript"></script> 
+   <script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/slides.jquery.js"> </script>
+   <script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/r.js"> </script>
+    <script>
+	$(function(){
+			$('#bannerBox').slides({
+				preload: true,
+				preloadImage: '/upload/images/shop/loading.gif',
+				play: 5000,
+				pause: 2500,
+				hoverPause: true,
+				generatePagination:true
+			});
+		});
+
+</script>
+<{/block}>
+<{block name=extendcss}>
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/css/floor.css"> 
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/css/newtype.css"> 
+<{/block}>
+<{block name=sitetitle}><{$mapname}><{/block}>
+ <{block name=bodylist}>
+ 	 <{load_data assign="lunbo" table="adv"    fileds="*"  limit="5" where="advtype='ledguangao' and  module='<{$sitetemp}>'"}>
+	<{if !empty($lunbo['list'])}>
+	  
+		<div class="wrapper" style="margin-top:10px;height:90px;">
+	     <div style="position: absolute;  height:90px;  width: 1200px;     overflow: hidden;  ">
+			<!--<div id="bannerBox">-->
+					 <!--<div  class="slides_container" style="height:90px;">-->
+						<!--<{foreach from=$lunbo['list'] item=items}>-->
+						<!--<a href="<{$items['linkurl']}>" target="_blank" style="height:90px;width:1200px;"><img style="height:90px;width:1200px;" src="<{$items['img']}>" width="1200" height="90"></a>-->
+						<!--<{/foreach}>-->
+				    <!--</div>-->
+
+			<!--</div>-->
+
+				 <table style="table-layout:fixed;height:98px;width:100%;border:none 0px #CCCCCC;background-color:#F57C7C;">
+					 <tbody>
+					 <tr>
+
+						 <td style="width:170px;background-color: #E1E1E1">
+
+							 <object codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="170" align="left" height="50">
+								 <param name="movie" value="<{$siteurl}>/templates/<{$tempdir}>/public/css/drk_ledadv/image/clock2.swf">
+								 <param name="quality" value="high">
+								 <param name="wmode" value="transparent">
+								 <embed src="<{$siteurl}>/templates/<{$tempdir}>/public/css/drk_ledadv/image/clock2.swf" quality="high" wmode="transparent" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="170" height="50" value="transparent">
+							 </object>
+						 </td>
+						 <td id="drk_ledtd" style="width:100%;">
+							 <div id="drk_colee_right0" style="overflow:hidden;width:auto;margin:0 5px 0 5px;">
+								 <table cellpadding="0" cellspacing="0">
+									 <tbody>
+									 <tr>
+										 <td id="drk_colee_right1" valign="top" align="center">
+											 <table cellpadding="0" cellspacing="0" class="fonttable">
+												 <tbody>
+												 <tr>
+                                                     <{foreach from=$lunbo['list'] item=items}>
+                                                     <td style="white-space:nowrap;padding:0 10px 0 10px;vertical-align:middle;">
+                                                         <a href="#" target="_blank" style="    display: inline-block;
+    width: 256px;font-size:0px; color:#F57C7C;">_<img  src="<{$siteurl}>/templates/<{$tempdir}>/public/site/car_2.png" alt="">_</a></td>
+													 <td style="white-space:nowrap;padding:0 10px 0 10px;vertical-align:middle;">
+														 <a href="<{$items['linkurl']}>" target="_blank" style="font-size:40px;font-weight: bold;color:#FFFFFF;"><{$items['title']}></a>
+													 </td>
+													 <{/foreach}>
+
+												 </tr>
+												 </tbody>
+											 </table>
+										 </td>
+										 <td id="drk_colee_right2" valign="top">
+											 <table cellpadding="0" cellspacing="0" class="fonttable">
+												 <tbody>
+												 <tr>
+
+                                                     <{foreach from=$lunbo['list'] item=items}>
+                                                     <td style="white-space:nowrap;padding:0 10px 0 10px;vertical-align:middle;">
+                                                         <a href="#" target="_blank" style="    display: inline-block;
+    width: 256px;font-size:0px; color:#F57C7C;">_<img  src="<{$siteurl}>/templates/<{$tempdir}>/public/site/car_2.png" alt="">_</a></td>
+                                                     <td style="white-space:nowrap;padding:0 10px 0 10px;vertical-align:middle;">
+                                                         <a href="<{$items['linkurl']}>" target="_blank" style="font-size:40px;color:#FFFFFF;font-weight: bold;"><{$items['title']}></a>
+                                                     </td>
+                                                     <{/foreach}>
+												 </tr>
+												 </tbody>
+											 </table>
+										 </td>
+									 </tr>
+									 </tbody>
+								 </table>
+							 </div>
+						 </td>
+
+					 </tr>
+					 </tbody>
+				 </table>
+
+
+
+
+			</div>
+		</div>
+
+	<{/if}>
+ <!--<script src="<{$siteurl}>/templates/<{$tempdir}>/public/css/drk_ledadv/image/drk_ledadv.js" type="text/javascript"></script>-->
+ <script src="<{$siteurl}>/templates/<{$tempdir}>/public/css/drk_ledadv/image/drk_marquee4.js" type="text/javascript"></script>
+
+ <style>
+     #drk_ledtd img {
+         width: 100%;
+         cursor: pointer;
+     }
+ </style>
+
+  <div style="height:20px;"></div>
+<div class="wrapper"> 
+<{foreach from=$attrinfo item=items}>
+	<div class="excavator-filter ng-scope"  goodstype_<{$items['id']}>" data="goodstype_<{$items['id']}>"  >
+	
+		<div class="excavator-filter-name">车场分类:</div>
+			<span data="0" class="excavator-filter-item  <{if  $goodstypeid['id'] ==0 }>focus <{/if}>" >不限</span> 
+			   	<{foreach from=$items['det'] item=itv}> 
+											   
+							<span    data="<{$itv['id']}>" class="excavator-filter-item ng-binding ng-scope <{if $itv['id'] == $goodstypeid['id'] }>focus <{/if}>" > <{$itv['name']}></span>					
+														
+				       <{/foreach}>		
+		  	
+	</div>
+	
+	 <{/foreach}>		
+	
+<script>
+
+$(function(){
+	$(".allcai").click(function(){
+		
+		$(".dropmenu").toggle();
+		
+	});
+	
+	$('.excavator-filter span').click(function(){
+		$(this).addClass('focus').siblings().removeClass('focus');
+	//	$(".allcai").text( $(this).text() );
+		makelink();
+	});
+	
+	
+	function makelink(){
+	  var findobj = $('.excavator-filter'); 
+	  var newstr = '';
+	   
+	
+			 newstr +='&'+$(findobj).attr('data')+'=';
+			
+					newstr+=$(findobj).find('span.focus').eq(0).attr('data');
+			
+				
+	   window.location.href="<{$siteurl}>/index.php?ctrl=site&action=index"+newstr;
+	}
+	
+	
+	
+	
+});
+
+</script>
+ 	
+	
+	
+	
+ 	
+ 	
+ 	
+ 	<script type="text/javascript">
+    var MT = {};
+    MT.BOOTSTAMP = new Date().getTime();
+    MT.STATIC_ROOT = "http://xs01.meituan.net/waimai_web/55669089";
+    MT.ENV = "production";
+    </script>	
+	
+<script>
+      (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] ||
+        function() {
+          (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+      ga('create', 'UA-45741865-1', {'cookieDomain': 'waimai.meituan.com'});
+      ga('send', 'pageview');
+      (function(a,b){function d(){var a=document.createElement("script");a.async=!0,a.src="http://s0.meituan.net/vendor/js/mta.min.js";var b=document.getElementsByTagName("script")[0];b.parentNode.insertBefore(a,b)}if(a.MeituanAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},"complete"===document.readyState)d();else{var c=window.onload;window.onload=function(){d(),c&&c()}}})(window,"mta");
+      mta("create","551517ddd0a88b586dc89658");
+      mta("send","page");   
+    </script>
+	
+	
+ 	<script>
+	
+	
+	
+//添加店铺收藏
+function myFavorite2(shopid,obj)
+{ 
+  var url = siteurl+'/index.php?ctrl=shop&action=addcollect&datatype=json&collectid='+shopid+'&type=0'; 
+  var backinfo = ajaxback(url,{});
+  if(backinfo.flag == false){ 
+     		$(obj).hide(); 
+     		$(obj).next().show(); 
+     	//	$('#CancelFavShop').show();
+   }else{ 
+   	diaerror(backinfo.content); 
+  }  
+}  
+//删除店铺收藏
+function delFav(shopid,obj)
+{ 
+	var url = siteurl+'/index.php?ctrl=shop&action=delcollect&datatype=json&collectid='+shopid+'&type=0'; 
+  var backinfo = ajaxback(url,{});
+  if(backinfo.flag == false){ 
+      $(obj).hide(); 
+	  $(obj).prev().show(); 
+     // $('#CancelFavShop').hide();
+   }else{ 
+   	 diaerror(backinfo.content); 
+  }  
+}
+	
+	
+	</script>
+ 	  
+	<!---循环体-->
+ 	
+ 	
+ 	<div style="clear:both;"></div>
+
+ <style>
+     .goplate{
+         width: 120px;
+         position: absolute;
+         right: 0;
+         top: 8px;
+         z-index: 9999;
+         text-align: center;
+     }
+     .goplate .money {
+         color: #707070;
+     }
+     .goplate .money .unit {
+         font: 500 30px "Microsoft YaHei",helvetica,sans-serif;
+         margin: 0 0 0 -5px;
+         color: #ff6600;
+     }
+     .goplate .map a {
+         background: #fff url(http://www.51park.com.cn/imagepic/park/dot.gif) no-repeat 3px 2px;
+         width: 71px;
+         height: 20px;
+         border: 1px #E1E1E1 solid;
+         display: block;
+         color: #888;
+         text-decoration: none;
+         line-height: 21px;
+         text-indent: 10px;
+         margin: 0 auto;
+     }
+     .restaurant .top-content {
+         position: relative;
+         height: 170px;
+         border-bottom: 1px solid #ebebeb;
+     }
+     .top-content .line {
+         width: 3px;
+         height: 66px;
+         background: url(http://www.51park.com.cn/imagepic/park/line.gif) no-repeat;
+         position: absolute;
+         right: 120px;
+         display: block;
+         z-index: 9999;
+         top: 6px;
+     }
+ </style>
+ <!--<div class="goplate">-->
+     <!--<p class="money"><em>￥</em><span class="unit">260</span>起</p>-->
+     <!--<p class="map"><a href="space.php?do=parking_detail&amp;id=7007" title="查看地图">查看地图</a></p>-->
+ <!--</div>-->
+  
+    <div class="rest-list">
+    <ul class="list clearfix" style="min-height:395px;float: left">
+       <{foreach from=$shoplist key=mykey item=items}>
+        <li class="fl rest-li" data="<{$mykey}>" > 	<div class="j-rest-outer rest-outer transition ">
+      <div class="restaurant" >
+
+          <div class="top-content">
+              <a class="rest-atag" href="<{ofunc type=url link="/shop/index/id/<{$items['shopid']}>/gid/<{$items['id']}>"}>" target="_blank">
+            <div class="preview">
+              <img  class="scroll-loading" src="<{$imgserver}><{$items['shoplogo']|default:$shoplogo}>" data-src="<{$items['shoplogo']|default:$shoplogo}>" data-max-width="208" data-max-height="156"  />
+              <div class="rest-tags">
+              </div>
+            </div>
+            <div class="content">
+				<div class="name">
+					<span class="no"><{$mykey+1}></span>
+                <span title="<{$items['shopname']}>">
+    <{$items['shopname']}>
+
+                </span>
+				</div>
+
+				<div class="price" >
+                <span class="start-price" style="width:100%;margin-top:10px;margin-bottom: 10px;">
+
+
+				 <{foreach from=$mainattr item=itat}>
+                            <{if $itat['type']=='img'}>
+                            <{foreach from=$items['attrdet'] item=itaa}>
+                            <{if $itat['id'] == $itaa['firstattr']}>
+                            <em class="pay-min-icon premium-icon" data-msg="<{$itat['name']}><{$itat['instro']}>"><img style="width:20px; height:20px;" alt="<{$itat['name']}>" title="<{$itat['instro']}>" src="<{$itaa['value']}>"></em>
+                            <{/if}>
+                            <{/foreach}>
+                            <{/if}>
+                            <{/foreach}>
+
+				</span>
+
+
+				</div>
+				<div class="attr">
+                <span title="<{$items['shopname']}>">
+   电话： <{$items['phone']}>
+
+                </span>
+				</div>
+				<div class="attr">
+                <span title="<{$items['shopname']}>">
+   地址： <{$items['address']}>
+
+                </span>
+				</div>
+				<div class="rank clearfix">
+  	              <span class="star-ranking fl">
+  	                <!-- 5颗星60px长度，算此时星级的长度 -->
+  	                <!-- 算出空白填充的部分长度 -->
+					<{assign var=pointwidth value=14.4*$items['point'] }>
+  	                <span class="star-score"  style="width:<{$pointwidth}>px"></span>
+  	              </span>
+                  <span class="score-num fl"><{$items['point']}>分</span>
+  	              <span class="total cc-lightred-new fr">
+出售<{$items['sellcount']}>单
+  	              </span>
+  		          </div>
+
+              <div class="price">
+                <!--<span class="start-price">起步:￥<{$items['limitcost']}></span>-->
+                <span class="send-price">
+				<{if $items['pscost'] == '' }>
+                  免配送费
+				 <{else}>
+				 配送费:￥<{$items['pscost']}>
+				 <{/if}>
+                </span>
+                <span class="send-time"><i class="icon i-poi-timer"></i>
+                      		
+		<{foreach from=$mainattr item=itat}>
+									  <{if $itat['type']=='input'}>
+									     <{foreach from=$itat['det'] item=itcc}>
+									       
+									          <{foreach from=$items['attrdet'] item=itaa}>
+									             <{if $itcc['parent_id'] == $itaa['firstattr']}>
+									                 <{$itaa['value']|default:'未说明'}>
+									             <{/if}>
+									          <{/foreach}>
+									     <{/foreach}>
+									  <{/if}>     
+									<{/foreach}>
+                </span>
+              </div>
+
+            </div>
+              </a>
+              <span class="line"></span>
+              <div class="goplate">
+
+                  <p class="money"><em>￥</em><span class="unit"><{$items['limitcost']}></span>起</p>
+                  <p class="map"><a href="<{ofunc type=url link="/shop/index/id/<{$items['shopid']}>/gid/<{$items['id']}>"}>" title="查看地图">查看地图</a></p>
+
+              </div>
+            <div class="clear"></div>
+          </div>
+
+
+
+          <div id="myitems<{$mykey}>" data="<{$mykey}>" style="height:auto; overflow:hidden;width: 100%;margin-bottom: 20px;">
+			  <!--小于3条加这个样式-->
+			  <table class="data" cellpadding="0" cellspacing="0">
+
+                  <thead>
+                  <tr class="titles">
+					  <th align="center" class="tit_01">类型<span class="lone_l"></span></th>
+					  <th align="center" class="tit_02">有效时间（始/终）</th>
+					  <th align="center" class="tit_03">剩余数量（个）</th>
+					  <th align="center" class="tit_04">价格（元）</th>
+					  <th  align="center" class="tit_05">       <h4 data="<{$mykey}>"><b  style="color: #F8720F; font-size: 13px;"></b></h4></th>
+				  </tr>
+                  </thead>
+                  <tbody>
+				  <{assign var=mygoodstypes value=$items['goodstype']}>
+
+				  <{foreach from=$mygoodstypes key=mygoodstypekey item=mygoodstype}>
+                  <{assign var=mygoods value=$mygoodstype['goods']}>
+                  <{foreach from=$mygoods key=mygoodskey item=goods}>
+				  <tr id="<{$mygoodskey}>">
+
+					  <td align="center" class="robel"><{$goods['name']}> <br><span class="favour"></span></td>
+					  <td align="center" class="time">
+						  <span class="star"><{$goods['begindate']}></span>
+                          <span class="end"><{$goods['enddate']}></span>
+                      </td><td align="center"><span class="nums"><{$goods['count']-$goods['sellcount']}></span>个
+				      </td>
+					  <td align="left" class="money"><em>￥</em><span class="price01"><{$goods['cost']}></span>元</td>
+					  <td align="center" class="buy">
+					<a   href="<{ofunc type=url link="/shop/showgoods/id/<{$goods['id']}>"}>" title="购买" >
+					  购买</a>
+					  </td>
+				  </tr>
+                  <{/foreach}>
+				  <{/foreach}>
+				  </tbody>
+			  </table>
+		  </div>
+
+      </div>
+    </div>
+</li>
+	<{/foreach}>
+    </ul>
+        <style>
+            .biaoti{
+                text-align: center;
+                font-weight: bold;
+                color: white;
+                font-size: 24px;
+                border-radius: 17px;
+                background: #01CD88;
+                width: 34px;
+                display: inline-block;
+                height: 34px;
+                /* max-width: 100%; */
+                vertical-align: middle;
+                /* border: 0; */
+            }
+        </style>
+		<div class="prudot_right" style="float: right">
+
+			<div class="restuGg" style="width: 265px;">
+				<div class="restuGgTitle">
+                    在线预订车位，让停车更简单！
+				</div>
+				<div class="restuGgContent">
+					在线预订车位，让停车更简单！停车易提供停车导航,浏览地图,搜索停车,预约洗车,预定车位,车位租贷,错时停车等功能服务。 &nbsp;
+				</div>
+				<div class="restuGgqsj">
+
+
+					<p>	购买、预定、租赁车位步骤</p>
+
+
+				</div>
+				<div class="restuGgimg">
+					<ul>
+                        <li class="rst-badge-item" style="width:259px;">
+                            <span class="biaoti" style=" background: #01CD88;">选</span>
+                            <span style="margin-left:5px;">从地图选择附近的停车场，点击进入</span>
+                        </li>
+                        <li class="rst-badge-item" style="width:259px;">
+                            <span class="biaoti" style=" background: #FF8C01;">买</span>
+                            <span style="margin-left:5px;">进入选择的停车场，点击产品购买</span>
+                        </li>
+                        <li class="rst-badge-item" style="width:259px;">
+                            <span class="biaoti" style=" background: #9770E8;">付</span>
+                            <span style="margin-left:5px;">核实产品及用户的信息，确认提交支付</span>
+                        </li>
+						</ul>
+					<div style="clear:both;"></div>
+				</div>
+				<div class="restuGgqsj" style="background: #FF8C01;">
+					<p>客户服务</p>
+				</div>
+				<div class="restuGgimg" >
+					<ul>
+
+						<li class="rst-badge-item" style="width:259px;">
+							<span class="biaoti" style=" background: #01CD88;"><i class="Hui-iconfont Hui-iconfont-tel"></i></span>
+							<span style="margin-left:5px;">400-0181-567</span>
+						</li>
+                        <li class="rst-badge-item" style="width:259px;">
+                            <span class="biaoti" style=" background: #2288cc;"><i class="Hui-iconfont Hui-iconfont-share-qq"></i></span>
+						<span style="margin-left:5px;"><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=270863798&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:522148648:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></span>
+                        </li>
+                        <li class="rst-badge-item" style="width:366px;">
+                            <span class="biaoti" style=" background:#E80000;"><i class="Hui-iconfont Hui-iconfont-share-weibo"></i></span>
+                        <span style="margin-left:5px;"><wb:follow-button uid="2407919474" style="display: inline-block;vertical-align: middle;" type="red_3" width="100%" height="24" ></wb:follow-button></span>
+					</li>
+                        <li class="rst-badge-item" style="width:259px;">
+                            <span class="biaoti" style=" background: #069d13;">
+                                <i class="Hui-iconfont Hui-iconfont-share-weixin"></i>
+                            </span>
+  <span style="margin-left:5px;">加微信联系我们：xiaoxiaohuiwo</span>
+                        </li>
+                        <img style="width:135px; height:135px;margin-left: 65px;" src="<{$siteurl}>/templates/<{$tempdir}>/public/site/rq_11.gif">
+                    </ul>
+					<div style="clear:both;"></div>
+				</div>
+				<!--<div class="restuGgqsj">-->
+					<!--<p>三、预订车位</p>-->
+				<!--</div>-->
+				<!--<div class="restuGgimg">-->
+					<!--<ul>-->
+                        <!--<li class="rst-badge-item" style="width:259px;">-->
+                            <!--<span class="biaoti" style=" background: #01CD88;">选</span>-->
+                            <!--<span style="margin-left:5px;">从地图选择附近的停车场，点击进入</span>-->
+                        <!--</li>-->
+                        <!--<li class="rst-badge-item" style="width:259px;">-->
+                            <!--<span class="biaoti" style=" background: #FF8C01;">买</span>-->
+                            <!--<span style="margin-left:5px;">进入选择的停车场，点击错时产品购买</span>-->
+                        <!--</li>-->
+                        <!--<li class="rst-badge-item" style="width:259px;">-->
+                            <!--<span class="biaoti" style=" background: #9770E8;">付</span>-->
+                            <!--<span style="margin-left:5px;">核实产品及用户的信息，确认提交支付</span>-->
+                        <!--</li>-->
+						<!--</ul>-->
+					<!--<div style="clear:both;"></div>-->
+				<!--</div>-->
+				<!--<div class="restuGgqsj">-->
+					<!--<p>四、4S服务</p>-->
+				<!--</div>-->
+				<!--<div class="restuGgimg">-->
+					<!--<ul>-->
+                        <!--<li class="rst-badge-item" style="width:259px;">-->
+                            <!--<span class="biaoti" style=" background: #01CD88;">选</span>-->
+                            <!--<span style="margin-left:5px;">从地图选择附近的停车场，点击进入</span>-->
+                        <!--</li>-->
+                        <!--<li class="rst-badge-item" style="width:259px;">-->
+                            <!--<span class="biaoti" style=" background: #FF8C01;">买</span>-->
+                            <!--<span style="margin-left:5px;">进入选择的停车场，点击错时产品购买</span>-->
+                        <!--</li>-->
+                        <!--<li class="rst-badge-item" style="width:259px;">-->
+                            <!--<span class="biaoti" style=" background: #9770E8;">付</span>-->
+                            <!--<span style="margin-left:5px;">核实产品及用户的信息，确认提交支付</span>-->
+                        <!--</li>-->
+						<!--</ul>-->
+					<!--<div style="clear:both;"></div>-->
+				<!--</div>-->
+			</div>
+
+
+
+
+
+
+
+
+
+
+		</div>
+  </div>
+
+
+
+
+ 	
+
+	
+
+ 
+ 	
+ 	
+ 	
+ 	 	<div style="clear:both;"></div>
+ 	
+ 	
+ 	
+ 	
+</div>
+
+<script>
+	$(".restaurant h4").live( {
+		click:function() {
+			var itemid = $(this).attr('data');
+			var $selectitem = $("#myitems" + itemid + " tr:gt(2)");
+			if ($selectitem.length > 0) {
+				if ($selectitem.is(":visible")) {
+
+					$selectitem.slideUp("fast");
+					$(this).find("b").text("+(展开)");
+
+				}
+				else {
+
+					$selectitem.slideDown("fast");
+					$(this).find("b").text("-(收起)");
+
+				}
+			}
+			else {
+				return false;
+			}
+		},
+		mouseover: function() {
+			// do something on mouseover
+		},
+		mouseout:function() {
+			// do something on mouseover
+		}
+
+	});
+					$(".floor-content .floor-goods").mouseover(function(){
+	
+						$(this).find($(".iscollect")).show();
+						
+					});
+					$(".floor-content .floor-goods").mouseout(function(){
+					
+						$(this).find($(".iscollect")).hide();
+						
+					});
+
+
+
+ $(function(){
+	 $(".rest-li").each(function(index,data){
+		var $trgt2= $(this).find('tr:gt(2)');
+		 var $findb=$(this).find("b");
+		 if ($trgt2.length>0){
+			 $findb.text("+(展开)");
+			 $trgt2.hide();
+			 $(this).find('tr:gt(1)').mouseout(function(){
+
+				 $trgt2.hide();
+				 $findb.text("+(展开)");
+			 });
+			 $(this).find('tr:gt(1)').mouseover(function(){
+
+				 $trgt2.show();
+				 $findb.text("-(收起)");
+			 });
+		 }
+
+
+	 });
+	var shopzongshu = <{$shopzongshu}>;
+	$("#shopzongshu").text(shopzongshu);
+ 
+		<{if $locationtype == 1}>
+ 	   var lng = '<{$lng}>';
+		
+		if(lng == 0 ){
+			 window.location.href= '<{ofunc type=url link="/site/guide"}>';
+		}
+ 	<{else}>
+		var myaddressid = '<{$myaddress}>';
+		if(myaddressid == null|| myaddressid==''){
+			 window.location.href= '<{ofunc type=url link="/site/guide"}>';
+		}
+	<{/if}>
+ 
+  $("#mygunclick").click(function(e) {
+    //
+    var offset = $(this).offset();
+    var relativeX = (e.pageX - offset.left);
+    var bili = Number(relativeX)/Number($(this).width())*100; 
+    bili = Math.ceil(bili);
+    var checknowid = $('#limitcost').val();
+    if(bili > 75){
+    	//30
+    	 $('#blue_bar').css({'width':'93%'});
+    	$('#limitcost').val(30);
+    	$('#showlimittext').text('30元以上');
+    	if(checknowid != 30){
+    		dosetdata();
+    	}
+       
+    }else if(bili > 50){
+       //20
+       $('#blue_bar').css({'width':'75%'});
+       $('#limitcost').val(20);
+       $('#showlimittext').text('20元以上');
+       if(checknowid != 20){
+    		dosetdata();
+    	}
+    }else if(bili > 25){
+      //10
+      $('#blue_bar').css({'width':'50%'});
+       $('#limitcost').val(10);
+       $('#showlimittext').text('10元以上');
+       if(checknowid != 10){
+    		dosetdata();
+    	}
+    }else if(bili > 5){
+    	 $('#blue_bar').css({'width':'25%'});
+       $('#limitcost').val(5);
+       $('#showlimittext').text('5元以上');
+       if(checknowid != 5){
+    	   	dosetdata();
+    	}
+    }else{
+    	$('#blue_bar').css('width','0px');
+    	$('#limitcost').val(0);
+    	$('#showlimittext').text('不限制');
+    	if(checknowid != 0){
+    	   	dosetdata();
+    	}
+    }
+     
+  }); 
+});
+  function dosetdata(){
+  	    var url = siteurl+"/index.php?ctrl=site&action=indexlist"; 
+	   $.post(url, $('#doselectform').serialize(),function (data, textStatus){  
+	     	$('#shopList').html(data);  
+	  }, 'html'); 
+  }
+	function tabCutover02(obj,tempobj){
+		$(obj).addClass('current').siblings().removeClass('current');
+		$(obj).parent().parent().find($('.'+tempobj)).addClass('floor-con-show').siblings().removeClass('floor-con-show');
+	}
+</script>
+<div style="height:20px;"></div>
+<!--区域店铺-->
+<{/block}>

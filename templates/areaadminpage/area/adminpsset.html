@@ -1,0 +1,80 @@
+
+ <{extends file="<{$tempdir}>/public/admin.html"}> 
+   <{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+ <{/block}>
+ <{block name=controlname}>默认配送设置<{/block}>
+ <{block name=bodylist}>
+ <div style="width:auto;overflow-x:hidden;overflow-y:auto"> 
+          <div class="tags">
+           
+          <div id="tagscontent">
+            <form method="post" name="form1" action="<{ofunc type=url link="/adminpage/area/module/savepsset/datatype/json"}>" onsubmit="return subform('<{ofunc type=url link="/adminpage/area/module/adminpsset"}>',this);">
+              <div>
+                <table border="0" cellspacing="2" cellpadding="4" class="list" name="table" id="table" width="100%">
+                  <tbody> 
+                    <tr onmouseover="this.bgColor='#D7D7D7';" onmouseout="this.bgColor='#F5F5F5';" bgcolor="D7D7D7">
+                      <td class="left">网站获取店铺列表模式</td>
+                      <td><input type="radio" name="locationtype"  value="1" <{if $locationtype ==1}>checked<{/if}> >百度地图 <input type="radio" name="locationtype"  value="2" <{if $locationtype ==2}>checked<{/if}>>文字 </td>
+                    </tr> 
+                    
+                    <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7" class="map">
+                      <td class="left">配送半径</td>
+                      <td>
+                       <input type="text" name="locationradius" value="<{$locationradius|default:'0'}>">
+                      </td>
+                    </tr> 
+                   
+                     <{$radiusvalue = $radiusvalue|unserialize}>
+                  <{section name=loop loop=$locationradius}> 
+                    <tr id="allps" onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7"  class="map">
+                      <td class="left"> <{$tempgongli = $smarty.section.loop.index+1}>
+                        	     <{$tempgongli}> 公里内配送费</td>
+                      <td><input type="text" name="radiusvalue<{$smarty.section.loop.index}>"   value="<{$radiusvalue[$smarty.section.loop.index]|default:'0'}>" class="skey" style="width:50px;" >元</td>
+                    </tr> 
+                   <{/section}>   
+                    <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7" class="wenzi" style="display:none;">
+                      <td class="left">默认配送费</td>
+                      <td>
+                       <input type="text" name="psvalue" value="<{$psvalue|default:'0'}>" class="skey" style="width:50px;" >元
+                      </td>
+                    </tr> 
+                    
+                  
+                  </tbody> 
+                </table>
+              </div>
+              <div class="blank20"></div> 
+               <input type="submit" value="确认提交" class="button">  
+            </form>
+          </div>
+        </div>
+        <div class="blank20"></div> 
+      
+      </div>
+      <div class="clear"></div>
+    </div>
+    
+    
+    
+  </div> 
+<script>
+	$(function(){ 
+		doselect();
+	});
+ $("input[name='locationtype']").live("click", function() {   
+ 	  doselect();    
+ });
+ function doselect(){
+     var checkvalue = $("input[name='locationtype']:checked").val(); 
+ 	   if(checkvalue == 1){
+ 	       $('.map').show();
+ 	       $('.wenzi').hide();
+ 	   }else{
+ 	   	$('.map').hide();
+ 	       $('.wenzi').show();
+ 	   }
+ } 
+</script>
+<!--newmain 结束-->
+<{/block}>

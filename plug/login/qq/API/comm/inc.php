@@ -1,0 +1,1 @@
+{"appid":"101250284\\'","appkey":"f3647cf6e7722affa9646b5e70d93563","callback":"http://m6.waimairen.com/member/otherlogin/logintype/qq","storageType":"file","host":"localhost","user":"root","password":"root","database":"test","scope":"get_user_info","errorReport":false}

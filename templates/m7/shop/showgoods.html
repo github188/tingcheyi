@@ -1,0 +1,553 @@
+ <{extends file="<{$tempdir}>/public/site.html"}>  
+<{block name=extendcss}>
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/css/market.css"> 
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/css/qqxs.css">   
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/css/newmarket.css">  
+
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/css/shop.css">
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/css/outdiv.css">
+
+<{/block}>
+ <{block name=navhide}><{/block}>
+<{block name=extendjs}> 
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/bootstrap.min.js" type="text/javascript" language="javascript"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/hanwoshop.js" type="text/javascript" language="javascript"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/cart.js" type="text/javascript" language="javascript"></script>
+<script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/outdiv.js" type="text/javascript" language="javascript"></script>
+ 
+<script>
+	var shopid = "<{$shopinfo['id']}>"; 
+
+	</script>
+
+                   
+
+
+
+
+
+<script type="text/javascript">
+
+    var topIsFixed = false;
+
+    $(document).ready(function () {
+
+        $(window).scroll(function () {
+
+            if ($(document).scrollTop() > 190) {
+
+                if (!topIsFixed) {
+
+                    $("#header-menu").removeAttr("style");
+
+                    $("#top").addClass("top-fixed");
+
+                    $("#header-menu").animate({ top: '0px' }, 200);
+
+                    topIsFixed = true;
+
+                }
+
+
+
+            } else {
+
+                $("#header-menu").removeAttr("style");
+
+                if (topIsFixed) {
+
+                    $("#top").removeClass("top-fixed");
+
+                    topIsFixed = false;
+
+                }
+
+            }
+
+        });
+
+    });
+
+
+
+</script> 
+
+ 
+<{/block}>
+   <{block name=bgshow}><div class="mmbg" style="background:#f8f6f5"></div><{/block}>
+ <{block name=shophide}><{/block}>
+<{block name=sitetitle}><{$goodsinfo['name']}><{/block}>
+ <{block name=bodylist}>
+ <style>.prudot_right_05{ width:275px; }
+	.restuGg{ margin-bottom:40px; margin-left:17px; width:275px; background:#fff;}
+	.restuGgTitle{width:255px; height:43px; line-height:43px; background:#5993ca; color:#fff; padding-left:20px;font-size:16px; }
+	.restuGgContent{ padding:22px; width:211px;}
+	.restuGgqsj{width:241px; color:#fff; margin-left:8px;font-size:16px;  background:#ff6931; padding-left:18px; line-height:37px;}
+	
+	.prudot_right_05 div{ }
+	.restuGgimg{ width:259px; margin-top:10px; color:#101010;  margin-left:8px;background:#fff;}
+	.restuGgimg ul li{float:left; border-right:1px solid #dcdcdc; padding:5px; margin-bottom:10px;}
+	
+	.newGouwuche{width:292px; background:#deedfb;}
+	.newGouwucheTit{width:292px; background:#9bbddd; height:47px; line-height:47px; color:#ffffff;}
+	.newGouwucheTit .cpfood{font-size: 14px;margin-left: 17px;}
+	.newGouwucheTit .qkfood{font-size: 14px; color:#2c6396; cursor:pointer;}
+	.newGouwucheTit .fsfood{font-size: 14px;margin-left: 52px;}
+	.newGouwucheTit .jgfood{font-size: 14px;margin-left: 37px;}
+	
+	.qujiesuan{width:292px; background:#9bbddd; height:51px; line-height:51px; color:#ffffff;}
+	
+	
+	.tuijianfood{ position:relative; width:1190px; margin:34px auto; background:#ffffff; height:232px; padding:22px 0px 22px 10px; }
+	.recFoodimg{ position:absolute; margin-left:-93px; left:50%;}
+	.recFood ul li{ position:relative; float:left; margin-right:8px;width:242px; height:228px;}
+	.recFood ul li img {width:242px; height:228px;}
+	.recFood ul li .recFoodxq {width:242px; height:82px; position:absolute;left:0px; bottom:-1px; background:url(<{$siteurl}>/templates/<{$tempdir}>/public/images/recFoodxqBg.png) center no-repeat; }
+	.rfoodname{font-family: "Microsoft yahei"; height:21px; color:#000000; font-size:16px; font-weight:bold; margin:12px 12px 0px 12px;}
+	.rfname{ float:left;}
+	.rcfcosst{ float:right; color:#c02424;}
+	
+	
+	
+	.caidanFood ul li{ position:relative; float:left;  margin:0px 20px 30px 0px; width:266px; height:230px;}
+	.caidanFood ul li img {width:266px; height:230px;}
+	.caidanFood ul li .recFoodxq {width:266px; height:82px; position:absolute; left:0px; bottom:-1px; background:url(<{$siteurl}>/templates/<{$tempdir}>/public/images/recFoodxqBgBG.png) center no-repeat; }
+	.caidanFood .rfoodn{width:266px; height:49px;}
+	.caidanFood .rfoodn .rfoodnRight{ float:right;width:112px; height:49px;}
+	
+	.rfoodn{width:242px; height:49px;}
+	.rfoodn .rfoodnLeft{ float:left;width:130px; height:49px;}
+	.rfoodn .rfoodnRight{ float:left;width:112px; height:49px;}
+	.yueshou{font-family: "Microsoft yahei";  color:#363636; font-size:12px; font-weight:bold; margin:16px 12px 0px 12px;}
+
+	
+	
+	#left_list div.tit03{ background:#ff6931; width:100%; height:43px; line-height:43px; font-size:14px}
+#left_list div.tit03 span{ color:#E7F1FA}
+#left_list div.tit03 span.tit03{ color:#ADC4F8; margin-left:15px}
+#left_list div.tit03 a{  padding:12px 16px; color:#FFFFFF; margin-left:15px}
+#left_list div.tit03 a.a1{ background:#ffffff;  padding:12px 16px; color:#ff6931; margin-left:15px}
+#left_list div.tit03 a:hover{ background:#ffffff; padding:12px 16px;  color:#ff6931; margin-left:15px}
+
+
+
+ul#left_cale2{ clear:both; margin-top: 20px; padding: 0px 40px 10px;}
+ul#left_cale2 li{ font-size:14px; color:#0c0c0c; height:40px; line-height:40px;font-family: "Microsoft yahei"; border-bottom:1px #f0f0f0  solid; padding-left:15px;  }
+ul#left_cale2 li a{ padding:4px 10px; margin-left:5px; margin-right:7px; color:#0c0c0c; line-height:250%}
+ul#left_cale2 li a.current{background:none; padding:4px 10px; color:#c42e2e}
+ul#left_cale2 li a:hover{ background:none; padding:4px 10px; color:#c42e2e}
+
+ul#left_cale2 {
+clear: both;
+margin-top: 20px;
+padding: 0px 15px 10px;
+}
+
+#cd_925_box {
+margin: 0px auto;
+width: 872px;
+padding: 0px 18px;
+overflow: hidden;
+}
+#cd_925_box h2.h87 {
+width: 100%;
+color: #242424;
+height: 44px;
+background: #f1f1f1;
+line-height: 44px;
+text-indent: 1.2em;
+font-family: "微软雅黑";
+font-size: 16px;
+}
+	
+.prudot_right_05{ width:275px; overflow:visible}
+	.restuGg{ margin-bottom:40px; margin-left:17px; width:275px; background:#fff;}
+	.restuGgTitle{width:255px; height:43px; line-height:43px; background:#ff6931; color:#fff; padding-left:20px;font-size:16px; }
+	.restuGgContent{ padding:22px; width:211px;}
+	.restuGgqsj{width:241px; color:#fff; margin-left:8px;font-size:16px;  background:#ff6931; padding-left:18px; line-height:37px;}
+
+	.restuGgimg{ width:259px; margin-top:10px; color:#101010;  margin-left:8px;background:#fff;}
+	.restuGgimg ul li{float:left; border-right:1px solid #dcdcdc; padding:5px; margin-bottom:10px;}
+	
+	.newGouwuche{width:292px; background:#deedfb;}
+	.newGouwucheTit{width:292px; background:#9bbddd; height:47px; line-height:47px; color:#ffffff;}
+	.newGouwucheTit .cpfood{font-size: 14px;margin-left: 17px;}
+	.newGouwucheTit .qkfood{font-size: 14px; color:#2c6396; cursor:pointer;}
+	.newGouwucheTit .fsfood{font-size: 14px;margin-left: 52px;}
+	.newGouwucheTit .jgfood{font-size: 14px;margin-left: 37px;}
+	
+	.qujiesuan{width:292px; background:#9bbddd; height:51px; line-height:51px; color:#ffffff;}	
+	</style>
+
+	
+	<div style="clear:both;"></div>
+ 
+ 
+ 
+ <div class="product"><!--product-->
+ 
+    	
+        <div class="goods_left"><!--goods_left-->
+     
+            <div class="goods_category" style="margin-bottom:20px; ">
+            <div class="goods_cattitle">&nbsp;&nbsp;同类热卖商品</div>
+            <div class="goods_cathot">
+            	<ul>
+            		
+            		<{foreach from=$hoptgoods item=items}>
+                	<li>
+                <div class="pro_propic"><a href="<{ofunc type=url link="/shop/showgoods/id/<{$items['id']}>"}>"><img src="<{$siteurl}><{$items['img']|default:$defaultgoods}>" ></a></div>
+                
+                <a href="<{ofunc type=url link="/shop/showgoods/id/<{$items['id']}>"}>"><{$items['name']}></a><br>
+                <span><font style="color:#cb002b; font-weight:bold;">￥<{$items['cost']}></font></span>
+                </li>
+                <{/foreach}>
+             
+                </ul>
+            </div>
+            </div>
+        </div><!--/goods_left-->
+        <div class="goods_right"><!--goods_right-->
+       	  <div class="goods_top"><!--goods_top-->
+            <div class="goods_position">当前位置：<a href="<{$siteurl}>">首页</a> <code>&gt;</code> <a href="<{ofunc type=url link="/shop/index/id/<{$shopinfo['id']}>"}>"><{$shopinfo['shopname']}></a> <code>&gt;</code> <a href="<{ofunc type=url link="/shop/index/id/<{$shopinfo['id']}>"}>"><{$catinfo['name']}></a> <code>&gt;</code><{$goodsinfo['name']}></div>
+			  <style>
+				  .goods_car {
+					  border: 20px solid #e1e1e1;
+					  width: 80%;
+					  margin-left: 80px;
+					  text-align: left;
+					  background-color: #3374AC;
+					  height: 305px;
+					  float: left;
+					  /*background:url(<{$siteurl}>/templates/<{$tempdir}>/public/images/shop/tingcheka.png) center no-repeat;*/
+					  /*background-size:contain;*/
+				  }
+				  .goods_tpright {
+					  height: 303px;
+					  width: 400px;
+					  float: right;
+					  margin-right: 40px;
+					  color: #f2f2f2;
+					  font-size: 14px;
+					  line-height: 30px;
+					  background:url(<{$siteurl}>/templates/<{$tempdir}>/public/images/shop/car.png) center no-repeat;
+					  background-size:contain;
+
+
+				  }
+				  .goods_pic {
+					  float: left;
+					  width: 240px;
+					  margin-left: 25px;
+					  height: 303px;
+					   border: #3374AC thin solid;
+					  text-align: center;
+				  }
+				  .cardname{
+					  float: left;
+					  /*margin-left: 70px;*/
+					  margin-top: 20px;
+					  font-size: 50px;
+					  font-weight: bolder;
+					  display: block;
+				  }
+				  .cardetail{
+					  /*float: left;*/
+					  margin-left: -60px;
+					  font-size: 18px;
+					  margin-top: 85px;
+					  font-weight: bolder;
+					  text-align: left;
+					  display: block;
+				  }
+				  .cardetail span{
+					  text-align:left;
+					  display: block;
+				  }
+				  .cartime{
+
+					  margin-top: 65px;
+					  float:right;
+					  width: 100%;
+					  font-size: 16px;
+					  font-weight: bolder;
+					  display: block;
+
+				  }
+				  .curststus {
+					  /*margin-left: 330px;*/
+					  background: #01DCB6;
+					  color:#fff;
+				  }
+				  /*.curststus {*/
+					  /*background: #01DCB6;*/
+					  /*color: #fff;*/
+				  /*}*/
+			  </style>
+			  <div class="goods_car">
+            <div class="goods_pic">
+            <table style="width:100%; height:100%;">
+            <tr><td style="vertical-align:central;"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/images/shop/pcar.png" style="width:200px; height:200px;" width="303" height="303">
+            </td></tr></table>
+            </div>
+				  <!--<{$siteurl}><{$goodsinfo['img']|default:$defaultgoods}>-->
+              <!--<{$goodsinfo|@print_r}>-->
+            <div class="goods_tpright">
+            <span class="cardname"><{$goodsinfo['name']}></span>
+				<span class="cardetail">
+					<span>价格：￥<{$goodsinfo['cost']}></span>
+					<span>库存：<{$goodsinfo['count']}></span>
+					<span>销量：<{$goodsinfo['sellcount']}></span>
+					<span>用户评价：<{$goodsinfo['point']}></span>
+                </span>
+
+				<span class="cartime">
+				有效时间：<{$goodsinfo['begindate']}>--<{$goodsinfo['enddate']}>
+				</span>
+          </div>
+
+
+			  </div>
+
+            <div class="goods_intro">
+				<div style=" float:left;margin-left: 330px;width: 300px;" class="goodsli">
+
+
+					<div style="float:left;" >
+						<a href="<{ofunc type=url link="/shop/index/id/<{$goodsinfo['shopid']}>"}>"><div style="padding: 0px 10px;
+    cursor: pointer;
+	margin-top:10px;
+    float: right;
+    line-height: 45px;
+    margin-right: 40px;
+    text-align: center;
+    font-size: 16px;
+    color: #000;
+    height: 45px;
+    background: #ccc;
+    /* border-bottom: 3px solid #888888; */
+    border-radius: 10px;">
+						返回继续选购
+					</div>
+						</a>
+					</div>
+
+
+					<div style="float:left;     margin-top: 10px;" >
+						<{if $goodsinfo['count'] > 1}>
+						<img style="cursor:pointer;" onclick="<{if $goodsinfo['have_det']==1}>addproduct(<{$goodsinfo['id']}>,<{$goodsinfo['shopid']}>,1,this);<{else}>addonedish('<{$goodsinfo['id']}>','<{$goodsinfo['shopid']}>',1,this);<{/if}>" src="<{$siteurl}>/upload/images/addcart.gif" width="117" height="41">
+						<{else}>
+			<span style="font-size: 16px;
+  background: #ccc;
+  color: #fff;
+  padding: 8px 30px;">已售完</span>
+						<{/if}>
+					</div>
+				</div>
+            <div class="goods_introtitle " style="height:35px; margin-bottom:20px; line-height:35px;" >
+			<!--<div class="showxiangqing goodsstst curststus"  onclick="showxiangqing();" style="background: #01DCB6;  cursor:pointer;">详情描述</div>-->
+			<!--<div class="showgoodspingjia goodsstst"   onclick="showgoodspingjia();"   style=" cursor:pointer;">商品评价</div>-->
+			</div>
+			<!--<script>-->
+			<!--function showxiangqing(){-->
+				<!--$(".showgoodspingjia").removeClass('curststus');-->
+					<!--$(".showxiangqing").addClass('curststus');				-->
+					<!--$("#showxiangqing").show();-->
+					<!--$("#showgoodspingjia").hide();-->
+			<!--}-->
+			<!--function showgoodspingjia(){-->
+				<!--$(".showxiangqing").removeClass('curststus');-->
+					<!--$(".showgoodspingjia").addClass('curststus');					-->
+					<!--$("#showxiangqing").hide();-->
+					<!--$("#showgoodspingjia").show();-->
+				<!--}-->
+		<!---->
+			<!--</script>-->
+			<div class="goods_introtxt" id="showxiangqing" style="display:none; ">  <{$goodsinfo['instro']|htmlspecialchars_decode|default:'暂无详情说明'}> </div>
+			
+            <div class="goods_introtxt" id="showgoodspingjia"  >
+			   <{if count($commentlist)> 0}>	
+				<ul id="Comcon" style="padding:19px;" scrollpagination="enabled">
+  <style>
+  .comcomleft{float:left;width:64px; height:76px; }
+  .comcomleft p{width:64px; text-align:center;}
+  .comcomzuo {width:52px; height:52px; padding:6px; border:1px #e9e9e9 solid;}
+  .comcomright{position:relative;float:right; border:1px solid #e9e9e9; padding:15px 10px; width:763px; height:auto; }
+  .comcomrightimg{position:absolute;left:-10px; top:20px;}
+  
+  .pingjiaUL{width:870px; hieght:auto;}
+  .pingjiaUL{ margin-bottom:16px;}
+  </style>
+
+		   <{foreach $commentlist item=items }> 
+		   <li>
+		  <div  class="pingjiaUL" >
+			<div class="comcomleft">
+				<div class="comcomzuo">
+				
+				<img src="<{$items['logo']|default:$userlogo}>" width="52" height="52">
+				
+				</div>
+				<p><{$items['username']}></p>
+			</div>
+				<div class="comcomright">
+					<div class="comcomrightimg"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/images/lefticonBG.png" /></div>
+					<div style="margin-left:15px; height:25px; border-bottom:1px dashed  #e8e8e8;">
+							<{section name=loop loop=$items['point']}> 
+															<div class="star_div" style="float:left;width:15px;"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/images/xinxin01.png" width="13" height="13"></div>
+															<{/section}> 
+					</div>
+					<div style="margin:8px 15px;;">
+						<span>心得：<{$items['content']|default:"我的最爱！"}></span>
+					</div>
+					<div style="margin:8px 50px;color:#aaaaaa;">
+						<span> <{$items['addtime']|date_format:"%Y-%m-%d %H:%M:%S"}></span>
+					</div>
+				</div>
+		</div>
+		  </li>
+			<div style="clear:both;"></div>
+			<{/foreach}>
+
+
+
+ </ul>
+  <div class="ajaxpage" style="float: right;
+width: auto;
+margin-right: 50px;">
+  	<{$pagecontent}>
+  </div>
+  
+     <{else}>
+   
+ <div style="padding: 20px;  font-size: 14px;  line-height: 200%;">
+    暂无评价
+  </div>
+
+   
+   <{/if}>
+
+			</div>
+            </div>
+        </div><!--/goods_right-->
+        <style>
+		.goodsstst{ width:100px; float:left; text-align:center; font-size:14px; color:#040404; height:34px; line-height:34px; background:#fff4e2; border:1px solid #fde6be; border-bottom:none; border-top-right-radius:5px;border-top-left-radius:5px; margin-right:20px; padding:0px 10px;}
+		/*.curststus{ background:#cc0527; color:#fff;}*/
+		</style>
+
+</div><!--/product-->
+ 
+ 
+   <div class="prudot_right_05" style="width:292px;"> 
+			<!-- 购物车 -->
+	
+	<div id="newGouwuche" class="newGouwuche" style="  bottom: 0px; z-index:99999999999999; position: fixed;">
+	
+		<div class="newGouwucheTit">
+			<span class="cpfood">产品</span>
+			<span onclick="delshopcart();" class="qkfood">[清空]</span>
+			<span class="fsfood">份数</span>
+			<span class="jgfood">单价</span>
+		</div>
+		 <div id="cartlist">
+		 
+		 
+		 
+		 </div>
+	
+		
+		
+		
+		
+	</div>
+	
+  </div> 
+</div>
+ 
+ 
+  
+	
+  <div style="clear:both;"></div>
+  
+  
+  
+  <div id="product_one" class="cart_products_list" style="width:260px;display:none;"> 
+    <div class="cart_products_title" onclick="closeproductdiv();">
+	     <span  >X</span>
+	</div> 
+	 <div   class="productloding">
+	      数据加载中....
+	</div>
+	<div    class="cart_products_content_area">
+	 
+	
+	      
+	</div> 
+</div>
+<script type="text/javascript"> 
+ var locationfalse  = false;
+ var juanlist  = [];
+ $(".MealsList li:nth-child(even)").addClass('odd');//css({'border-left':'3px solid #f60','background-color':'#fffae7'});
+ 	 
+ 	var nowdate = '<{time()|date_format:"%Y-%m-%d"}>';
+	var starttime = '<{$shopinfo['starttime']}>';
+	var nowtime = '<{time()|date_format:"%Y-%m-%d %H:%M:%S"}>';
+ var shopid = <{$shopinfo['id']}>;   
+ var locationfalse  = false;
+ var submithtml = '<{ofunc type=url link="/shop/makeorder/datatype/json/random/@random@"}>';
+	  var orderhtml = '<{ofunc type=url link="/site/waitpay/orderid/@orderid@"}>';
+ var allowedguestbuy = '<{$allowedguestbuy}>';
+  	
+ 
+  function artopen(){ 
+    art.dialog({
+       id: 'testID3',
+       lock: true,
+       background: '#666', // 背景色
+       opacity: 0.87,	// 透明度
+       title:'定位提示',
+       content: $('#temdiv_id').html()
+    });  
+  }
+	function closetout(){ 
+	  art.dialog({id: 'testID3'}).close();
+	}
+	
+	     
+//添加店铺收藏
+function myFavorite2()
+{ 
+  var url = siteurl+'/index.php?ctrl=shop&action=addcollect&datatype=json&collectid='+shopid+'&type=0'; 
+  var backinfo = ajaxback(url,{});
+  if(backinfo.flag == false){ 
+     		$('#AddFavShop').hide(); 
+     		$('#CancelFavShop').show();
+   }else{ 
+   	diaerror(backinfo.content); 
+  }  
+}  
+//删除店铺收藏
+function delFav()
+{ 
+	var url = siteurl+'/index.php?ctrl=shop&action=delcollect&datatype=json&collectid='+shopid+'&type=0'; 
+  var backinfo = ajaxback(url,{});
+  if(backinfo.flag == false){ 
+      $('#AddFavShop').show(); 
+      $('#CancelFavShop').hide();
+   }else{ 
+   	 diaerror(backinfo.content); 
+  }  
+}
+	
+	
+	
+</script>
+<script>
+ 
+
+
+</script>
+
+ 
+ 
+<{/block}>

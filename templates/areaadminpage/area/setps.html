@@ -1,0 +1,101 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+<meta http-equiv="Content-Language" content="zh-CN"> 
+<meta content="all" name="robots"> 
+<meta name="description" content=""> 
+<meta content="" name="keywords"> 
+<title>配送设置</title> 
+<link rel="stylesheet" type="text/css" href="<{$siteurl}>/templates/<{$tempdir}>/public/css/admin.css">
+ 
+ <script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/jquery.js" type="text/javascript" language="javascript"></script>  
+ <script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/artDialog.js?skin=blue"></script>
+</head>
+<body style="background:none;height:300px;">
+	 <form  method="post" name="upform" action="<{ofunc type=url link="/areaadminpage/area/module/savesetps"}>" style="text-align:center;">  
+	 	
+	 	
+	 	
+	  
+	<div style="width:300px;float:left;height:260px;OVERFLOW-Y: auto;OVERFLOW-X: hidden;">
+	 	<table>
+	 		
+	 		<tr><th colspan="2" style="text-align:left;">配送设置</th></tr>
+	 		
+	 		<tr>
+	 			<td  >配送类型:</td><td>  <input type="radio" name="sendtype" value="0" <{if $shopdetinfo['sendtype'] ==0}>checked<{/if}>>网站配送<input type="radio" name="sendtype" value="1" <{if $shopdetinfo['sendtype'] ==1}>checked<{/if}>>店铺配送</td>
+	 		</tr>
+	 		
+	 		   	<tr class="showpesong"> <td>配送费</td><td> <input type="text" name="pscost" value="<{$shopdetinfo['pscost']}>" style="width:50px;">元 </td></tr>
+	 		<tr class="showbangjing" id="showbangjing"> <td>配送半径</td><td> <input type="text" name="pradius" value="<{$shopdetinfo['pradius']}>" style="width:50px;" onchange="doselect();">千米 </td></tr>
+	 
+	 		
+	 	 
+	 	  
+	 				
+	 
+	 			 
+	  
+	 				
+	 		</table>     
+   	 
+	  <input type="hidden" value="<{$shopdetinfo['shopid']}>" name="shopid"> 
+	
+	</div>
+   <div style="width:300px;float:left;height:260px;OVERFLOW-Y: auto;OVERFLOW-X: hidden;" id="arealist">
+	 	<table>
+	 		<tr><th colspan="2" style="text-align:left;">勾选配送地区</th></tr>
+	 	<{foreach from=$arealist item=items}>
+                     	  <tr class="s_out" onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7" id="tr_<{$items['id']}>">  
+                              <td colspan="2" style="text-align:left;">
+                              	  <div style="padding-left:<{$items['space']*50}>px;">
+                              	  <{if !in_array($items['id'],$parent_ids)}>	<input type="checkbox" name="areaids[]" value="<{$items['id']}>" <{if in_array($items['id'],$choiceid)}>checked<{/if}>><{/if}> <{$items['name']}> 
+                                  </div>
+                              </td> 
+                             
+                        </tr>
+                    <{/foreach}>  
+	
+	 		</table>   
+	 	</div>  
+	 	 
+	 	<div style="clear:both;height:30px;text-align:right;"> 	<input type="submit" value="确认提交" class="button">  </div>
+	 	
+  </form>
+<script>
+var checklocation = '<{$locationtype}>';
+$(function(){ 
+	/*
+	if(checklocation == 1){
+	   
+	  $('.showpesong').hide();
+	  
+	}else{
+		$('.showbangjing').hide();
+	}*/
+	doselect(); 
+});
+function doselect(){
+	var bangjing = $('input[name="pradius"]').val();
+	var htmls = '';
+	var checkleng = Number(<{$dolenth}>);
+	$('.bangjingvalue').remove();
+	for(var i=0;i<bangjing;i++){
+		var c = i+1; 
+		if(i < checkleng){
+		<{foreach from=$shopvalues key=mykey item=items}>
+		  if(i == <{$mykey}>){
+	     	htmls += '<tr class="bangjingvalue"><td>'+i+'-'+c+'千米配送费:</td><td>  <input type="text" name="radiusvalue'+i+'" value="<{$items}>" style="width:50px;"  >元 </td></tr>';
+	    }
+		<{/foreach}>
+		
+	  }else{
+	  	htmls += '<tr class="bangjingvalue"><td>'+i+'-'+c+'千米配送费:</td><td>  <input type="text" name="radiusvalue'+i+'" value="" style="width:50px;"  >元 </td></tr>';
+	  }
+		
+	}
+	$('#showbangjing').after(htmls);
+	//
+}
+</script>
+</body>
+</html>

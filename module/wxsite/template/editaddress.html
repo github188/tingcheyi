@@ -1,0 +1,322 @@
+<{extends file="<{$tempdir}>/public/wxsite.html"}>
+<{block name=extendcss}>  
+<{/block}>
+ <{block name=myScrolljs}>
+ <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=<{$baidumapkey}>"></script>
+<script> 
+		var myScroll;
+function loaded() {
+	myScroll = new iScroll('wrapper', {
+		useTransform: false,
+		onBeforeScrollStart: function (e) {
+			var target = e.target;
+			while (target.nodeType != 1) target = target.parentNode;
+
+			if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
+				e.preventDefault();
+		}
+	});
+}
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false); 
+document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+</script>
+<{/block}>
+<{block name=hearnav}><!--标题-->
+ <{load_data assign="info" table="address" type="one" where="id='<{$id}>' and userid = '<{$member['uid']}>'" fileds="*" }> 
+
+	<!--标题-->
+<div class="toptitCon">
+ <div class="toptitBox addressbox" >
+ <div class="toptitL" ><i></i></div>
+  <div class="toptitC"><h3><{if !empty($info) }>编辑<{else}>新增<{/if}>收货地址</h3></div>
+  <div class="toptitR" onclick="saveaddress();"><h3>保存</h3></div>
+ </div>
+ 
+ <div class="mapaddressbox toptitBox" style="display:none; padding:0px; height:49px;">
+ <!--搜索框-->
+ 
+<div class="searchCon" >
+ <div class="toptitL" style="margin-top:5px;"><i></i></div>
+ <div class="searchBox" style="float:left; margin-left:15px; width:80%; height:32px;">
+ <input style="height:32px; line-height:32px; padding-left:25px; font-size:14px;width:100%;" type="text" id="searchKeywords"  onkeyup="getscraddress();" placeholder="搜索地址"><i></i></div>
+</div>
+
+</div>
+ 
+ 
+</div>
+
+
+<{/block}>
+<{block name=sitetitle}><{$sitename}><{/block}>
+<{block name=blockcontent}>  
+ <div id="wrapper" style="top:40px;">
+	<div id="scroller">
+ 
+<div class="addressbox">
+
+<!--联系人-->
+<div class="newaddCon">
+ <div class="newaddtit"><h3>联系人</h3></div>
+ <div class="newaddBox">
+  <ul class="newadd">
+   <li><a>姓名：</a><input type="text" placeholder="请填写收货人的姓名" id="contactname" value="<{$info['contactname']}>" name="" class="newinp"></li>
+   <li>
+    <ul>
+     <li><label><input type="radio" value="1" <{if !empty($info) }> <{if $info['sex'] == 1 }>checked<{/if}> <{else}>checked<{/if}> name="sex" checked="checked"><i class="newaddio1"></i></label><span>先生</span></li>
+     <li><label><input type="radio" value="2" name="sex" <{if $info['sex'] == 2 }>checked<{/if}>  ><i class="newaddio2"></i></label><span>女士</span></li>
+    </ul>
+   </li>
+   <li><a>手机：</a><input type="text" placeholder="请填写收货人手机号" id="mobile" value="<{$info['phone']}>" class="newinp"></li>
+  </ul>
+ </div>
+</div>
+<!--收货地址-->
+<div class="newaddCon">
+ <div class="newaddtit"><h3>收货地址</h3></div>
+ <div class="newaddBox">
+  <ul class="newadd">
+   <li style=" height:44px; ">
+   <a style="float:left;">小区/大厦/学校：</a>
+   <div lng="<{$info['lng']}>" lat="<{$info['lat']}>"  style="float:left; height:44px; line-height:44px;" type="text" onclick="getmapaddress();" class="newinp1"><{$info['bigadr']|default:'点击选择地址'}></div></li>
+   <div class="clear"></div>
+   <li><a>楼号-门牌号：</a><input type="text" placeholder="例：16号楼107室" value="<{$info['detailadr']}>" class="newinp2"></li>
+  </ul>
+ </div>
+</div>
+
+</div>
+
+ 
+ 
+ <div class="mapaddressbox"  style="display:none;">
+	<div class="showmapbox">
+		 <div class="mapditu" id="map">
+			
+		 </div>
+		 <div id="marker_red_sprite"><img src="<{$siteurl}>/upload/map/marker_red_sprite.png" /></div>
+	</div>
+ 
+	
+<div id="choiceguidebox" >
+	<ul>
+		<!--  <li>
+			<div class="addresslist">
+				<p class="choicegudie">郑州大学新校区</p>
+				<p class="choicedetgudie">郑州大学新校区郑州大学新校区郑州大学新校区郑州大学新校区</p>
+			</div>
+		</li>   -->
+	</ul>
+</div>
+</div>
+
+<!-------------------------------------------------------------------------切换地址结束---------------------------------------------------------------------------------->
+
+	
+	
+	
+  </div>
+</div> 
+<script>
+var map,market;
+var biaoqianval = false;
+function bqzhi(){
+	biaoqianval  = false;
+}
+ $(function(){
+ 
+	getscraddress();
+	 
+ 
+ });
+ 
+function getmapaddress(){
+	$(".addressbox").hide();
+	$(".mapaddressbox").show();
+	var screenheight = ($(window).height())*0.5;
+	$(".mapditu").css('height',screenheight);
+	getLocation();
+}
+function getmapshow(lng,lat){
+	var map = new BMap.Map("map");  
+	var point = new BMap.Point(lng,lat);  
+	map.centerAndZoom(point, 15);  
+	map.enableScrollWheelZoom();
+	map.enableContinuousZoom();
+	showmapnearadr(lng,lat); 
+	//map.enableKeyboard(); //键盘方向键缩放事件
+	map.addEventListener("dragend", function(){   //拖拽事件  
+	 var center = map.getCenter();   
+	 showmapnearadr(center.lng,center.lat);
+	 
+	});
+}
+function getdefaultmapshow(lng,lat){
+	var map = new BMap.Map("map");  
+	var point = new BMap.Point('<{$lng}>','<{$lat}>');  
+//	var point = new BMap.Point(113.597715,34.802461);  
+	map.centerAndZoom(point, 15);  
+	map.enableScrollWheelZoom();
+	map.enableContinuousZoom();
+//	showmapnearadr(113.597715,34.802461);
+	showmapnearadr('<{$lng}>','<{$lat}>'); 
+	//map.enableKeyboard(); //键盘方向键缩放事件
+	map.addEventListener("dragend", function(){   //拖拽事件  
+	 var center = map.getCenter();     
+	 showmapnearadr(center.lng,center.lat);
+	 
+	});
+	
+}
+function showmapnearadr(lng,lat){ 
+	 $.getScript('http://api.map.baidu.com/geocoder/v2/?ak=<{$baidumapkey}>&callback=renderReverse&location='+lat+','+lng+'6&output=json&pois=1'); 
+}
+function renderReverse(datas){
+	 
+	 if(datas.status == 0){
+	 	$("#choiceguidebox ul").html('');
+		 /* 
+		 {"addr":"河南省广州市中原区华淮小区11栋",
+		 "cp":"NavInfo",
+		 "direction":"附近",
+		 "distance":"40",
+		 "name":"华淮小区11栋",
+		 "poiType":"房地产",
+		 "point":{"x":113.60700002968,"y":34.736593865518},
+		 "tag":"房地产;住宅区","tel":"","uid":"97389a78371b6f76b020a838","zip":""}
+		 
+		 */
+	$('#choiceguidebox ul').append('<li lat="'+datas.result.location.lat+'"  lng="'+datas.result.location.lng+'"  address="'+datas.result.business+'"  ><div class="addresslist" ><p class="choicegudie" style="color:red;">[推荐位置]'+datas.result.business+'</p><p class="choicedetgudie" >'+datas.result.formatted_address+'</p></div></li>');
+				 
+			 if(datas.result.pois.length > 0){
+			//	$("#choiceguidebox ul").html('');
+				for(i=0;i<datas.result.pois.length;i++){
+				
+					$('#choiceguidebox ul').append('<li lat="'+datas.result.pois[i].point.y+'"  lng="'+datas.result.pois[i].point.x+'"  address="'+datas.result.pois[i].name+'"  ><div class="addresslist"><p class="choicegudie">'+datas.result.pois[i].name+'</p><p class="choicedetgudie">'+datas.result.pois[i].addr+'</p></div></li>');
+					
+					
+				}
+					setTimeout("bqzhi()",200 );
+					 myScroll.refresh();
+			
+			}else{
+		//	$("#choiceguidebox ul").html('');
+			 $('#choiceguidebox ul').append('<li><div class="addresslist" style="text-align:center;"><p class="choicegudie">获取地址失败</p><p class="choicedetgudie" style="text-align:center;">请在尝试下</p></div></li>');
+			
+			setTimeout("bqzhi()",200 );
+			 myScroll.refresh();
+			}
+			
+			 $("#choiceguidebox ul li").bind('click',function(){
+				var lng = $(this).attr('lng');
+				var lat = $(this).attr('lat');
+				var address = $(this).attr('address');
+				choiceaddress(lng,lat,address);
+			})
+		
+	 }
+}
+ 
+function getscraddress(){ 
+	biaoqianval = false;
+	if(biaoqianval == false){
+	  
+		//	 setTimeout("bqzhi()",500 );   
+						var searchval  = $("#searchKeywords").val();
+						
+						if(searchval != ''){ 
+					
+								biaoqianval  = true;
+									  
+									var searchvalue = encodeURI(searchval);
+									  var tempurl = 'http://api.map.baidu.com/geocoder/v2/?address='+searchvalue+'&output=json&ak=<{$baidumapkey}>&callback=showLocation';
+									  alert(tempurl);
+									 $.getScript(tempurl); 
+						  
+					
+						} 
+	}
+
+}
+function showLocation(datas){
+	$("#choiceguidebox ul").html(''); 
+	 
+	if(datas.status == 0){
+		var lng = datas.result.location.lng;
+		var lat = datas.result.location.lat;
+		showmapnearadr(lng,lat);
+	}
+}
+function choiceaddress(lng,lat,address){
+	$(".mapaddressbox").hide();
+	$(".addressbox").show();
+	$(".newinp1").attr('lng',lng);
+	$(".newinp1").attr('lat',lat);
+	$(".newinp1").text(address);
+}
+function getLocation() { 
+  if (navigator.geolocation)
+    { 
+       navigator.geolocation.getCurrentPosition(showPosition,showError);
+    }
+   else{
+		getdefaultmapshow();
+	}
+  }
+
+function showPosition(position)
+{ 	
+	var lng = position.coords.longitude;
+	var lat = position.coords.latitude;
+	getmapshow(lng,lat);
+}
+ function showError(error)
+  {
+  getdefaultmapshow();
+   switch(error.code) 
+    {
+    	
+    case error.PERMISSION_DENIED:
+      //x.innerHTML="User denied the request for Geolocation."
+    //  $('#showareainfo').text("User denied the request for Geolocation.");
+      break;
+    case error.POSITION_UNAVAILABLE:
+     // x.innerHTML="Location information is unavailable."
+      //$('#showareainfo').text("Location information is unavailable.");
+      break;
+    case error.TIMEOUT:
+    //  x.innerHTML="The request to get user location timed out."
+    //$('#showareainfo').text("The request to get user location timed out.");
+      break;
+    case error.UNKNOWN_ERROR:
+     // x.innerHTML="An unknown error occurred."
+     //  $('#showareainfo').text("An unknown error occurred.");
+      break;
+    }
+     
+  }
+function saveaddress(){ 
+		$('#loading').show();
+		var sex = $("input[name='sex']:checked").val();
+		var bigadr = $(".newinp1").text();
+		var detailadr = $(".newinp2").val();
+		var lng = $(".newinp1").attr('lng');
+		var lat = $(".newinp1").attr('lat');
+		var tempaddress = $(".newinp1").text()+$(".newinp2").val();
+        var info = {'contactname':$('#contactname').val(),'sex':sex,'lng':lng,'lat':lat,'phone':$('#mobile').val(),'bigadr':bigadr,'detailadr':detailadr,'add_new':tempaddress,'addressid':<{$id}>}; 
+	  	var url = '<{ofunc type=url link="/area/saveaddress/random/@random@/datatype/json"}>';
+		  var backdata = ajaxback(url,info); 
+		  if(backdata.flag == false){ 
+		  	<{if $shopid > 0}>
+		  	 window.location.href = siteurl+'/index.php?ctrl=wxsite&action=bkaddress&shopid=<{$shopid}>&backtype=<{$backtype}>';
+		  	<{else}>
+		      window.location.href = siteurl+'/index.php?ctrl=wxsite&action=address';
+		    <{/if}>
+		  }else{
+		  	$('#loading').hide();
+		     Tmsg(backdata.content);
+		  }
+		  
+	}
+</script>
+<{/block}>

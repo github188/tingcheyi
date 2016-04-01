@@ -1,0 +1,32 @@
+ <div class="waimaiset"> 
+	<div class="jbset <{if $urlshort == 'shopcenter/useredit'}> onset<{/if}>" onclick="openlink('<{ofunc type=url link="/shopcenter/useredit"}>');">
+                	<img src="<{$siteurl}>/templates/<{$tempdir}>/public/shopcenter/images/jbBg.png" /><span>基本设置</span>
+                </div>
+                <{if empty($shopinfo['shoptype'])}>
+                <div  class="jbset <{if $urlshort == 'shopcenter/usershopfast'}> onset<{/if}>" onclick="openlink('<{ofunc type=url link="/shopcenter/usershopfast"}>');" >
+                	<img src="<{$siteurl}>/templates/<{$tempdir}>/public/shopcenter/images/wmset.png" /><span>停车场设置</span>
+                </div>
+                <{else}>
+                <div  class="jbset <{if $urlshort == 'shopcenter/usershopmarket'}> onset<{/if}>"   onclick="openlink('<{ofunc type=url link="/shopcenter/usershopmarket"}>')">
+                	<img src="<{$siteurl}>/templates/<{$tempdir}>/public/shopcenter/images/wmset.png" /><span>养车市场</span>
+                </div>
+                
+                <{/if}> 
+                <div class="jbset <{if $urlshort == 'shopcenter/usershopinstro'}> onset<{/if}>" onclick="openlink('<{ofunc type=url link="/shopcenter/usershopinstro"}>');">
+                	<img src="<{$siteurl}>/templates/<{$tempdir}>/public/shopcenter/images/dianpujieshao.png" /><span>停车场介绍</span>
+                </div>
+                <div class="jbset <{if $urlshort == 'shopcenter/usershopnotice'}> onset<{/if}>" onclick="openlink('<{ofunc type=url link="/shopcenter/usershopnotice"}>');">
+                	<img src="<{$siteurl}>/templates/<{$tempdir}>/public/shopcenter/images/gonggao.png" /><span>停车场公告</span>
+                </div>
+              </div>
+<script>       	
+				$(function(){
+					$(".waimaiset .jbset").click(function(){
+						$(this).css('background','#ec7501').siblings().css('background','');
+						
+					});	
+					
+				});
+ </script>
+       	 
+       		 

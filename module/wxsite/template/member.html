@@ -1,0 +1,121 @@
+ <{extends file="<{$tempdir}>/public/wxsite.html"}>  
+<{block name=extendcss}> 
+<link rel="stylesheet"  href="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/css/shopshow.css">   
+<{/block}>
+ <{block name=extendjs}>  
+  <script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/wxshop.js"></script>  
+<{/block}>
+<{block name=sitetitle}><{$sitename}><{/block}>
+<{block name=hearnav}><{/block}>
+<{block name=myScrolljs}><script> 
+		var myScroll;
+function loaded() {
+	myScroll = new iScroll('wrapper', {
+		useTransform: false,
+		onBeforeScrollStart: function (e) {
+			var target = e.target;
+			while (target.nodeType != 1) target = target.parentNode;
+
+			if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
+				e.preventDefault();
+		}
+	});
+}
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false); 
+document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+</script>
+<{/block}>
+<{block name=blockcontent}> 
+<div id="wrapper" style="top:0px;">
+<div id="scroller">
+
+
+<!-------------------------登录------------------------->
+<!--基本信息-->
+<div class="signinCon">
+ <div class="signint"  onclick="dolink('<{ofunc type=url link="/wxsite/myaccount"}>');"  >
+  <ul>
+   <li> <img style="border-radius:50%;" src="<{$member['logo']|default:$userlogo}>"></a></li>
+   <li><h3><{$member['username']}></h3></li>
+  </ul>
+ </div>
+ <div class="signinb">
+  <ul>
+   <li  onclick="dolink('<{ofunc type=url link="/wxsite/memcard"}>');" ><a><i class="sigye"></i><span>余额 <{$member['cost']}></span></a></li>
+   <li  onclick="dolink('<{ofunc type=url link="/wxsite/gift"}>');" ><a><i class="sigjf"></i><span>积分 <{$member['score']|default:'0'}></span></a></li>
+   <li  onclick="dolink('<{ofunc type=url link="/wxsite/juan"}>');" ><a><i class="sigyh"></i><span>优惠券 <{$juanshu}></span></a></li>
+   <li  onclick="dolink('<{ofunc type=url link="/wxsite/giftlist"}>');"   style="background-image:none;"><a><i class="siglp"></i><span>礼品</span></a></li>
+  </ul>
+ </div>
+</div>
+<!--链接-->
+<div class="signinlink">
+ <ul>
+  <li  onclick="dolink('<{ofunc type=url link="/wxsite/address"}>');" ><a><i class="signindz"></i><span>我的地址<i class="fa fa-angle-right"></i></span></a></li>
+  <li  onclick="dolink('<{ofunc type=url link="/wxsite/collect"}>');" ><a><i class="signinsc"></i><span>我的收藏<i class="fa fa-angle-right"></i></span></a></li>
+  <li  onclick="dolink('<{ofunc type=url link="/wxsite/juan"}>');"    ><a><i class="signinyh"></i><span>优惠券<i class="fa fa-angle-right"></i></span></a></li>
+  <li   onclick="dolink('<{ofunc type=url link="/wxsite/order"}>');" ><a><i class="signindd"></i><span>我的订单<i class="fa fa-angle-right"></i></span></a></li>
+   	<{if $wxuserbangd !=1 }>
+  <li id="icon-bangdmem"  onclick="dolink('<{ofunc type=url link="/wxsite/bangdmem"}>');"  ><a><i class="signinbangdmem"></i><span>绑定账号<i class="fa fa-angle-right"></i></span></a></li>
+  <{/if}>
+    <li id="icon-exit" onclick="dolink('<{ofunc type=url link="/wxsite/loginout"}>');"   ><a><i class="signinoutlogin"></i><span>退出<i class="fa fa-angle-right"></i></span></a></li>
+
+  
+ </ul>
+</div>
+
+ 
+ </div> 
+  </div>
+ 
+<script>
+$(function(){
+
+	function isWeiXin(){
+	    var ua = window.navigator.userAgent.toLowerCase();
+	    if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+	        return true;
+	    }else{
+	        return false;
+	    }
+	}
+	
+ 	var browser = {
+
+			versions: function () {
+			var u = navigator.userAgent, app = navigator.appVersion;
+
+			return {
+			trident: u.indexOf('Trident') > -1, //IE内核
+			presto: u.indexOf('Presto') > -1, //opera内核
+			webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+			gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+			mobile: !!u.match(/AppleWebKit.*Mobile.*/) || !!u.match(/AppleWebKit/), //是否为移动终端
+			ios: !!u.match(/(i[^;]+;(U;)? CPU.+Mac OS X)/), //ios终端
+			android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+			iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者QQHD浏览器
+			iPad: u.indexOf('iPad') > -1, //是否iPad
+			webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+			};
+			} (),
+			language: (navigator.browserLanguage || navigator.language).toLowerCase()
+			}
+			if (browser.versions.mobile ) {
+			            
+
+				            if(isWeiXin()){
+								$("#icon-bangdmem").show();
+								$("#icon-exit").hide();
+					        }else{
+							
+							//	$("#icon-bangdmem").hide();
+								$("#icon-exit").show();
+								
+							}
+			         
+			        }
+				
+})
+</script>
+ 
+<{/block}>

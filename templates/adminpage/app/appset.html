@@ -1,0 +1,580 @@
+ <{extends file="<{$tempdir}>/public/admin.html"}> 
+ <{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+ <{/block}>
+ <{block name=controlname}>积分设置<{/block}>
+ <{block name=bodylist}> 
+	
+	   <div style="width:auto;overflow-x:hidden;overflow-y:auto"> 
+         
+          <div id="tagscontent">
+            <form method="post" name="form1" action="<{ofunc type=url link="/adminpage/app/module/saveappset/datatype/json"}>" onsubmit="return subform('',this);">
+              <div>
+                <table border="0" cellspacing="2" cellpadding="4" class="list" name="table" id="table" width="100%">
+                  <tbody>
+                  	<tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">
+                      <td class="left" valign="top">商家端推送KEY</td>
+                      <td> 
+                         <input type="input" name="appuser" id="appuser" value="<{$appuser|default:''}>"  class="skey" style="width:200px;"> 
+                       </td>
+                    </tr>
+                     <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">
+                      <td class="left">商家端推送secret</td>
+                      <td> <input type="input" name="appsecret" id="appsecret" value="<{$appsecret|default:''}>"  class="skey" style="width:200px;"> </td>
+                    </tr>
+                    <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">
+                      <td class="left" valign="top">用户端推送KEY</td>
+                      <td> 
+                         <input type="input" name="appuser2" id="appuser2" value="<{$appuser2|default:''}>"  class="skey" style="width:200px;"> 
+                       </td>
+                    </tr>
+                     <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">
+                      <td class="left">用户端推送secret</td>
+                      <td> <input type="input" name="appsecret2" id="appsecret2" value="<{$appsecret2|default:''}>"  class="skey" style="width:200px;"> </td>
+                    </tr>
+                    <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">
+                      <td class="left" valign="top">配送员推送KEY</td>
+                      <td> 
+                         <input type="input" name="appuser3" id="appuser3" value="<{$appuser3|default:''}>"  class="skey" style="width:200px;"> 
+                       </td>
+                    </tr>
+                     <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">
+                      <td class="left">配送员推送secret</td>
+                      <td> <input type="input" name="appsecret3" id="appsecret3" value="<{$appsecret3|default:''}>"  class="skey" style="width:200px;"> </td>
+                    </tr>
+                    <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">
+                      <td class="left">APP用户版本</td>
+                      <td> <input type="input" name="appvison1" id="appvison1" value="<{$appvison1|default:'1'}>"  class="skey" style="width:200px;">版本号请填写时间戳，起始版是1，必须和最新apk的android:versionCode 一致 要不然每次都要下载而不是最新版本 </td>
+                    </tr>
+                    <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">
+                      <td class="left">APP用户下载地址</td>
+                      <td> <input type="input" name="appdownload1" id="appdownload1" value="<{$appdownload1|default:''}>"  class="skey" style="width:200px;">http://www.xxx.com/xxx.apk </td>
+                    </tr>
+                     <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">
+                      <td class="left">APP商家版本</td>
+                      <td> <input type="input" name="appvison2" id="appvison2" value="<{$appvison2|default:'1'}>"  class="skey" style="width:200px;">版本号请填写时间戳，起始版是1，必须和最新apk的android:versionCode 一致 要不然每次都要下载而不是最新版本 </td>
+                    </tr>
+                    <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">
+                      <td class="left">APP商家下载地址</td>
+                      <td> <input type="input" name="appdownload2" id="appdownload2" value="<{$appdownload2|default:''}>"  class="skey" style="width:200px;">http://www.xxx.com/xxx.apk </td>
+                    </tr>
+                    <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">
+                      <td class="left">APP配送员版本</td>
+                      <td> <input type="input" name="appvison3" id="appvison3" value="<{$appvison3|default:'1'}>"  class="skey" style="width:200px;">版本号请填写时间戳，起始版是1，必须和最新apk的android:versionCode 一致 要不然每次都要下载而不是最新版本 </td>
+                    </tr>
+                    <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">
+                      <td class="left">APP配送员下载地址</td>
+                      <td> <input type="input" name="appdownload3" id="appdownload3" value="<{$appdownload3|default:''}>"  class="skey" style="width:200px;">http://www.xxx.com/xxx.apk </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="blank20"></div>
+              <input type="hidden" name="tijiao" id="tijiao" value="do" class="skey" style="width:250px;">
+              <input type="hidden" name="saction" id="saction" value="siteset" class="skey" style="width:250px;">
+               <input type="submit" value="确认提交" class="button">  
+            </form>
+          </div>
+		  
+		    <div style="height:40px;line-height:40px;text-align:left;font-weight:bold;border-top:1px solid #e8eef6;border-bottom:1px solid #e8eef6;padding-left:30px;margin-top:10px;background-color:#0086ae;color:#fff;">展示模块设置（针对与移动端模板二有效）</div>
+		   <div id="tagscontent"> 
+              <div>
+                <table border="0" cellspacing="2" cellpadding="4" class="list" name="table" id="table" width="100%">
+
+                    <thead>
+
+                      <tr>
+                        <th align="center">名称</th>  
+                        <th align="center">code</th> 
+					     	<th align="center">图片展示</th> 
+                        <th align="center">上传图片</th>
+                        <th align="center">是否展示首页</th> 
+                        <th align="center">排序</th> 
+						 
+                       </tr>
+ 
+                    </thead> 
+                     <tbody>
+                     <{foreach from=$appmodulelist item=items}>
+                      <tr class="s_out" onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7"> 
+                       
+                        <td align="center"><{$items['cnname']}></td> 
+                        <td align="center"><{$items['name']}></td> 
+						 <td align="center"><img src="<{$items['imgurl']}>" id="module_<{$items['name']}>" <{if empty($items['imgurl'])}> style="display:none;height:100px;width:100px;" <{else}> style="height:100px;width:100px;"<{/if}>></td> 
+                        <td align="center"><span style="cursor:pointer;" onclick="uploads('<{$items['name']}>');">上传图片</span></td>   
+						 <td align="center"><input type="checkbox" value="1" name="is_display" data="<{$items['name']}>" <{if $items['is_display'] == 1}>checked<{/if}>></td>   
+                         <td align="center"><input type="text" class="savemodulepaixu" style="width:60px;" name="<{$items['name']}>" data="<{$items['id']}>"  data="<{$items['name']}>" value="<{$items['orderid']|default:0}>" ></td>  
+                      </tr> 
+                       <{/foreach}>
+                    </tbody> 
+
+                  </table>
+              </div> 
+          </div>
+		  
+<script>
+var dialogs ;
+function uploads(modulename){
+ 	  dialogs = art.dialog.open('<{ofunc type=url link="/adminpage/other/module/uploadapp/obj/'+modulename+'/func/uploadsucess"}>');
+ 	  dialogs.title('上传图片');
+}
+function uploadsucess(flag,obj,linkurl){
+	if(flag == true){
+ 		alert(linkurl);
+		dialogs.close();
+		uploads(obj);
+	}else{
+		dialogs.close(); 
+		//提交数据并返回显示 
+			$.post('<{ofunc type=url link="/adminpage/app/module/appmdimg/datatype/json"}>', {'mudulename':obj,'imgurl':linkurl} ,function (data, textStatus){  
+			if(data.error == false){
+				$('#module_'+obj).attr('src',linkurl);
+				$('#module_'+obj).show();
+			}else{
+				if(data.error == true)
+				{
+					diaerror(data.msg); 
+				}else{
+					diaerror(data); 
+				}
+			} 
+		}, 'json');  
+	}
+ }
+$(function(){   
+   $("input[name='is_display']").bind("click", function() {     
+       var doselect = 0;
+			if($(this).is(':checked') == true){
+			doselect =1;
+			} 
+	   	$.post('<{ofunc type=url link="/adminpage/app/module/docontroladv/datatype/json"}>', {'ctrlname':'is_show','modulename':$(this).attr('data'),'modulevalue':doselect} ,function (data, textStatus){  
+			if(data.error == false){
+				diasucces('操作成功','');
+			}else{
+				if(data.error == true)
+				{
+					diaerror(data.msg); 
+				}else{
+					diaerror(data); 
+				}
+			} 
+		}, 'json');  
+	});
+	
+	$("input[name='is_install']").bind("click", function() {     
+	   	$.post('<{ofunc type=url link="/adminpage/app/module/docontroladv/datatype/json"}>', {'ctrlname':'is_install','modulename':$(this).attr('data'),'modulevalue':$("input[name='is_install']:checked").val()} ,function (data, textStatus){  
+			if(data.error == false){
+				diasucces('操作成功','');
+			}else{
+				if(data.error == true)
+				{
+					diaerror(data.msg); 
+				}else{
+					diaerror(data); 
+				}
+			} 
+		}, 'json');  
+	});
+	
+
+
+});
+
+
+</script>
+		  
+		  
+		  
+		   <div style="height:40px;line-height:40px;text-align:left;font-weight:bold;border-top:1px solid #e8eef6;border-bottom:1px solid #e8eef6;padding-left:30px;margin-top:10px;background-color:#0086ae;color:#fff;">固定区域设置</div>
+		    <div id="tagscontent">
+           
+              <div>
+                 <table border="0" cellspacing="2" cellpadding="4" class="list" name="table" id="table" width="100%">
+
+                    <thead>
+
+                      <tr>
+                        <th align="center">名称</th>  
+							<th align="center">图片</th>
+                        <th align="center">上传</th> 
+                        <th align="center">跳转界面</th>
+                        <th align="center">排序</th>
+                         
+							<th align="center">操作</th> 
+                       </tr>
+ 
+                    </thead> 
+                     <tbody>
+                    <{foreach from=$appadvlist item=items}>
+					    <{if $items['type'] == 2}>
+                      <tr class="s_out" onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7"> 
+                      
+                        <td align="center">
+							<input type="hidden" name="input_gid<{$items['id']}>" value="<{$items['id']}>">
+							<input type="text" name="input_gname<{$items['id']}>" id="input_gname<{$items['id']}>" value="<{$items['name']}>" style="width:100px;"></td> 
+							<td align="center"><input type="hidden" name="input_gimg<{$items['id']}>" id="input_gimg<{$items['id']}>"  value="<{$items['img']}>"><img src="<{$items['img']}>" id="gimg<{$items['id']}>"   style="width:100px;height:100px;"></td> 
+                        <td align="center"> <span style="cursor:pointer;" onclick="upload_gudings('gimg<{$items['id']}>');">上传图片</span></td> 
+                        <td align="center"><select name="input_gselect<{$items['id']}>">
+													<{foreach from=$catlist item=itv}>
+													<option value="<{$itv['id']}>" <{if $items['param'] == $itv['id']}> selected <{/if}> ><{$catarr[$itv['cattype']]}>-<{$itv['name']}></option>
+													<{/foreach}> 
+												</select></td>   
+						<td align="center" ><input type="text" name="input_gorderid<{$items['id']}>" id="input_gorderid<{$items['id']}>" value="<{$items['orderid']}>" style="width:60px;"></td>
+                        <td align="center"><a href="#"><a onclick="javascript:dogdsave('<{$items['id']}>');" href="#" class="delurl">提交更新</a> 
+							<a onclick="return remind(this);" href="<{ofunc type=url link="/adminpage/app/module/delappadv/id/<{$items['id']}>/datatype/json"}>"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/images/admin/del.jpg"></a></td>  
+                      </tr> 
+							<{/if}>
+					  <{/foreach}>
+                      <tr class="s_out" onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7"> 
+                       
+                        <td align="center"><input type="hidden" name="input_gid" value=""><input type="text" name="input_gname" id="input_gname" value="" style="width:100px;"></td> 
+						    <td align="center"><input type="hidden" name="input_gimg" id="input_gimg"  value=""><img src="" id="gimg"   style="width:100px;height:100px;display:none;"></td> 
+                        <td align="center"><span style="cursor:pointer;" onclick="upload_gudings('gimg');">上传图片</span></td> 
+                        <td align="center"><select name="input_gselect">
+													<{foreach from=$catlist item=items}>
+													<option value="<{$items['id']}>"><{$catarr[$items['cattype']]}>-<{$items['name']}></option>
+													<{/foreach}> 
+												</select>
+							</td>  
+                         <td align="center" ><input type="text" name="input_gorderid" id="input_gorderid" value="" placeholder="排序" style="width:60px;"></td>
+                        <td align="center"><a onclick="javascript:dogdsave('');" href="#" class="delurl">提交</a></td> 
+                      </tr> 
+                    </tbody> 
+
+                  </table>
+              </div>  
+          </div> 
+<script> 
+function upload_gudings(modulename){
+ 	  dialogs = art.dialog.open('<{ofunc type=url link="/adminpage/other/module/uploadapp/obj/'+modulename+'/func/uploadgsucess"}>');
+ 	  dialogs.title('上传图片');
+}
+function uploadgsucess(flag,obj,linkurl){
+	if(flag == true){
+ 		alert(linkurl);
+		dialogs.close();
+		upload_gudings(obj);
+	}else{
+		dialogs.close(); 
+		//提交数据并返回显示 
+			$('#'+obj).attr('src',linkurl);
+			$('#'+obj).show();
+		  $('#input_'+obj).val(linkurl); 
+	}
+ }
+ function dogdsave(gdid){
+    var checkname =   $('#input_gname'+gdid).val();
+    
+	if(checkname == ''){
+	    alert('录入的名称不能为空');
+		return false;
+	}
+	var checkimg = $('#input_gimg'+gdid).val();
+	var orderid = $('#input_gorderid'+gdid).val();
+	if(checkimg == ''){
+	   alert('未选择图片');
+	   return false; 
+	} 	
+	 		
+	var typeid = $("select[name='input_gselect"+gdid+"']").find("option:selected").val(); //$(this).input_gselect
+    $.post('<{ofunc type=url link="/adminpage/app/module/addgd/datatype/json"}>', {'imgurl':checkimg,'orderid':orderid,'typeid':typeid,'name':checkname,'appposition':2,'id':gdid} ,function (data, textStatus){  
+			if(data.error == false){
+				diasucces('操作成功','');
+			}else{
+				if(data.error == true)
+				{
+					diaerror(data.msg); 
+				}else{
+					diaerror(data); 
+				}
+			} 
+	}, 'json'); 
+ }  
+ function dosaveadv(gdid){
+	var checkname =   $('#input_aname'+gdid).val();
+	if(checkname == ''){
+	    alert('录入的名称不能为空');
+		return false;
+	}
+	var checkimg = $('#input_aimg'+gdid).val();
+	if(checkimg == ''){
+	   alert('未选择图片');
+	   return false; 
+	} 	
+	 		
+	 
+    $.post('<{ofunc type=url link="/adminpage/app/module/addad/datatype/json"}>', {'imgurl':checkimg,'typeid':0,'name':checkname,'appposition':1,'id':gdid} ,function (data, textStatus){  
+			if(data.error == false){
+				diasucces('操作成功','');
+			}else{
+				if(data.error == true)
+				{
+					diaerror(data.msg); 
+				}else{
+					diaerror(data); 
+				}
+			} 
+	}, 'json'); 
+ }
+ function dosaveanadv(gdid){
+	var checkname =   $('#input_anname'+gdid).val();
+	if(checkname == ''){
+	    alert('录入的名称不能为空');
+		return false;
+	}
+	var checkimg = $('#input_animg'+gdid).val();
+	if(checkimg == ''){
+	   alert('未选择图片');
+	   return false; 
+	} 	
+	 		
+	 
+    $.post('<{ofunc type=url link="/adminpage/app/module/addad/datatype/json"}>', {'imgurl':checkimg,'typeid':0,'name':checkname,'appposition':3,'id':gdid} ,function (data, textStatus){  
+			if(data.error == false){
+				diasucces('操作成功','');
+			}else{
+				if(data.error == true)
+				{
+					diaerror(data.msg); 
+				}else{
+					diaerror(data); 
+				}
+			} 
+	}, 'json');
+ }
+</script>
+		  
+		  
+		  
+		  <div style="height:40px;line-height:40px;text-align:left;font-weight:bold;border-top:1px solid #e8eef6;border-bottom:1px solid #e8eef6;padding-left:30px;margin-top:10px;background-color:#0086ae;color:#fff;">轮播设置</div>
+		   <div id="tagscontent">
+            <form method="post" name="form1" action="<{ofunc type=url link="/adminpage/app/module/saveappset/datatype/json"}>" onsubmit="return subform('',this);">
+              <div>
+                <table border="0" cellspacing="2" cellpadding="4" class="list" name="table" id="table" width="100%">
+
+                    <thead>
+
+                      <tr>
+                        <th align="center">轮播说明</th> 
+							<th align="center">图片展示</th>  						
+                        <th align="center">图片上传</th>  
+							<th align="center">操作</th> 
+                       </tr>
+ 
+                    </thead> 
+                     <tbody>
+                    <{foreach from=$appadvlist item=items}>
+					    <{if $items['type'] ==1}>
+                      <tr class="s_out" onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7"> 
+                      
+                        <td align="center"><input type="hidden" name="input_aid<{$items['id']}>" value="<{$items['id']}>"><input type="text" name="input_aname<{$items['id']}>" id="input_aname<{$items['id']}>" value="<{$items['name']}>" style="width:100px;"></td> 
+							<td align="center"><input type="hidden" name="input_aimg<{$items['id']}>" id="input_aimg<{$items['id']}>"  value="<{$items['img']}>"><img src="<{$items['img']}>" id="aimg<{$items['id']}>"   style="width:100px;height:100px;"></td> 
+                        <td align="center"> <span style="cursor:pointer;" onclick="upload_gudings('aimg<{$items['id']}>');">上传图片</span></td> 
+                      
+                        <td align="center"><a href="#"><a onclick="javascript:dosaveadv('<{$items['id']}>');" href="#" class="delurl">提交更新</a> 
+							<a onclick="return remind(this);" href="<{ofunc type=url link="/adminpage/app/module/delappadv/id/<{$items['id']}>/datatype/json"}>"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/images/admin/del.jpg"></a></td>  
+                      </tr> 
+							<{/if}>
+					  <{/foreach}>
+                      
+                      <tr class="s_out" onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7"> 
+                       
+                        <td align="center"><input type="text" name="input_aname" id="input_aname" value="" style="width:100px;"></td> 
+                         <td align="center"><input type="hidden" name="input_aimg" id="input_aimg"  value=""><img src="" id="aimg"   style="width:100px;height:100px;display:none;"></td> 
+                        <td align="center"><span style="cursor:pointer;" onclick="upload_gudings('aimg');">上传图片</span></td> 
+                        <td align="center"><a onclick="javascript:dosaveadv('');" href="#" class="delurl">提交</a></td> 
+                      </tr> 
+                    </tbody> 
+
+                  </table>
+              </div>
+              
+            </form>
+          </div> 
+		  
+		    <div style="height:40px;line-height:40px;text-align:left;font-weight:bold;border-top:1px solid #e8eef6;border-bottom:1px solid #e8eef6;padding-left:30px;margin-top:10px;background-color:#0086ae;color:#fff;">开机动画</div>
+		   <div id="tagscontent">
+            <form method="post" name="form1" action="<{ofunc type=url link="/adminpage/app/module/saveappset/datatype/json"}>" onsubmit="return subform('',this);">
+              <div>
+                <table border="0" cellspacing="2" cellpadding="4" class="list" name="table" id="table" width="100%">
+
+                    <thead>
+
+                      <tr>
+                        <th align="center">开机动画</th> 
+							<th align="center">图片展示</th>  						
+                        <th align="center">图片上传</th>  
+							<th align="center">操作</th> 
+                       </tr>
+ 
+                    </thead> 
+                     <tbody>
+                    <{foreach from=$appadvlist item=items}>
+					    <{if $items['type'] ==3}>
+                      <tr class="s_out" onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7"> 
+                      
+                        <td align="center"><input type="hidden" name="input_anid<{$items['id']}>" value="<{$items['id']}>"><input type="text" name="input_anname<{$items['id']}>" id="input_anname<{$items['id']}>" value="<{$items['name']}>" style="width:100px;"></td> 
+							<td align="center"><input type="hidden" name="input_animg<{$items['id']}>" id="input_animg<{$items['id']}>"  value="<{$items['img']}>"><img src="<{$items['img']}>" id="animg<{$items['id']}>"   style="width:100px;height:100px;"></td> 
+                        <td align="center"> <span style="cursor:pointer;" onclick="upload_gudings('animg<{$items['id']}>');">上传图片</span></td> 
+                      
+                        <td align="center"><a href="#"><a onclick="javascript:dosaveanadv('<{$items['id']}>');" href="#" class="delurl">提交更新</a> 
+							<a onclick="return remind(this);" href="<{ofunc type=url link="/adminpage/app/module/delappadv/id/<{$items['id']}>/datatype/json"}>"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/images/admin/del.jpg"></a></td>  
+                      </tr> 
+							<{/if}>
+					  <{/foreach}>
+                      
+                      <tr class="s_out" onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7"> 
+                       
+                        <td align="center"><input type="text" name="input_anname" id="input_anname" value="" style="width:100px;"></td> 
+                         <td align="center"><input type="hidden" name="input_animg" id="input_animg"  value=""><img src="" id="animg"   style="width:100px;height:100px;display:none;"></td> 
+                        <td align="center"><span style="cursor:pointer;" onclick="upload_gudings('animg');">上传图片</span></td> 
+                        <td align="center"><a onclick="javascript:dosaveanadv('');" href="#" class="delurl">提交</a></td> 
+                      </tr> 
+                    </tbody> 
+
+                  </table>
+              </div>
+              
+            </form>
+          </div> 
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		   <div style="height:40px;line-height:40px;text-align:left;font-weight:bold;border-top:1px solid #e8eef6;border-bottom:1px solid #e8eef6;padding-left:30px;margin-top:10px;background-color:#0086ae;color:#fff;">首页列表数据</div>
+		   <div id="tagscontent">
+            <form method="post" name="form1" action="<{ofunc type=url link="/adminpage/app/module/saveappset/datatype/json"}>" onsubmit="return subform('',this);">
+              <div>
+                <table border="0" cellspacing="2" cellpadding="4" class="list" name="table" id="table" width="100%">
+                  <tbody>
+                  	<tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">  <td   valign="top" style="padding-left:200px;"><input type="radio" name="APPindex" value="1" <{if $appinfo['APPindex'] == 1}>checked<{/if}> >推荐停车场</td>  </tr>
+                     <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">  <td   valign="top" style="padding-left:200px;"><input type="radio" name="APPindex" value="2" <{if $appinfo['APPindex'] == 2}>checked<{/if}>>热卖停车场</td>  </tr>
+						<tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">  <td   valign="top" style="padding-left:200px;"><input type="radio" name="APPindex" value="3" <{if $appinfo['APPindex'] == 3}>checked<{/if}>>新增停车场</td>  </tr>
+						<tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">  <td   valign="top" style="padding-left:200px;"><input type="radio" name="APPindex" value="4" <{if $appinfo['APPindex'] == 4}>checked<{/if}>>推荐养车</td>  </tr>
+						<tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">  <td   valign="top" style="padding-left:200px;"><input type="radio" name="APPindex" value="5" <{if $appinfo['APPindex'] == 5}>checked<{/if}>>普通养车</td>  </tr> 			 
+                  </tbody>
+                </table>
+              </div>  
+            </form>
+          </div>
+		  
+		  
+		  
+		    <div style="height:40px;line-height:40px;text-align:left;font-weight:bold;border-top:1px solid #e8eef6;border-bottom:1px solid #e8eef6;padding-left:30px;margin-top:10px;background-color:#0086ae;color:#fff;">APP其他设置</div>
+		   <div id="tagscontent">
+            <form method="post" name="form1" action="<{ofunc type=url link="/adminpage/app/module/saveappset/datatype/json"}>" onsubmit="return subform('',this);">
+              <div>
+                <table border="0" cellspacing="2" cellpadding="4" class="list" name="table" id="table" width="100%">
+                  <tbody>
+                  	<tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">
+                      <td class="left" valign="top">是否开启APP货到支付</td>
+                      <td> 
+                         <input type="checkbox" name="apppayacount" value="1" <{if $appinfo['apppayacount'] == 1}>checked<{/if}>>开启 APP货到支付
+                       </td>
+                    </tr>
+                     <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">
+                      <td class="left">是否开启在线支付</td>
+                      <td> <input type="checkbox" name="apppayonline" value="1" <{if $appinfo['apppayonline'] == 1}>checked<{/if}>>开启 APP在线支付 </td>
+                    </tr>
+                    <tr onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7">
+                      <td class="left" valign="top">数据版本</td>
+                      <td> 
+                         <input type="input" name="appdataver" id="appdataver" value="<{$appinfo['appdataver']|default:''}>"  class="skey" style="width:50px;"> (根据此是否更新用户缓存初始为1，当用户存放临时数据和这个不一样则就自动更新缓存数据)
+                       </td>
+                    </tr>
+                     
+                  </tbody>
+                </table>
+              </div> 
+            </form>
+          </div>
+		  
+		  
+        </div> 
+        
+        
+   
+    </div> 
+<script>
+$(function(){  
+	$("input[name='APPindex']").click(function(){
+		$.post('<{ofunc type=url link="/adminpage/app/module/appindexshow/datatype/json"}>', {'type':'APPindex','APPindex':$("input[name='APPindex']:checked").val()} ,function (data, textStatus){  
+			if(data.error == false){
+				diasucces('操作成功','');
+			}else{
+				if(data.error == true)
+				{
+					diaerror(data.msg); 
+				}else{
+					diaerror(data); 
+				}
+			} 
+		}, 'json');  
+	});
+	$("input[name='apppayacount']").click(function(){
+	     $.post('<{ofunc type=url link="/adminpage/app/module/appindexshow/datatype/json"}>', {'type':'apppayacount','apppayacount':$("input[name='apppayacount']:checked").val()} ,function (data, textStatus){  
+			if(data.error == false){
+				diasucces('操作成功','');
+			}else{
+				if(data.error == true)
+				{
+					diaerror(data.msg); 
+				}else{
+					diaerror(data); 
+				}
+			} 
+		}, 'json'); 
+	});
+	$("input[name='apppayonline']").click(function(){
+	     $.post('<{ofunc type=url link="/adminpage/app/module/appindexshow/datatype/json"}>', {'type':'apppayonline','apppayonline':$("input[name='apppayonline']:checked").val()} ,function (data, textStatus){  
+			if(data.error == false){
+				diasucces('操作成功','');
+			}else{
+				if(data.error == true)
+				{
+					diaerror(data.msg); 
+				}else{
+					diaerror(data); 
+				}
+			} 
+		}, 'json'); 
+	});
+	$("input[name='appdataver']").change(function(){
+    	$.post('<{ofunc type=url link="/adminpage/app/module/appindexshow/datatype/json"}>', {'type':'appdataver','appdataver':$("input[name='appdataver']").val()} ,function (data, textStatus){  
+			if(data.error == false){
+				diasucces('操作成功','');
+			}else{
+				if(data.error == true)
+				{
+					diaerror(data.msg); 
+				}else{
+					diaerror(data); 
+				}
+			} 
+		}, 'json');
+	});
+	
+	/***  模块排序  ****/
+$(".savemodulepaixu").change(function(){
+    	$.post('<{ofunc type=url link="/adminpage/app/module/savemodulepaixu/datatype/json"}>', {'name':$(this).attr('name'),'orderid':$(this).val()} ,function (data, textStatus){  
+			if(data.error == false){
+				diasucces('操作成功','');
+			}else{
+				if(data.error == true)
+				{
+					diaerror(data.msg); 
+				}else{
+					diaerror(data); 
+				}
+			} 
+		}, 'json');
+	 
+})
+
+});
+</script>  
+<!--newmain 结束-->
+ <{/block}>

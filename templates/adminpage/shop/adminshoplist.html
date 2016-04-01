@@ -1,0 +1,257 @@
+ <{extends file="<{$tempdir}>/public/admin.html"}> 
+   <{block name=extendjs}>
+<script type="text/javascript" language="javascript" src="<{$siteurl}>/templates/<{$tempdir}>/public/js/artdialog/plugins/iframeTools.js"></script>
+ <{/block}>
+ <{block name=controlname}>店铺列表<{/block}>
+ <{block name=bodylist}>
+
+      <div style="width:auto;overflow-x:hidden;overflow-y:auto">  
+      	 
+      	<div class="search">
+      		 
+            
+            <div class="search_content">
+            	 
+            	 <form method="get" name="form1" action="<{ofunc type=url link="/adminpage/shop/module/adminshoplist"}>">
+            	   <input type="hidden" name="ctrl" value="adminpage">
+            	   <input type="hidden" name="action" value="shop">
+            	   <input type="hidden" name="module" value="adminshoplist">
+            	   <label>店铺名</label>
+            	   <input type="text" name="shopname" value="<{$shopname|default:''}>"> 
+            	   <label>用户名：</label>
+            	   <input type="text" name="username" value="<{$username|default:''}>">                 
+                  <label>手机：</label>
+            	   <input type="text" name="phone" value="<{$phone|default:''}>">    
+            	  
+            	    <input type="submit" value="提交查询" class="button">  
+            	 </form>
+            </div>       
+        
+      	</div>
+      	
+      	
+           <div class="tags">
+
+      	  
+          <div id="tagscontent">
+
+            <div id="con_one_1">
+
+              <div class="table_td" style="margin-top:10px;">
+
+              <form method="post" action="" onsubmit="return remind();"  id="delform">
+
+                  <table border="0" cellspacing="2" cellpadding="4" class="list" name="table" id="table" width="100%">
+
+                    <thead>
+
+                      <tr>
+
+                        <th width="60px"><input type="checkbox" id="chkall" name="chkall" onclick="checkall()"></th>
+
+                        <th align="center">店铺名称</th>
+     <th align="center">入驻资料</th>
+
+                        <th align="center">会员名称</th> 
+
+                        <th align="center">设置店铺标签</th> 
+                        <th align="center">是否营业</th>
+                       
+                        <th align="center">佣金</th>
+                        <th align="center">排序</th>
+                        <th align="center">有效时间</th>
+                        <th align="center">配送设置</th>
+                        <th align="center">操作</th>
+
+                      </tr>
+
+                    </thead> 
+
+                     <tbody>
+
+                     <{load_data assign="list" table="shop" showpage="true"  where="is_pass='1' <{$where}>"  orderby=" sort asc "  }> 
+                      <{foreach from=$list['list'] item=items}> 
+                      <tr class="s_out" onmouseover="this.bgColor='#F5F5F5';" onmouseout="this.bgColor='D7D7D7';" bgcolor="D7D7D7"> 
+                        <td align="center" ><input type="checkbox" name="id[]" value="<{$items['id']}>"></td> 
+                        <td align="center"><{$items['shopname']}>[<font color=red><{$shoptype[$items['shoptype']]}></font>]</td> 
+						   <td align="center"> <a onclick="showshopdetail('<{$items['id']}>','<{$items['shopname']}>');" href="#">查看详情</a></td> 
+                        <td align="center"> 
+                        	<{load_data assign="userinfo" table="member" type="one" where="uid='<{$items['uid']}>'" fileds="username" }> 
+                          	<{$userinfo['username']}>  
+                        	</td> 
+                        <td align="center">
+                        <a onclick="starttask('<{$items['id']}>','<{$items['shopname']}>');" href="#">设置</a> &nbsp;&nbsp;<a onclick="setps('<{$items['id']}>','<{$items['shopname']}>');" href="#">订单通知</a></td>  
+                        <td align="center"><{if $items['is_open'] == 1}>是<{else}>否<{/if}></td> 
+                   
+                         <td align="center"><{if $items['yjin']=='0'}>默认比例<{$yjin}><{else}><{$items['yjin']}><{/if}><a onclick="setyjin('<{$items['id']}>','<{$items['shopname']}>','<{$items['yjin']}>','<{$yjin}>');" href="#">设置</a></td>
+                        <td align="center"><input type="text" name="pxinput" data="<{$items['id']}>" value="<{$items['sort']}>" style="width:30px;padding:0px;"></td>
+                        <td align="center"><a href="#" onclick="doshow('<{$items['id']}>','<{intval(($items['endtime']-time())/86400)}>');"> <{if $items['endtime'] > 0}>    <{intval(($items['endtime']-time())/86400)}>    <{else}>设置 <{/if}></a></td>
+                          <td align="center">
+                        <a onclick="psset('<{$items['id']}>','<{$items['shopname']}>');" href="#">配送设置</a></td>  
+                         <td align="center"><a href="<{ofunc type=url link="/adminpage/shop/module/resetdefualt/shopid/<{$items['id']}>"}>" target="_blank">
+                            <input class="btn btn-success radius" type="button" value="进入商家后台">
+                         <!-- <img src="<{$siteurl}>/templates/<{$tempdir}>/public/images/admin/but.png"> --></a></td> 
+                      </tr> 
+                       <{/foreach}> 
+
+                    </tbody> 
+
+                  </table>
+
+                <div class="blank20"></div>
+
+                 
+                </form>
+            <style>
+
+ .radius{border-radius:4px; overflow:hidden}              
+.btn{
+   font-weight: bold;
+
+   display:inline-block;
+   cursor:pointer;
+   text-align:center; 
+
+   white-space:nowrap;
+   vertical-align: middle;
+   *zoom:1;
+   -webkit-transition:background-color .1s linear;
+   -moz-transition:background-color .1s linear;
+   -o-transition:background-color .1s linear;
+   transition:background-color .1s linear;
+}
+.btn-success{color:#fff;background-color:#01DCB6; border-color:#5eb95e}
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success.active{color:#fff;background-color:#01DCB6;border-color:#429842}
+
+              </style>
+                <div class="page_newc">
+                 	     <div class="select_page">
+                 	      
+                 	     	
+                 	     	
+                 	     	</div>
+                       <div class="show_page"><ul><{$list['pagecontent']}></ul></div>
+                 </div>
+
+                <div class="blank20"></div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        
+  </div>
+  
+  
+  
+  
+  
+ 
+</div>  
+<script>
+	 	var dialogs ;
+	 function starttask(shopid,shopname)
+	 {
+	 	 dialogs = art.dialog.open(siteurl+'/index.php?ctrl=adminpage&action=shop&module=shopbiaoqian&id='+shopid,{height:'450px',width:'400px'},false); 
+	 }
+	  function showshopdetail(shopid,shopname)
+	 {
+	 	 dialogs = art.dialog.open(siteurl+'/index.php?ctrl=adminpage&action=shop&module=showshopdetail&id='+shopid,{height:'650px',width:'800px'},false);
+	 	 dialogs.title('查看'+shopname+'入驻资料'); 
+	 }
+function uploadsucess(linkurl){
+ 	dialogs.close(); 
+ 	window.location.reload(); 
+}
+function uploaderror(msg){
+	 alert(msg); 
+}
+function setyjin(shopid,shopname,myongjin,defaultyj)
+{
+	var mytj = myongjin==0?defaultyj:myongjin;
+  var	htmls = '<form method="post" id="subyj" action="#" style="text-align:center;"><table>';
+	htmls += '<tbody><tr>';
+	htmls += '<td height="50px">佣金比例:</td>';
+	htmls += '<td> <input type="text" name="yjin" value="'+mytj+'" style="width:100px;"></td></tr>';
+	htmls += '</tbody></table> ';
+  htmls += '<input type="hidden" value="'+shopid+'" name="shopid"> ';
+	htmls += '<input type="button" value="确认提交" class="button" id="buttonsubyj" ></form>';
+  art.dialog({
+    id: 'testID4',
+    title:'设置'+shopname+'佣金',
+    content: htmls
+  });
+} 
+$('#buttonsubyj').live('click',function(){ 
+	$.post('<{ofunc type=url link="/adminpage/shop/module/savesetshopyjin/datatype/json"}>', $('#subyj').serialize() ,function (data, textStatus){  
+			if(data.error == false){
+     	  	diasucces('操作成功','');
+     	}else{
+     		if(data.error == true)
+     		{
+     			diaerror(data.msg); 
+     		}else{
+     			diaerror(data); 
+     		}
+     	} 
+	 }, 'json'); 
+});
+$("input[name='pxinput']").live("change", function() {   
+	$.post('<{ofunc type=url link="/adminpage/shop/module/adminshoppx/datatype/json"}>', {'id':$(this).attr('data'),'pxid':$(this).val()},function (data, textStatus){  
+			if(data.error == false){
+     		diasucces(data.msg,newurl);
+     	}else{
+     		if(data.error == true)
+     		{
+     			diaerror(data.msg); 
+     		}else{
+     			diaerror(data); 
+     		}
+     	} 
+	 }, 'json'); 
+});
+function doshow(shopid,shoptian){
+var	htmls = '<form method="post" id="doshwoform" action="#" style="text-align:center;"><table>';
+	htmls += '<tbody><tr>';
+	htmls += '<td height="50px">有效天数:</td>';
+	htmls += '<td> <input type="text" name="mysetclosetime" value="'+shoptian+'" style="width:100px;"></td></tr>';
+	htmls += '</tbody></table> ';
+  htmls += '<input type="hidden" value="'+shopid+'" name="shopid"> ';
+	htmls += '<input type="button" value="确认提交" class="button" id="dosetclosetime" ></form>';
+  art.dialog({
+    id: 'testID3',
+    title:'设置开店有效时间',
+    content: htmls
+  });
+}
+$('#dosetclosetime').live('click',function(){ 
+	$.post('<{ofunc type=url link="/adminpage/shop/module/shopactivetime/datatype/json"}>', $('#doshwoform').serialize() ,function (data, textStatus){  
+			if(data.error == false){
+     		diasucces(data.msg,'');
+     	}else{
+     		if(data.error == true)
+     		{
+     			diaerror(data.msg); 
+     		}else{
+     			diaerror(data); 
+     		}
+     	} 
+	 }, 'json'); 
+});
+function setps(shopid,shopname)
+{
+	 	 dialogs = art.dialog.open(siteurl+'/index.php?ctrl=adminpage&action=shop&module=setnotice&shopid='+shopid,{height:'180px',width:'400px'},false); 
+} 	
+function psset(shopid,shopname){
+	 dialogs = art.dialog.open(siteurl+'/index.php?ctrl=adminpage&action=area&module=setps&shopid='+shopid,{height:'300px',width:'600px'},false); 
+} 
+</script>
+<!--newmain 结束-->
+<{/block}>

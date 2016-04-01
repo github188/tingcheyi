@@ -1,0 +1,81 @@
+ <{extends file="<{$tempdir}>/public/wxsite.html"}>  
+<{block name=extendcss}> 
+<{/block}>
+ <{block name=extendjs}>  
+   <script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/template.min.js"></script>    
+<{/block}>
+<{block name=myScrolljs}>
+<script> 
+		var myScroll;
+function loaded() {
+	myScroll = new iScroll('wrapper', {
+		useTransform: false,
+		onBeforeScrollStart: function (e) {
+			var target = e.target;
+			while (target.nodeType != 1) target = target.parentNode;
+
+			if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
+				e.preventDefault();
+		}
+	});
+}
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false); 
+document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+</script>
+<{/block}>
+<{block name=sitetitle}><{$sitename}><{/block}>
+<{block name=hearnav}>
+<div class="toptitCon">
+ <div class="toptitBox">
+  <div class="toptitL"><i></i></div>
+  <div class="toptitC"><h3>余额</h3></div>
+  <div class="toptitR"  onclick="dolink('<{ofunc type=url link="/wxsite/costlog"}>');" ><h3>余额明细</h3></div>
+ </div>
+</div>
+<{/block}>
+<{block name=blockcontent}>  
+ <div id="wrapper" style="top:40px; bottom:55px;">
+	<div id="scroller">
+	
+
+<!--账户余额-->
+<div class="accobalaplay">
+ <div class="accobalaplayicon"></div>
+ <span>账户余额：<b>￥<{$member['cost']}></b></span>
+</div>
+<!--直接充值-->
+<div class="balarechar">
+ <ul>
+  <li>充值：<input type="number" id="Sum" name="Sum" value="" placeholder="输入金额"></li>
+  <li  onclick="dolink('<{ofunc type=url link="/wxsite/paybangcard"}>');" >使用充值卡充值</li>
+ </ul>
+</div>
+ 
+  <div style="height:10px;"></div>
+</div>		 
+</div>	 
+<script>
+
+	function nextpay(){
+		
+		
+		if( $('#Sum').val() <= 10 ){
+			Tmsg('充值金额不能小于10！');
+		} else{
+ 			var newlink = '<{ofunc type=url link="/wxsite/subbalancepay/cost/@cost@"}>';
+			var showlink = newlink.replace('@cost@',$('#Sum').val());
+			//Sum
+			location.href = showlink ;  
+		}
+		
+		
+	} 
+	
+
+ </script>
+<{/block}>
+<{block name=footer}>
+<div style=" position:fixed; z-index:999999; bottom:10px; width:100%; ">
+<div style="margin-top:10px;" class="intexchabutt"><input type="button" value="立即充值" id="nextpay" onclick="nextpay();"  class="intexbg1"></div>
+</div>
+<{/block}>

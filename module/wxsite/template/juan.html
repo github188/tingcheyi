@@ -1,0 +1,95 @@
+ <{extends file="<{$tempdir}>/public/wxsite.html"}>  
+<{block name=extendcss}> 
+ <link rel="stylesheet"  href="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/css/juan.css">
+<{/block}>
+ <{block name=extendjs}> 
+  <script src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/js/template.min.js"></script>   
+ 
+ <script>  
+  function showorder(obj){
+
+  	window.location.href=siteurl+'/index.php?ctrl=wxsite&action=ordershow&orderid='+$(obj).attr('orderid')+'&random=@random@';  //'ordershow.html?orderid='+$(obj).attr('orderid');//  	alert($(obj).attr('orderid')); 
+
+  } 
+</script>
+
+<{/block}>
+ <{block name=hearnav}>
+<div class="toptitCon">
+ <div class="toptitBox">
+  <div class="toptitL"><i></i></div>
+  <div class="toptitC"><h3>优惠券列表</h3></div>
+    <div class="toptitR"  onclick="dolink('<{ofunc type=url link="/wxsite/addjuan"}>');" ><h3><img style="width:19px;    top: 11px;
+    position: absolute;
+    right: 10px;" src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/addjuanBG.png" /></h3></div>
+
+ </div>
+</div>
+ <{/block}>
+<{block name=sitetitle}><{$sitename}><{/block}>
+<{block name=myScrolljs}><script> 
+		var myScroll;
+function loaded() {
+	myScroll = new iScroll('wrapper', {
+		useTransform: false,
+		onBeforeScrollStart: function (e) {
+			var target = e.target;
+			while (target.nodeType != 1) target = target.parentNode;
+
+			if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
+				e.preventDefault();
+		}
+	});
+}
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false); 
+document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+</script>
+<{/block}>
+<{block name=blockcontent}> 
+ 
+ <div id="wrapper" style="top:40px;">
+	<div id="scroller">
+	
+	
+	
+	<div class="discouponCon">
+ <div class="discouponBox">
+ 
+  
+  
+  <{foreach from=$pcjuan['list'] key=key item=items}>   
+  
+  <div class="discoupon">
+   <div class="discouponT <{if $items['endtime'] < $nowtime }> discouponTbg2 <{else}> discouponTbg1  <{/if}> ">
+    <span>￥<b><{$items['cost']}></b></span>
+    <ul>
+     <li>有效日期：<{$items['endtime']|date_format:"%Y-%m-%d"}></li>
+     <li>满<{$items['limitcost']}>元可用</li>
+    </ul>
+   </div>
+   <div class="discouponB"><{$items['name']}></div>
+  </div>
+  
+   <{/foreach}>  
+  
+ </div>
+</div>
+
+
+	 
+ <div style="clear:both;height:20px;"></div>
+ 
+
+ 
+<script>
+	function changeto(obj){
+	  var pobj = $(obj).parent();
+	  $(pobj).find('.list').toggle();
+	}
+	 
+</script>
+
+
+</div>
+</div>
+<{/block}>

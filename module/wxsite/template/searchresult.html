@@ -1,0 +1,135 @@
+	<div class="searchtit"><i class="topsetit"></i><h3>商家</h3></div>
+
+	<div class="nearbyreCon" style="margin-top:0px;">
+	<div class="nearbyreBox">
+	<{if !empty( $shopsearchlist )}>
+	<{foreach from=$shopsearchlist item=items }>
+	
+				<ul class="nearbyre"  data-supplierid="<{$items['id']}>"  > 
+			 
+				  <{if $items['opentype']  != 2  && $items['opentype']  != 3 }>
+					  <a href="javascript:void(0);">  
+				 <{else}>	
+					<{if $items['shoptype']  == 0 }>
+				 		 <a href="<{ofunc type=url link="/wxsite/shopshow/typelx/wm/id/<{$items['id']}>"}>">
+					<{else}>
+					 	<a href="<{ofunc type=url link="/wxsite/shopshow/typelx/mk/id/<{$items['id']}>"}>">
+					<{/if}>
+				 <{/if}>
+				  <li class="nearbyreLimg"><img class="scrollLoading"  src="<{$items['shoplogo']|default:$shoplogo}>"></li>  
+			  	<li class="nearbyreRco"> 
+			  	 <ul class="nearbyrecommend">  
+				  	  <li><h3><{$items['shopname']}></h3></li>  
+				 
+				 <{if $items['opentype']  == 3 }>
+				 		<li class="nerestate" style="margin-top: 8px;"><i class="nerejs"></i></li> 
+				  <{/if}>
+				<{if $items['opentype']  != 2  && $items['opentype']  != 3 }>
+				 	<li class="nerestate" style="margin-top: 8px;"><i class="nerexx"></i></li> 
+				<{/if}>
+				   <li>  
+				  <ul class="neresavo"> 
+				 	<li style="width:'+spdatas[i].point*15+'px; height:15px; overflow:hidden;"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></li> 
+				 	<li>月售<{$items['ordercount']}>单</li>  
+				  
+				 <{if $items['sendtype']  = 0 }>
+					<li style=" float:right;"><i class="nermyf"></i></li>  
+				<{/if}>
+				  </ul>  
+				  	  </li>  
+				   	  <li>  
+				  	   <ul class="nereprice"> 
+				 		<li><span>起送价<b>￥<{$items['limitcost']}></b></span>|</li> 
+				   		<li><span>配送费<b>￥<{$items['pscost']}></b></span><{if $items['attrdet']['input'] != '' }>| <{/if}></li>  
+						<{if $items['attrdet']['input'] != '' }>	<li><span><{$items['attrdet']['input']}>送达</span></li>  <{/if}>
+				  	   </ul> 
+				  	  </li>  
+				<{if count($items['cxlist'])  > 0 }>
+					<{foreach from=$items['cxlist'] item=itv }>
+ 				 	  <li class="neredisc"><i class="nereyh" style=" margin-top: 5px;background:url(<{$itv['imgurl']}>) no-repeat left center ;background-size: 100%;"></i><span><{$itv['name']}></span></li> 
+					 <{/foreach}>
+				<{/if}>
+				  </ul>  
+				  	</li>  
+				   </a> 
+				  </ul>  
+	
+	
+<{/foreach}>	
+
+<{else}>
+<ul class="nearbyre"   > 
+<li>
+	未查询到相关商户...
+</li>
+  </ul>  
+<{/if}>
+
+</div>
+</div>
+
+	<div class="searchtit"><i class="hissetit"></i><h3>商品</h3></div>
+<div class="ordisordRight"style="background:#fff;">
+
+<{if !empty($goodssearchlist)}>
+	<{foreach from=$goodssearchlist item=items }>
+ 
+	  <div class="ordisordBox goodsli"   goodname="<{$items['name']}>"   id="gidli_<{$items['id']}>" typeid="<{$items['typeid']}>" data-price="<{$items['cost']}>" >
+	  
+		   <div class="ordisord">
+			<ul class="ordisordet">
+			 <li  onclick="dolink('<{ofunc type=url link="/wxsite/foodshow/id/<{$items['id']}>"}>');"  ><img src="<{$items['img']|default:$shoplogo}>"></li>
+			 <li  onclick="dolink('<{ofunc type=url link="/wxsite/foodshow/id/<{$items['id']}>"}>');"  >
+			  <ul class="ordisordC">
+			   <li><h3><{$items['name']}></h3></li>
+			   <li><span>销量<{$items['sellcount']}><{if !empty($itv['goodattr'])}><{$itv['goodattr']}><{else}><{if !empty($shopinfo['goodattrdefault'])}><{$shopinfo['goodattrdefault']}><{/if}><{/if}></span></li>
+			   <li><b>￥<{$items['cost']}></b><{if !empty($itv['goodattr'])}>/<{$itv['goodattr']}><{else}><{if !empty($shopinfo['goodattrdefault'])}>/<{$shopinfo['goodattrdefault']}><{/if}><{/if}>
+			   <{if $items['is_cx'] == 1 }><del><{$items['cost']/($items['zhekou']/10)}>元</del><{/if}></li>
+			  <{if $items['is_cx'] == 1 }> <li><a><{$items['zhekou']}>折</a></li><{/if}>
+			  </ul>
+			 </li>
+			 <li style="float:right;">
+			  <ul class="ordisordR">  
+			  <{if $items['opentype'] != 2 && $items['opentype'] != 3}>
+			  <span class="shopdayangstatus">休息中</span>
+			  <{else}>
+				 
+				 <{if $items['count'] > 0 }> 
+					<{if $items['shoptype']  == 0 }> 
+						<li  onclick="dolink('<{ofunc type=url link="/wxsite/shopshow/typelx/wm/id/<{$items['shopid']}>"}>');"   class="moreguige">进入商家</li>
+					  <{else}>
+					  <li  onclick="dolink('<{ofunc type=url link="/wxsite/shopshow/typelx/mk/id/<{$items['shopid']}>"}>');"   class="moreguige">进入商家</li>
+					  <{/if}>
+				  <{else}>
+				  <li style="color:#cccccc;"  onclick="dolink('<{ofunc type=url link="/wxsite/foodshow/id/<{$items['id']}>"}>');"   class="moreguige">售完</li>
+				  
+				  <{/if}>
+				   
+				   
+			  <{/if}>
+			 
+			  </ul>
+			 </li>
+			</ul>
+		<{if !empty($items['descgoods']) }>	<p><{$items['descgoods']}></p> <{/if}>
+		   </div>
+	 
+	  </div> 
+
+<{/foreach}> 
+	<{else}>
+ <div class="ordisordBox goodsli" >
+	  
+		   <div class="ordisord">
+			<ul class="ordisordet">
+<li>
+	未查询到相关商品...
+</li>
+  </ul>  
+  	  </div> 
+	  	  </div> 
+<{/if}>
+
+	
+	</div>
+		  

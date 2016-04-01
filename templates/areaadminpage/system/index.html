@@ -1,0 +1,97 @@
+ <{extends file="<{$tempdir}>/public/admin.html"}> 
+ <{block name=extendjs}>
+ <script src="<{$siteurl}>/js/kindeditor/kindeditor.js" type="text/javascript" language="javascript"></script>
+ <script src="<{$siteurl}>/templates/<{$tempdir}>/public/js/datepicker/WdatePicker.js" type="text/javascript" language="javascript"></script> 
+ <{/block}>
+ <{block name=controlname}>网站信息<{/block}>
+ <{block name=bodylist}> 
+</div>
+</div>
+</div> 
+   <div class="right_content">
+   	  	
+   	  	
+   	  	   
+   	      <!-- 第二部分开始-->
+   	      <div class="showpart_2">
+   	      	 <div class="smallpart">
+   	      	 	   <div class="small_top"> 系统信息 </div>
+   	      	 	   <div class="small_content">
+   	      	 	   	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+   	      	 	   		<tr>
+   	      	 	   			  <td class="tdcls1">服务器当前时间</td><td class="tdcls2"><{$smarty.now|date_format:"%Y-%m-%d %H:%M:%S"}></td>
+   	      	 	   		</tr>
+   	      	 	   		<tr>
+   	      	 	   			  <td class="tdcls1">PHP版本</td><td class="tdcls2"><{phpversion()}></td>
+   	      	 	   		</tr>
+   	      	 	   		<tr>
+   	      	 	   			  <td class="tdcls1">官方网站地址：</td><td class="tdcls2">www.tingche.com</td>
+   	      	 	   		</tr>
+   	      	 	   		<tr>
+   	      	 	   			  <td class="tdcls1">版权所有：</td><td class="tdcls2">广州**停车科技有限公司</td>
+   	      	 	   		</tr>
+   	      	 	   	</table>
+   	      	 	   	<div style="width:530px;height:110px; padding:15px 0px; text-align:center; margin:0 auto;">
+						<a target="_blank" href="<{ofunc type=url link="/adminpage/order/module/ordertoday"}>"><img style="margin-right:50px;"  width="180"  src="<{$siteurl}>/templates/<{$tempdir}>/public/images/admin/orderquickSystem.png" />
+						</a>
+						<a target="_blank" href="<{ofunc type=url link="/adminpage/order/module/adminfastfoods"}>"><img width="180"  src="<{$siteurl}>/templates/<{$tempdir}>/public/images/admin/kefudaikeSystem.png" />
+						</a>
+					</div>
+   	      	 	   	</div>
+   	      	</div>
+   	      	<style>
+   	      		.tdcls1{line-height:45px;}
+   	      		.tdcls3{width:50%;font-weight:bold;text-align:right;line-height:45px;}
+   	      		.ac{border-right: 1px solid #e5e5e5;}
+   	      		.tdcls3 a{width:100px;color:#0076cf;padding-left:10px;padding-right:10px;}
+   	      		</style>
+   	      	<div class="smallpart">
+   	      		   <div class="small_top"> 数据统计 </div>
+   	      		   <div class="small_content">
+   	      		   		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+   	      	 	   		    <tr>
+   	      	 	   			  <td class="tdcls3 ac">	今日总订单<a ><{$tjdata['dayallorder']}></a></td><td class="tdcls3">已上线商家<a ><{$tjdata['onlineshop']}></a></td>
+   	      	 	   		</tr>
+   	      	 	   		<tr>
+   	      	 	   			  <td class="tdcls3 ac">今日待审核订单<a ><{$tjdata['dayworder']}></a></td><td class="tdcls3">待审核商家<a ><{$tjdata['wshop']}></a></td>
+   	      	 	   		</tr>
+   	      	 	   		<tr>
+   	      	 	   			  <td class="tdcls3 ac">今日已审核订单<a ><{$tjdata['dayporder']}></a></td><td class="tdcls3">会员总数<a ><{$tjdata['pmember']}></a></td>
+   	      	 	   		</tr>
+   	      	 	   		<tr>
+   	      	 	   			  <td class="tdcls3 ac">本月已完成订单<a ><{$tjdata['monthallorder']}></a></td><td class="tdcls3">商城订单<a ><{$tjdata['market']}></a></td>
+   	      	 	   		</tr>
+   	      	 	   			<tr>
+   	      	 	   			  <td class="tdcls3 ac">已完成订单总量<a ><{$tjdata['allorder']}></a></td><td class="tdcls3">商品数量<a ><{$tjdata['marketg']}></a></td>
+   	      	 	   		</tr>
+   	      	 	   	 
+
+
+
+
+   	      	 	   	  </table> 
+   	      		   	</div>
+   	      	</div>
+   	      
+
+
+
+
+
+   	      	
+   	      </div>
+   	      <!-- 第二部分结束-->
+   	  </div>
+   	  <!-- right_content 结束-->
+   	  
+   </div>
+   <!-- newmain_all 结束-->
+</div>	
+<script>
+	$(function(){ 
+	 $('.right_content').eq(0).hide();
+	 $('.show_content_m_t3').hide();
+	});
+	</script>
+<!--newmain 结束-->
+<{/block}>

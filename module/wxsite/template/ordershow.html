@@ -1,0 +1,434 @@
+ <{extends file="<{$tempdir}>/public/wxsite.html"}>  
+<{block name=extendcss}> 
+<link rel="stylesheet"  href="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/css/order.css">  
+<link rel="stylesheet"  href="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/css/ordershow.css">  
+<style>
+.statusline{    position: absolute;
+    top: 58px;
+    width: 2px;
+    border-radius: 0px;
+    height: 40px;
+    background: #ff6e6e;
+    left: 15px;}
+</style>
+<{/block}>
+ <{block name=extendjs}> 
+  <{if empty($order)}>
+  <script>
+$(function(){  
+       error($('#supplierlist'),'未获取到订单'); 
+});
+  </script>
+  <{/if}>
+<{/block}>
+<{block name=myScrolljs}>
+<script> 
+		var myScroll;
+function loaded() {
+	myScroll = new iScroll('wrapper', {
+		useTransform: false,
+		onBeforeScrollStart: function (e) {
+			var target = e.target;
+			while (target.nodeType != 1) target = target.parentNode;
+
+			if (target.tagName != 'SELECT' && target.tagName != 'INPUT' && target.tagName != 'TEXTAREA')
+				e.preventDefault();
+		}
+	});
+}
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false); 
+document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+</script>
+<script>
+function showorderdetail(){
+ 
+	$("#showorderstatus").removeClass('ainregaA');
+	$("#showorderdetail").addClass('ainregaA');
+	$("#fis_elm__5").hide();
+	$("#fis_elm__4").show();
+	myScroll.refresh();
+}
+function showorderstatus(){
+
+	$("#showorderdetail").removeClass('ainregaA');
+	$("#showorderstatus").addClass('ainregaA');
+	
+	$("#fis_elm__5").show();
+	$("#fis_elm__4").hide();
+	myScroll.refresh();
+}
+</script>
+<{/block}>
+<{block name=sitetitle}><{$sitename}><{/block}>
+<{block name=hearnav}>
+<div class="toptitCon">
+ <div class="toptitBox">
+  <div class="toptitL"><i></i></div>
+  <div class="toptitC"><h3><{$order['shopname']}></h3></div>
+ <div class="toptitR"  onclick="dolink('<{ofunc type=url link="/wxsite/index"}>');" ><h3><img style="width: 25px;
+    top: 7px;
+    position: absolute;
+    right: 10px;" src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/jinruindexBg.png" /></h3></div> </div>
+</div>
+<{/block}>
+  <{block name=footer}><{/block}>
+<{block name=blockcontent}> 
+<style>
+.page-app{ background:#f0f0f0;}
+body{background:#f0f0f0;}
+</style>
+
+ 
+<div id="fis_elm__3" style="position:fixed;z-index:99999999999; top:40px;" >
+
+	
+	
+	
+<!--订单链接-->
+<div class="signinregistertit">
+ <ul>
+  <li id="showorderstatus" onclick="showorderstatus();" class="ainregaA" >订单状态</li>
+  <li   id="showorderdetail"  onclick="showorderdetail();" >订单详情</li>
+ </ul>
+</div>
+ 
+ 
+</div>
+
+
+ <div id="wrapper" style="top:85px;bottom:0px; ">
+ 	<div id="scroller">
+	
+<!--订单列表-->
+ 
+ <div id="fis_elm__4" style="display:none;">
+  
+<!--订单列表-->
+<div class="orderdishes">
+ <div class="orderdishestit"><i class="shopicon"></i><{$order['shopname']}></div>
+ <div class="orderdishesmain">
+ <{foreach from=$orderdet item=items}>
+  <ul>
+   <li class="ordfontele"><{$items['goodsname']}></li>
+   <li><b>x<{$items['goodscount']}></b></li>
+   <li>￥<{$items['goodscost']}></li>
+  </ul>
+  <{/foreach}>
+  <{if $order['bagcost'] > 0 }>
+  <ul>
+   <li class="ordfontele">餐盒费</li>
+   <li>&nbsp;</li>
+   <li>￥<{$order['bagcost']}></li>
+  </ul>
+  <{/if}>
+   <{if $order['pscost'] > 0 }>
+  <ul>
+   <li class="ordfontele">配送费</li>
+   <li>&nbsp;</li>
+   <li>￥<{$order['pscost']}></li>
+  </ul>
+  <{/if}>
+  <{if $order['cxcost']+$order['yhjcost'] > 0 }>
+  <ul>
+   <li class="ordfontele">满减优惠</li>
+   <li>&nbsp;</li>
+   <li>-￥<{$order['cxcost']+$order['yhjcost']}></li>
+  </ul>
+  <{/if}>
+  <ul>
+   <li class="ordfontele">合计</li>
+   <li>&nbsp;</li>
+   <li><span>￥<{$order['allcost']}></span></li>
+  </ul>
+ </div>
+</div>
+<!--订单详情-->
+<div class="orderdishes">
+ <div class="orderdishestit"><i class="detaicon"></i>订单详情</div>
+ 
+ <{if $order['shoptype'] != 100 }>
+ 
+ 
+ <div class="orderdetailsmain">
+  <ul>
+   <li><b>订单号：</b><span><{$order['dno']}></span></li>
+   <li><b>下单时间：</b><span><{$order['addtime']}></span></li>
+   <li><b>支付方式：</b><span>
+   <{if $order['paytype'] == 0 }> 
+	货到支付<{if $order['paystatus'] == 0 }>（未付）<{/if}><{if $order['paystatus'] == 1 }>（已付）<{/if}> 
+   <{/if}>
+    <{if $order['paytype'] == 1 }> 
+	
+		<{if $order['paytype_name'] == '' }> 
+			在线支付
+		<{else}>
+			<{if $order['paytype_name'] == 'open_acout' }>余额支付<{/if}>
+			<{if $order['paytype_name'] == 'weixin' }>微信支付<{/if}>
+			<{if $order['paytype_name'] == 'alipay' ||  $order['paytype_name'] == 'alimobile' }>支付宝支付<{/if}>
+			<{if $order['paystatus'] == 1 }>(已付）<{/if}> <{if $order['paystatus'] == 0 }>(未付）<{/if}> 
+		<{/if}>
+  
+   <{/if}>
+   </span></li>
+   
+   <li><b>联系人：</b><span><{$order['buyername']}></span></li>
+   <li><b>手机号码：</b><span><{$order['buyerphone']}></span></li>
+   
+   
+    <{if $order['is_goshop'] == 0}> 
+		 <li><b>收货地址：</b><span><{$order['buyeraddress']}></span></li> 
+	   <{if $order['content']  != '' }>
+	   <li><b>备注：</b><span><{$order['content']}></span></li>
+	   <{/if}>
+	   <li><b>配送信息：</b><span>本订单由<{if $order['pstype'] == 0 }><{$sitename}><{/if}><{if $order['pstype'] == 1}>商家<{/if}>提供配送服务</span></li>
+	   
+   
+   <{else}>
+ 	   <li><b>消费时间：</b><span><{$order['posttime']}></span></li>
+
+	   <li><b>车位座数：</b><span>
+   <{assign var=showother value=$order['othertext']|unserialize}>   
+		            		 		  	 <{foreach from=$showother key=mytest item=itc}>
+		            		 		  	<font color=red> <{$mytest}>:<{$itc}> </font>
+		            		 		  	 <{/foreach}>
+</span></li>
+	   <{if $order['content']  != '' }>
+	   <li><b>备注：</b><span><{$order['content']}></span></li>
+	   <{/if}>
+ 
+	<{/if}>   
+   
+  </ul>
+ </div>
+ 
+ 
+ 
+ <{/if}>
+ 
+</div>
+<!--再来一单-->
+ 
+ 
+
+	<{if $order['shoptype'] == 1}>
+		<div class="recurorder"  onclick="dolink('<{ofunc type=url link="/wxsite/shopshow/typelx/mk/id/<{$order['shopid']}>"}>');"    ><input type="button" value="再来一单"></div> 
+	  <{else}>
+			<{if $order['is_goshop'] == 0}>
+				<div class="recurorder"  onclick="dolink('<{ofunc type=url link="/wxsite/shopshow/typelx/wm/id/<{$order['shopid']}>"}>');"    ><input type="button" value="再来一单"></div> 
+			 <{else}>	
+				<div class="recurorder"  onclick="dolink('<{ofunc type=url link="/wxsite/shopshow/typelx/yd/id/<{$order['shopid']}>"}>');"    ><input type="button" value="再来一单"></div> 
+			<{/if}>
+	 <{/if}>
+ 
+
+</div>
+ 
+ 
+ 
+ 
+ 
+ <!-- 订单状态 -->
+ <div id="fis_elm__5" style="margin-bottom:53px;"><div id="order-widget-orderhistory" class="order-widget-orderhistory">
+<div class="relative-wrapper">
+
+
+
+<{foreach from=$orderwuliustatus key=key  item=items name=wuliuindex}>
+			<div class="item">
+			<div class="status-icon">
+			<span class="myline -mark">
+			<img src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/order_status_bg.png">
+			</span>
+			<{if !($smarty.foreach.wuliuindex.last eq 1)}><div class="statusline"></div><{/if}>
+			</div>
+			<div class="status-card">
+			<div class="card-arrow"></div>
+			<div class="card-content">
+			<p class="big"><{$items['statustitle']}>
+			<span><{$items['addtime']|date_format:"%m月 %d日 %H:%M"}></span>
+			</p>	
+			<p class="small"><{$items['ststusdesc']}>		
+			</p>
+			</div>
+			</div>
+			</div> 
+<{/foreach}>
+<{if $order['paytype'] == 1 && $order['paystatus'] == 0  }>
+
+			<div class="item">
+			<div class="status-icon">
+			<span class="myline -mark"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/order_status_bg.png">
+			</span>
+			<div class="statusline" style="top:-32px;"></div>
+			<div class="statusline"></div>
+			</div>
+			<div class="status-card">
+			<div class="card-arrow"></div>
+			<div class="card-content">
+			<p class="big">
+			待支付
+			<span><{$orderwuliustatus[0]['addtime']|date_format:"%m月 %d日 %H:%M"}> </span>
+			</p>
+			<p class="small">
+			请在15分钟内完成支付
+			</p>
+			</div>
+			</div>
+			</div>
+			<div class="item">
+			<div class="status-icon">
+			<span class="myline -mark"><img src="<{$siteurl}>/templates/<{$tempdir}>/public/wxsite/images/order_status_bg.png">
+			</span>
+			</div>
+			<div class="status-card">
+			<div class="card-arrow"></div>
+			<div class="card-content">
+			<p class="big" onclick="dolink('<{ofunc type=url link="/wxsite/subshow/orderid/<{$order['id']}>"}>');"  style="line-height:40px;">请继续支付
+			<span> </span>
+			</p>		 
+			</div>
+			</div>
+			</div>
+
+<{/if}>
+
+
+
+</div>
+<div class="time-btm">
+<div class="right-btn">
+<div class="title none">
+ 		 
+ 
+ <{if $order['status'] >= 0 && $order['status'] < 2     }> 
+	 <{if $order['is_reback'] == 0  }>
+		 <{if $order['paytype'] == 0  && $order['is_make'] == 0   }>
+				<a class="cui-btn active"  
+				<{if $order['paytype'] == 0 }> 
+					onclick="unorder();"  
+				<{else}> 
+					<{if $order['paystatus'] == 0 }>  onclick="unorder();"   <{else}> onclick="dolink('<{ofunc type=url link="/wxsite/drawbacklog/orderid/<{$order['id']}>"}>');" <{/if}>
+				<{/if}> 
+				href="javascript:void(0);">取消订单 </a> 
+	 
+		<{/if}>
+	 
+		 <{if $order['paytype'] == 1 && $order['paystatus'] == 1 && $order['is_make'] == 0   }>
+		 
+			<a  onclick="dolink('<{ofunc type=url link="/wxsite/drawbacklog/orderid/<{$order['id']}>"}>');"   class="cui-btn active">取消订单</a>
+		 
+		<{/if}>
+		
+	<{else}>
+		<a  onclick="dolink('<{ofunc type=url link="/wxsite/drawbacklog/orderid/<{$order['id']}>"}>');"   class="cui-btn active">查看退款详情</a>
+	<{/if}>
+ <{/if}>
+ <{if $order['status'] == 4 || $order['status'] == 5 }> 
+	<a class="cui-btn active" onclick="dolink('<{ofunc type=url link="/wxsite/shoplist"}>');"  href="javascript:void(0);">逛逛别家 </a> 
+ <{/if}>
+ <{if $order['status'] == 0 && $order['paytype'] == 1 && $order['paystatus'] == 0  }> 
+	<a class="cui-btn active"  onclick="dolink('<{ofunc type=url link="/wxsite/subshow/orderid/<{$order['id']}>"}>');"  href="javascript:void(0);">继续支付 </a> 
+ <{/if}> 
+ <{if $order['status'] >= 0 && $order['status'] < 3 &&  $order['is_make'] == 1   }> 
+	<a class="cui-btn active"  onclick="dolink('<{ofunc type=url link="/wxsite/shoplist"}>');"  href="javascript:void(0);">逛逛别家 </a> 
+ <{/if}> 
+ <{if $order['status'] == 2  && $order['is_reback'] == 0  }> 
+	<a class="cui-btn active" onclick="acceptorder();"    href="javascript:void(0);">确认收货 </a> 
+ <{/if}>
+ <{if $order['status'] == 3  && $order['is_acceptorder'] == 1 && $order['is_ping'] == 0 }> 
+	<a class="cui-btn active" onclick="pingorder();"    href="javascript:void(0);">评价订单 </a> 
+ <{/if}>
+  <{if $order['status'] == 3  && $order['is_acceptorder'] == 1 && $order['is_ping'] == 1 }> 
+	  <{if $order['shoptype'] == 1}>
+		<a class="cui-btn active" onclick="dolink('<{ofunc type=url link="/wxsite/shopshow/typelx/mk/id/<{$order['shopid']}>"}>');"    href="javascript:void(0);">在来一单 </a> 
+	  <{else}>
+			 <{if $order['is_goshop'] == 1}>
+				<a class="cui-btn active" onclick="dolink('<{ofunc type=url link="/wxsite/shopshow/typelx/yd/id/<{$order['shopid']}>"}>');"    href="javascript:void(0);">在来一单 </a> 
+			 <{else}>
+				<a class="cui-btn active" onclick="dolink('<{ofunc type=url link="/wxsite/shopshow/typelx/wm/id/<{$order['shopid']}>"}>');"    href="javascript:void(0);">在来一单 </a> 
+			<{/if}>
+	 <{/if}>
+ <{/if}>
+	
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+</div>
+ 
+<script>
+	$(".liststyle1 li:even").addClass("tabEven"); 
+	 function unorder(){  
+	 	if(confirm('确认取消订单')){
+   	     $('#loading').show(); 
+   		   var url = siteurl+'/index.php?ctrl=order&action=userunorder&orderid=<{$order['id']}>&datatype=json&random=@random@';   
+ 	        $.ajax({ 
+           dataType: "json",  
+           url: url.replace('@random@', 1+Math.round(Math.random()*1000)),  
+           success: function(content) {    
+           	 if(content.error == false) 
+          	{  
+          		$('#orderstatus').text('已关闭'); 
+          		$('.cart_gojs').remove();
+          		$('#loading').hide();
+				window.location.reload();
+				
+          	}else{ 
+          			Tmsg(content.msg);
+          		  $('#loading').hide();
+          	}  
+          	 
+	         }, 
+           error: function(content) {  
+             	Tmsg('提交数据失败');
+        	    $('#loading').hide();
+	         }
+       
+         });  
+     }
+     return false;
+   }
+   function acceptorder(){  
+	 	if(confirm('确认收货？')){
+   	     $('#loading').show(); 
+   		   var url = siteurl+'/index.php?ctrl=order&action=acceptorder&orderid=<{$order['id']}>&datatype=json&random=@random@';   
+ 	        $.ajax({ 
+           dataType: "json",  
+           url: url.replace('@random@', 1+Math.round(Math.random()*1000)),  
+           success: function(content) {    
+           	 if(content.error == false) 
+          	{  
+          		$('#orderstatus').text('已关闭'); 
+          		$('.cart_gojs').remove();
+          		$('#loading').hide();
+				window.location.reload();
+				
+          	}else{ 
+          			Tmsg(content.msg);
+          		  $('#loading').hide();
+          	}  
+          	 
+	         }, 
+           error: function(content) {  
+             	Tmsg('提交数据失败');
+        	    $('#loading').hide();
+	         }
+       
+         });  
+     }
+     return false;
+   }
+   function pingorder(){
+   		window.location.href=siteurl+'/index.php?ctrl=wxsite&action=commentorder&orderid=<{$order['id']}>';  //'ordershow.html?orderid='+$(obj).attr('orderid');//  	alert($(obj).attr('orderid')); 
+  }
+</script>
+
+
+</div>
+</div>
+</div>
+<{/block}>
